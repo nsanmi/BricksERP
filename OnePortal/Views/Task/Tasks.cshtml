@@ -1,0 +1,463 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_objective_activity
+@{
+    ViewBag.Title = "Tasks";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading navy-bg">
+    <div class="col-lg-10">
+        <h2>@Model.activity</h2>
+        <ol class="breadcrumb navy-bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.pm_project_strategic_objective.project_id })">@Model.pm_project_strategic_objective.pm_project.code</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Objective","Project",new { id = Model.pm_project_strategic_objective.id })">@Model.pm_project_strategic_objective.code</a>
+            </li>
+            <li class="active">
+                <strong>@Model.activity</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>Not Started</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="completed">
+                        @if (Model.pm_project_task.Any())
+                        {
+                            foreach (var task in Model.pm_project_task.Where(e => e.status == 7))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    <strong><a href="@Url.Action("Task", "Task", new { id = task.id })"> @task.task</a></strong> - @task.description
+                                    <div class="team-members">
+                                        @if (task.pm_task_admin.Any())
+                                        {
+                                            foreach (var admin in task.pm_task_admin)
+                                            {
+
+                                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                if (!File.Exists(Server.MapPath(pic)))
+                                                { pic = "/Content/images/a4.jpg"; }
+
+                                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                            }
+                                        }
+
+
+                                    </div>
+
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <a href="@Url.Action("DeleteTask","Task",new { id = task.id })" class="pull-right btn btn-xs btn-danger">Delete</a>
+                                        <i class="fa fa-clock-o"></i>  
+                                        @if (task.due_date.HasValue)
+    {
+                                    <span>@task.due_date.Value.ToString("yyyy-MM-dd")</span>
+}
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>In Progress</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="inprogress">
+                        @if (Model.pm_project_task.Any())
+                        {
+                            foreach (var task in Model.pm_project_task.Where(e => e.status == 5))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    <strong><a href="@Url.Action("Task", "Task", new { id = task.id })"> @task.task</a></strong> - @task.description
+                                    <div class="team-members">
+                                        @if (task.pm_task_admin.Any())
+                                        {
+                                            foreach (var admin in task.pm_task_admin)
+                                            {
+
+                                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                if (!File.Exists(Server.MapPath(pic)))
+                                                { pic = "/Content/images/a4.jpg"; }
+
+                                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                            }
+                                        }
+
+
+                                    </div>
+
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <a href="@Url.Action("DeleteTask","Task",new { id = task.id })" class="pull-right btn btn-xs btn-danger">Delete</a>
+                                        <i class="fa fa-clock-o"></i> 
+                                        @if (task.due_date.HasValue)
+                                        {
+                                        <span>@task.due_date.Value.ToString("yyyy-MM-dd")</span>
+                                        }
+                                       
+                    </div>
+
+                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>Completed</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="completed">
+                        @if (Model.pm_project_task.Any())
+                        {
+                            foreach (var task in Model.pm_project_task.Where(e => e.status == 6))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    <strong><a href="@Url.Action("Task", "Task", new { id = task.id })"> @task.task</a></strong> - @task.description
+                                    <div class="team-members">
+                                        @if (task.pm_task_admin.Any())
+                                        {
+                                            foreach (var admin in task.pm_task_admin)
+                                            {
+
+                                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                if (!File.Exists(Server.MapPath(pic)))
+                                                { pic = "/Content/images/a4.jpg"; }
+
+                                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                            }
+                                        }
+
+
+                                    </div>
+
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <a href="@Url.Action("DeleteTask","Task",new { id = task.id })" class="pull-right btn btn-xs btn-danger">Delete</a>
+                                        <i class="fa fa-clock-o"></i>  @if (task.due_date.HasValue)
+    {
+                                    <span>@task.due_date.Value.ToString("yyyy-MM-dd")</span>
+}
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>@Model.activity</h3>
+                    <p class="small">@Model.description</p>
+                    <hr />
+                    <p>
+                        Start date:
+                        @if (Model.start_date.HasValue)
+                        {
+                            <span style="font-weight:bold">@Model.start_date.Value.ToString("MMMM dd, yyyy")</span>
+                        }
+                    </p>
+                    <p>
+                        End date:
+                        @if (Model.end_date.HasValue)
+                        {
+                            <span style="font-weight:bold">@Model.end_date.Value.ToString("MMMM dd, yyyy")</span>
+                        }
+                    </p>
+
+                    <p>
+                        Expected start date: @if (Model.expected_start_date.HasValue)
+                        {
+                            <span style="font-weight:bold">@Model.expected_start_date.Value.ToString("MMMM dd, yyyy")</span>
+                        }
+                    </p>
+                    <p>
+                        Due date:
+                        @if (Model.due_date.HasValue)
+                        {
+                            <span style="font-weight:bold">@Model.due_date.Value.ToString("MMMM dd, yyyy")</span>
+                        }
+                    </p>
+
+
+                    <div class="team-members">
+                        @if (Model.pm_activity_admin.Any())
+                        {
+                            foreach (var admin in Model.pm_activity_admin)
+                            {
+
+                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                if (!File.Exists(Server.MapPath(pic)))
+                                { pic = "/Content/images/a4.jpg"; }
+
+                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                            }
+                        }
+
+
+                    </div>
+                    <hr />
+                    <form method="post" enctype="multipart/form-data" id="frmFile">
+                        <input type="file" style="display:none" name="file" id="file" />
+                        <input type="hidden" value="activity" name="module" />
+                        <input type="hidden" value="@Model.id" name="activity_id" />
+                    </form>
+                    <h4>
+                        Files <div class="pull-right">
+                            <a href="#" onclick="$('#file').click()" class="btn btn-xs btn-primary">Add files</a><label style="display:none" id="progress">
+                                <img src="~/Content/images/loading-spinner-blue.gif" style="height:18px" alt="" />
+
+                            </label>
+                        </div>
+                    </h4>
+
+                    @if (Model.pm_activity_files.Any())
+                    {
+                        <table class="table" style="font-size:11px">
+                            <tbody>
+                                @foreach (var file in Model.pm_activity_files.OrderByDescending(e => e.uploaded_at).Take(10))
+                                {
+                                    <tr>
+                                        <td><a href=""><i class="fa fa-file"></i> @file.file_name</a></td>
+                                        <td>@file.uploaded_at.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <a href="@Url.Action("Files","Activity",new {id=Model.id})" class="btn btn-xs btn-default">View all project files</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<div id="small-chat">
+
+
+    <a class="open-small-chat" data-toggle="modal" data-target="#myModal2">
+        <i class="fa fa-plus"></i>
+
+    </a>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddTask", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Task</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="activity_id" value="@Model.id" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Task</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="task" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Task Admin</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="employee" multiple></select>
+                            <span class="help-block m-b-none">Select person</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Status</label>
+
+                        <div class="col-lg-9">
+                            @*<select class="form-control" name="status"></select>*@
+                            @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">End Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Ex. Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Due Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="due_date" name="due_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('#e6').select2({
+                placeholder: 'Search...',
+                dropdownParent: $("#myModal2"),
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

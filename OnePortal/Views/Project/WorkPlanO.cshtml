@@ -1,0 +1,361 @@
+﻿@using HRM.DAL.Models;
+@using System.Globalization;
+@using HRM.DAL.Util;
+@model pm_project_strategic_objective
+@{
+    ViewBag.Title = "WorkPlan";
+    var first_day = new DateTime(2017, 7, 1);
+    var start_week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(first_day, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+    var last_day = new DateTime(2017, 9, 30);
+    var last_week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(last_day, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    var year = 2017;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2>@Model.code</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.id })">@Model.code</a>
+            </li>
+            <li class="active">
+                <strong>Work Plan</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Work Plan
+                    </h5>
+                  
+
+                </div>
+                <div class="ibox-content">
+
+
+
+
+                    <table class="overflow-y" style="margin-top:0px;margin-bottom:0px;">
+                        <thead>
+                            <tr class="top-header">
+                                <th></th>
+                                <th colspan="7"></th>
+
+                                @for (var i = start_week; i <= last_week; i++)
+                                {
+                                    var first_week_day = DateUtil.FirstDateOfWeekISO8601Monday(year, i);
+                                    <th colspan="7">Week @i <span style="font-size:11px;font-weight:normal;color:chocolate">  @first_week_day.ToString("dd-MMM") to @first_week_day.AddDays(6).ToString("dd-MMM")</span></th>
+
+                                }
+
+                            </tr>
+                            <tr class="title-header">
+                                <th></th>
+                                <th>Task and Objectives</th>
+                                <th>Outcome</th>
+                                <th>Means of Verification</th>
+                                <th>Responsible party</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>% Completion</th>
+
+                                @for (var i = start_week; i <= last_week; i++)
+                                {
+
+                                    <th style="font-weight:normal">M</th>
+                                    <th>T</th>
+                                    <th>W</th>
+                                    <th>T</th>
+                                    <th>F</th>
+                                    <th>S</th>
+                                    <th>S</th>
+
+                                }
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.pm_project_objective_activity.Any())
+                            {
+                                
+                                    var act = 1;
+                                    foreach (var activity in Model.pm_project_objective_activity)
+                                    {
+                                        <tr>
+                                            <th class="activity">ACT - @act</th>
+                                            <th class="activity">@activity.activity</th>
+                                            <td class="activity"></td>
+                                            <td class="activity"></td>
+                                            <td class="activity">
+                                                @if (activity.pm_activity_admin.Any())
+                                                {
+                                                    <span style="font-size:11px">
+                                                        @string.Join(",", activity.pm_activity_admin.Select(e => e.admin_hrm_employee.emp_firstname.Substring(0, 1) + "" + e.admin_hrm_employee.emp_lastname.Substring(0, 1)).ToList())
+                                                    </span>
+
+                                                }
+
+                                            </td>
+                                            <td class="activity"></td>
+                                            <td class="activity"></td>
+                                            <td class="activity"></td>
+
+                                            @for (var i = start_week; i <= last_week; i++)
+                                            {
+                                                <td class="activity"></td>
+                                                <td class="activity"></td>
+                                                <td class="activity"></td>
+                                                <td class="activity"></td>
+                                                <td class="activity"></td>
+                                                <td class="activity" style="background-color:grey;border:0"></td>
+                                                <td class="activity" style="background-color:grey;border:0"></td>
+
+                                            }
+                                        </tr>
+                                        act++;
+                                        var tsk = 1;
+
+                                        foreach (var task in activity.pm_project_task)
+                                        {
+                                            <tr>
+                                                <th class="task">TSK - @tsk</th>
+                                                <th class="task">@task.task</th>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    @if (task.pm_task_admin.Any())
+                                                    {
+                                                        <span style="font-size:11px">
+                                                            @string.Join(",", task.pm_task_admin.Select(e => e.admin_hrm_employee.emp_firstname.Substring(0, 1) + "" + e.admin_hrm_employee.emp_lastname.Substring(0, 1)).ToList())
+                                                        </span>
+
+                                                    }
+
+                                                </td>
+                                                <td style="font-size:11px">@task.start_date.Value.ToString("yyyy-MMM-dd")</td>
+                                                <td style="font-size:11px">@task.end_date.Value.ToString("yyyy-MMM-dd")</td>
+                                                <td></td>
+
+                                                @for (var i = start_week; i <= last_week; i++)
+                                                {
+                                                    var first_week_day = DateUtil.FirstDateOfWeekISO8601Monday(year, i);
+
+                                                    for (var day = first_week_day; day <= first_week_day.AddDays(6); day = day.AddDays(1))
+                                                    {
+                                                        if (task.start_date.Value == day)
+                                                        {
+                                                            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Friday)
+                                                            {
+                                                                <td style="padding:0px;border:0;" class="weekend">
+                                                                    <div class="bar-beginning">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="padding:0px;border:0">
+                                                                    <div class="bar-beginning">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+
+                                                        }
+                                                        else if (task.end_date.Value == day)
+                                                        {
+                                                            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Friday)
+                                                            {
+                                                                <td style="padding:0px;border:0;" class="weekend">
+                                                                    <div class="bar-end">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <td style="padding:0px;border:0">
+                                                                    <div class="bar-end">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+
+
+                                                        }
+                                                        else if (task.start_date.Value <= day && task.end_date >= day)
+                                                        {
+
+                                                            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Friday)
+                                                            {
+                                                                <td style="padding:0px;border:0;" class="weekend">
+                                                                    <div class="bar">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td style="padding:0px;border:0">
+                                                                    <div class="bar">
+
+                                                                    </div>
+                                                                </td>
+                                                            }
+
+
+                                                        }
+
+                                                        else
+                                                        {
+                                                            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Friday)
+                                                            {
+                                                                <td style="padding:0px;border:0;background-color:gray"></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                }
+
+
+
+                                            </tr>
+
+                                            tsk++;
+                                        }
+                                    }
+                                }
+                            
+
+                        </tbody>
+                    </table>
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none" id="tb_clone">
+
+</div>
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="~/Content/js/jquery.table2excel.js"></script>
+    <script src="~/Content/js/jquery.stickyheader.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+
+
+    <script>
+
+                            $(document).ready(function () {
+
+                                $(".ibox-content").find("table").each(function () {
+                                    var newTb = $(this).clone()
+                                    newTb.removeClass("overflow-y");
+                                    newTb.addClass("test_class")
+                                    newTb.attr("id", "sample_table");
+                                    $("#tb_clone").append(newTb);
+                                });
+                                //var newTb = $(".overflow-y").clone();
+                                //newTb.removeClass(".overflow-y");
+                                //newTb.name = "sample_table";
+                                //newTb.find('table').each(function () {
+
+
+                                //});
+                                convert_toplan();
+                                //$("#tb_clone").append(newTb);
+
+
+                                //$('.i-checks').iCheck({
+                                //    checkboxClass: 'icheckbox_square-green',
+                                //    radioClass: 'iradio_square-green'
+                                //});
+
+
+
+                            });
+
+                            function fnExcelReport() {
+                                var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+                                var textRange; var j = 0;
+                                tab = document.getElementById('sample_table'); // id of table
+
+                                for (j = 0; j < tab.rows.length; j++) {
+                                    tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                                    //tab_text=tab_text+"</tr>";
+                                }
+
+                                tab_text = tab_text + "</table>";
+                                tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                                tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+                                tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+                                var ua = window.navigator.userAgent;
+                                var msie = ua.indexOf("MSIE ");
+
+                                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                                {
+                                    txtArea1.document.open("txt/html", "replace");
+                                    txtArea1.document.write(tab_text);
+                                    txtArea1.document.close();
+                                    txtArea1.focus();
+                                    sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+                                }
+                                else                 //other browser not tested on IE 11
+                                    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+                                return (sa);
+                            }
+
+
+    </script>
+
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/css/normalize.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/Content/css/demo.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/Content/css/component.css" />
+    <style>
+    </style>
+
+
+}

@@ -1,0 +1,22 @@
+﻿@using WorkFlow.DAL
+@{
+    var form_view_data = (Dictionary<string, string>)ViewBag.form_view_data;
+    var vendors = Util.GetVendors();
+
+    var value = form_view_data["1"];
+}
+<div class="form-group">
+    @MvcHtmlString.Create(form_view_data["1"])
+</div>
+
+<div class="form-group">
+    <label>Vendors</label>
+    @Html.DropDownList("vendor", new SelectList(vendors, "id", "name", null), "- Please Select -", new { @class = "form-control" })
+</div>
+
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+

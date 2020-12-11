@@ -1,0 +1,232 @@
+﻿@model IEnumerable<Hotel.Dal.Models.Hotel_guest>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_otherLayout.cshtml";
+}
+
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5> </h5>
+                    <div class="ibox-tools">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+                        <p>
+                            @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                        </p>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="full-height-scroll">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-bordered" id="tb_employees" data-page-length='15'>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.First_name)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Last_name)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Other_names)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Address)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.State)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Country)
+                                                </th>
+                                                @*<th>
+                                                        @Html.DisplayNameFor(model => model.Nextofkin_fullname)
+                                                    </th>*@
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Email)
+                                                </th>
+                                                @*<th>
+                                                        @Html.DisplayNameFor(model => model.Password)
+                                                    </th>*@
+                                                @*<th>
+                                                        @Html.DisplayNameFor(model => model.Nextofkin_fulladdress)
+                                                    </th>*@
+                                                @*<th>
+                                                        @Html.DisplayNameFor(model => model.Nextofkin_phonenumber)
+                                                    </th>*@
+                                                @*<th>
+                                                        @Html.DisplayNameFor(model => model.status)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.deleted)
+                                                    </th>*@
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.First_name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Last_name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Other_names)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Address)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.State)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Country)
+                                                    </td>
+                                                    @*<td>
+                                                            @Html.DisplayFor(modelItem => item.Nextofkin_fullname)
+                                                        </td>*@
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                    </td>
+                                                    @*<td>
+                                                            @Html.DisplayFor(modelItem => item.Password)
+                                                        </td>*@
+                                                    @*<td>
+                                                            @Html.DisplayFor(modelItem => item.Nextofkin_fulladdress)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Nextofkin_phonenumber)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.status)
+                                                        </td>*@
+                                                    @*<td>
+                                                            @Html.DisplayFor(modelItem => item.deleted)
+                                                        </td>*@
+                                                <td>
+                                                    <a class="btn btn-primary" href="@Url.Action("GuestProfile", "CompanyPages", new {guestId = item.Id @*checkindate = checkindate, checkoutdate = checkoutdate*@ })">
+                                                        View Guest
+                                                    </a>
+                                                </td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tb_employees').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'employee_list' },
+                    { extend: 'pdf', title: 'employee_list' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+    </script>
+}
+
+@section Styles{
+    <style>
+        .table td.text {
+            max-width: 177px;
+        }
+
+            .table td.text span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+        .table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        table {
+            border: 1px;
+            table-layout: fixed;
+        }
+
+        .table > tbody > tr > td, .table > thead > tr > th {
+            padding: 6px 10px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+    </style>
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+

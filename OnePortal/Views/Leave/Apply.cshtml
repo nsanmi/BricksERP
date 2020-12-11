@@ -1,0 +1,316 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "Apply Leave";
+    var entitlements = (IQueryable<admin_hrm_leave_entitlement>)ViewBag.entitlements;
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Apply for Leave</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>Apply</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="@Url.Action("Apply","Leave")" method="post">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Apply Leave </h5>
+                        <div class="ibox-tools">
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#myModal2" type="button">Check Leave Balance</button>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Leave Type</label>
+                                    @Html.DropDownList("leave_type", new SelectList(OptionUtil.GetLeaveTypes(), "id", "name"), "- Please Select -", new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" id="data_1">
+                                    <label class="font-noraml">From Date</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" required type="text" readonly class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" id="data_1">
+                                    <label class="font-noraml">To Date</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" required type="text" readonly class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Partial Days</label>
+                                    <select class="form-control" id="sel_partial_days" name="sel_partial_days" onchange="toggle_partial()">
+                                        <option value="1">None</option>
+                                        <option value="2">All Days</option>
+                                        <option value="3">Start Day only</option>
+                                        <option value="4">End Day only</option>
+                                        <option value="5">Start and End Day</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="rw_start" style="display:none">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Start Day</label>
+                                    <select class="form-control" id="sel_duration_1" name="sel_duration_1" onchange="toggle_duration('.sp_day_1','.sp_time_1')">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_day_1">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_1" name="sel_time_1">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_1">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_1">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="rw_end" style="display:none">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>End Day</label>
+                                    <select class="form-control" id="sel_duration_2" name="sel_duration_2" onchange="toggle_duration('.sp_day_2','.sp_time_2',this)">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_day_2">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_2" name="sel_time_2">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_2">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_2">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="rw_all" style="display:none">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <select class="form-control" id="sel_duration_a" name="sel_duration_a" onchange="toggle_duration('.sp_day_a','.sp_time_a',this)">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_day_a">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_a" name="sel_time_a">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_a">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_a">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group"><label>Comment</label> <textarea name="comment" rows="4" class="form-control"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Leave Entitlements</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    @*<th>Entitlement Type</th>*@
+                                    <th>No of Days</th>
+                                    <th>Days Used</th>
+                                    <th>Remaining</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (entitlements.Any())
+                                {
+                                    foreach(var entitlemnt in entitlements)
+                                    {
+                                        <tr>
+                                            <td>@entitlemnt.admin_hrm_leave_type.name</td>
+                                            @*<td>@entitlemnt.admin_hrm_leave_entitlement_type.name</td>*@
+                                            <td>@entitlemnt.no_of_days</td>
+                                            <td>@entitlemnt.days_used</td>
+                                            <td>@string.Format("{0}",entitlemnt.no_of_days-entitlemnt.days_used)</td>
+                                            <td>@entitlemnt.from_date.ToString("dd MMM yyyy")</td>
+                                            <td>@entitlemnt.to_date.Value.ToString("dd MMM yyyy")</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            var dateToday = new Date();
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                daysOfWeekDisabled: [0, 6]
+            });
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}

@@ -1,0 +1,49 @@
+﻿@using OnePortal.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div class="text-center">
+    <h1 class="logo-name" style="font-family: 'Quattrocento', serif;">BRICKSPOINT</h1>
+</div>
+
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <h3>Welcome to Brickspoint</h3>
+        <p>Provide your Login credentials to proceed</p>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", role = "form" }))
+            {
+
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email Address", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { placeholder = "Password", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+        }
+
+        <br />
+        <p>Brickspoint &copy; 2020</p>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,36 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+    var form = XElement.Parse(workflow.workflow).Element("form");
+}
+
+<div class="form-group">
+    <label>Skip Job Completion</label>
+
+    <input type="checkbox"  name="skip_form" />
+</div>
+
+
+<div class="form-group">
+    <label>Upload Job Completion Form</label>
+
+    <input type="file" name="files" multiple />
+</div>
+
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

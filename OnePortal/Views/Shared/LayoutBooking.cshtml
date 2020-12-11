@@ -1,0 +1,165 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Hotel Template">
+    <meta name="keywords" content="Hotel, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <title>@ViewBag.Title - Brickspoint - Hotel</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/Files/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Files/css/style.css" type="text/css">
+
+
+    @*@Styles.Render("~/Content/themecss")
+        @Styles.Render("~/Asset/css")
+
+        @Scripts.Render("~/bundles/modernizr")
+        @RenderSection("Styles", required: false)*@
+
+</head>
+<body class="">
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="inner-header">
+                <div class="logo">
+                    <a href="./index.html"><img src="~/Files/img/logo.png" alt=""></a>
+                </div>
+                <div class="nav-right">
+                    <a href="#" class="primary-btn">Make a Reservation</a>
+                </div>
+                <nav class="main-menu mobile-menu">
+                    <ul>
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./about-us.html">About</a></li>
+                        <li class="active"><a href="rooms.html">Rooms</a></li>
+                        <li>
+                            <a href="#">Pages</a>
+                            <ul class="drop-menu">
+                                <li><a href="about-us.html">About Us</a></li>
+                                <li><a href="rooms.html">Rooms</a></li>
+                                <li><a href="services.html">Services</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./blog.html">News</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div id="mobile-menu-wrap"></div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+  
+
+
+
+    @RenderBody()
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-item">
+                        <div class="footer-logo">
+                            <a href="#"><img src="~/Files/img/logo.png" alt=""></a>
+                        </div>
+                        <p>
+                            Dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-item">
+                        <h5>Newsletter</h5>
+                        <div class="newslatter-form">
+                            <input type="text" placeholder="Your Email Here">
+                            <button type="submit">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer-item">
+                        <h5>Contact Info</h5>
+                        <ul>
+                            <li><img src="~/Files/img/placeholder.png" alt="">1525 Boring Lane,<br />Los Angeles, CA</li>
+                            <li><img src="~/Files/img/phone.png" alt="">+1 (603)535-4592</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <ul>
+                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Rooms</a></li>
+                            <li><a href="#">Facilities</a></li>
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row pt-5">
+                    <div class="col-lg-12 ">
+                        <div class="small text-white text-center">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+    <!-- Js Plugins -->
+    <script src="~/Files/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Files/js/bootstrap.min.js"></script>
+    <script src="~/Files/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Files/js/jquery-ui.min.js"></script>
+    <script src="~/Files/js/jquery.nice-select.min.js"></script>
+    <script src="~/Files/js/jquery.slicknav.js"></script>
+    <script src="~/Files/js/owl.carousel.min.js"></script>
+    <script src="~/Files/js/main.js"></script>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/themeplugins")
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

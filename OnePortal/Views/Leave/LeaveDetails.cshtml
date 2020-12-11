@@ -1,0 +1,130 @@
+﻿@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "LeaveDetails";
+    var request = (admin_hrm_leave_request)ViewBag.request;
+   
+    var canEdit = Convert.ToInt32(ViewBag.canEdit);
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Leave Details</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>Leave Details</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>@string.Format("{0} {1} {2}",request.admin_hrm_employee.emp_lastname,request.admin_hrm_employee.emp_firstname,request.admin_hrm_employee.emp_middle_name) </h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Requested for: </label><span>@string.Format("{0} to {1}", request.leave_start_date.ToString("yyyy-MM-dd"), request.admin_hrm_leave.LastOrDefault().date.Value.ToString("yyyy-MM-dd"))</span>
+                            <br />
+                            <label>Applied on: </label><span>@request.date_applied.ToString("yyyy-MM-dd")</span>
+                        </div>
+                        <form method="post" action="@Url.Action("LeaveDetails","Leave")">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+
+
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Leave Type</th>
+                                                <th>Leave Balance (Days)</th>
+                                                <th>Duration(Hours)</th>
+                                                <th>Status</th>
+                                                <th>Comments</th>
+                                                @if (canEdit == 1)
+                                                {
+                                                    <th>Action</th>
+                                                }
+                                                
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (request.admin_hrm_leave.Any())
+                                            {
+                                                foreach (var leave in request.admin_hrm_leave)
+                                                {
+                                                    var entitlement = request.admin_hrm_employee.admin_hrm_leave_entitlement.FirstOrDefault(e => e.leave_type_id == 1);
+                                                    <tr>
+                                                        <td>@leave.date.Value.ToString("yyyy-MM-dd")</td>
+                                                        <td>@leave.admin_hrm_leave_type.name</td>
+                                                        @if (entitlement != null)
+                                                        {
+                                                            <td>@string.Format("{0}", entitlement.no_of_days - entitlement.days_used)</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                        <td>@leave.length_hours</td>
+                                                        <td>@leave.admin_hrm_leave_status.name</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-comment-o"></i></button>
+                                                        </td>
+                                                        @if (canEdit==1)
+                                                        {
+                                                            <td>
+                                                                <select class="form-control" name="@leave.id">
+                                                                    <option value="-2">Select action</option>
+                                                                    <option value="3">Approve</option>
+                                                                    <option value="0">Cancel</option>
+                                                                    <option value="-1">Reject</option>
+                                                                </select>
+                                                            </td>
+                                                        }
+                                                       
+
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                @if (canEdit == 1)
+                                {
+                                     <button type="submit" class="btn btn-primary pull-right">Save</button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

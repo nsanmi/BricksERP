@@ -1,0 +1,179 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+   
+}
+<div class="form-group" style="border:solid #ccc 1px">
+    <textarea class="form-control summernote" name="email_info">
+
+<table>
+    <tbody>
+        <tr>
+            <td>Dear Sir,</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><strong>REQUEST FOR QUOTATION</strong></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                The Maryland Global Initiative Corporation of Nigeria a Non –profit, Non- Governmental Organization funded by the US Government through the Center for Disease Control  (CDC). University of Maryland (UMB) Program in Nigeria operationalized through Maryland Global Initiatives Corporation (MGIC) Nigeria, which promotes best practices in health care delivery and research using local and internationally-adapted models to strengthen health systems.
+            </td>
+        </tr>
+        <tr>
+            <td>We request the quotation for:</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table class="table table-bordered" id="tb_items">
+                    <thead>
+                        <tr>
+
+                            <th style="background-color:transparent">Unit</th>
+                            <th style="background-color:transparent">Quantity</th>
+                            <th style="background-color:transparent">Item</th>
+                            <th style="background-color:transparent">Description</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (form.Element("items").Elements("item").Any())
+                        {
+                            foreach (var item in form.Element("items").Elements("item"))
+                            {
+                                <tr>
+                                    <td>@item.Element("unit").Value</td>
+                                    <td>@item.Element("quantity").Value</td>
+                                    <td>@item.Element("itemname").Value</td>
+                                    <td>@item.Element("description").Value</td>
+
+                                </tr>
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                Should your organization be successful in the bid selection process, note that (as a statutory requirement) our organization shall withhold & remit to the tax authority the appropriate tax rate under which your professional service falls and a Performance Bond (PB) will be requested from you if your transaction falls within that threshold. We are VAT exempt as an organization (NGO).
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3">
+                Kindly send your quote on or before 22nd May, 2017 in hard copy of sealed envelope to our office, Maryland Global Initiatives Corporation (MGIC-Nigeria), Plot 784, Jahi District.
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="3">For further enquiries, contact me on: 07016834312</td>
+
+        </tr>
+        <tr>
+            <td colspan="3">Thank you as we await a quick response.</td>
+        </tr>
+        <tr>
+            <td>Regards,</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="3">Oluwaseyi Efuntoye,</td>
+
+        </tr>
+        <tr>
+            <td colspan="3">Administrative Assistant</td>
+           
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+        Dear Sir,<br /><br />
+
+    <center><strong>REQUEST FOR QUOTATION</strong></center><br />The Maryland Global Initiative Corporation of Nigeria a Non –profit, Non- Governmental Organization funded by the US Government through the Center for Disease Control  (CDC). University of Maryland (UMB) Program in Nigeria operationalized through Maryland Global Initiatives Corporation (MGIC) Nigeria, which promotes best practices in health care delivery and research using local and internationally-adapted models to strengthen health systems.
+<br />
+
+We request the quotation for:
+<br />
+
+<div style="margin-top:15px">
+
+    <table class="table table-bordered" id="tb_items">
+    <thead>
+    <tr>
+              
+    <th style="background-color:transparent">Unit</th>
+    <th style="background-color:transparent">Quantity</th>
+    <th style="background-color:transparent">Item</th>
+    <th style="background-color:transparent">Description</th>
+           
+                    </tr>
+                </thead>
+    <tbody>
+                    @if (form.Element("items").Elements("item").Any())
+                    {
+                        foreach (var item in form.Element("items").Elements("item"))
+                        {
+    <tr>
+    <td>@item.Element("unit").Value</td>
+    <td>@item.Element("quantity").Value</td>
+    <td>@item.Element("itemname").Value</td>
+    <td>@item.Element("description").Value</td>
+           
+                            </tr>
+                        }
+                    }
+           
+           
+                </tbody>
+            </table>
+</div>
+Should your organization be successful in the bid selection process, note that (as a statutory requirement) our organization shall withhold & remit to the tax authority the appropriate tax rate under which your professional service falls and a Performance Bond (PB) will be requested from you if your transaction falls within that threshold. We are VAT exempt as an organization (NGO).
+<br />
+<br />
+
+        Kindly send your quote on or before 22nd May, 2017 in hard copy of sealed envelope to our office, Maryland Global Initiatives Corporation (MGIC-Nigeria), Plot 784, Jahi District.<br />
+
+For further enquiries, contact me on: 07016834312<br />
+
+Thank you as we await a quick response.<br />
+
+Regards,<br /><br />
+
+Oluwaseyi Efuntoye,<br />
+
+Administrative Assistant
+
+    </textarea>
+   
+
+
+</div>
+
+
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Vendors</label>
+    @Html.DropDownList("vendors", new SelectList(Util.GetVendors(), "id", "name",null), null, new { @class = "form-control",multiple="multiple",required="required" })
+</div>

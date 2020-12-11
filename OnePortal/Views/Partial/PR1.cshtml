@@ -1,0 +1,116 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var step = (Step)ViewBag.step;
+}
+<div class="form-group">
+
+
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent" width="15%">Item</th>
+                <th style="background-color:transparent">Specification</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                <th style="background-color:transparent" width="10%">Total</th>
+                <th style="background-color:transparent"><button type="button" class="btn btn-sm btn-primary" onclick="add_row('tb_items')">Add Row</button></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    <tr class="txtMult">
+                        <td><input class="form-control number val1 allownumericwithdecimal" type="text" required onpaste="return false" name="unit" value="@item.Element("unit").Value" /></td>
+                        <td><input class="form-control number allownumericwithdecimal val2" type="text" required onpaste="return false" name="quantity" value="@item.Element("quantity").Value" /></td>
+                        <td><input class="form-control" type="text" required name="itemname" value="@item.Element("itemname").Value" /></td>
+                        @if(item.Element("description") !=null)
+                        {
+                        <td><textarea class="form-control" required name="description">@item.Element("description")?.Value</textarea></td>
+                        }
+                        <td><input class="form-control number val3 allownumericwithdecimal" type="text" required onpaste="return false" name="unit_cost" value="@(item.Element("est_unit_price") != null ? item.Element("est_unit_price").Value : item.Element("unit_cost").Value)" /></td>
+                        <td><span class="multTotal">0.00</span></td>
+                        <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tb_items')"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr class="txtMult">
+                    <td><input class="form-control number allownumericwithdecimal val1" required type="text" name="unit" onpaste="return false" /></td>
+                    <td><input class="form-control number allownumericwithdecimal val2" required type="text" name="quantity" onpaste="return false" /></td>
+                    <td>
+                        <input class="form-control" required type="text" name="itemname" />
+                        @*<select id="e6" class="form-control iselect" name="itemname"></select>*@
+                    </td>
+                    <td><textarea class="form-control" required name="description"></textarea></td>
+                    <td><input class="form-control number allownumericwithdecimal val3" required type="text" name="unit_cost" onpaste="return false" /></td>
+                    <td><span class="multTotal">0.00</span></td>
+                    <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tb_items')"><i class="fa fa-trash"></i></button></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5">Total</td>
+                <td id="grandTotal" colspan="2">0.00</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@{
+    var justification = "";
+    if (form.Element("justification") != null)
+    {
+        justification = form.Element("justification").Value;
+    }
+
+    var comment = "";
+    if (step.Definition.Element("comments") != null)
+    {
+        comment = step.Definition.Element("comments").Value;
+    }
+}
+<div class="form-group">
+    <label>Justification</label>
+    <textarea class="form-control" required name="justification">@justification
+</textarea>
+</div>
+
+
+@*<div class="form-group">
+        <label>Upload Supporting Document</label>
+
+        <input type="file" multiple name="files" />
+    </div>*@
+
+
+
+
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment">@comment</textarea>
+</div>
+
+<input type="file" name="files" multiple />
+<div class="form-group">
+    <label>Upload Supporting Document</label>
+</div>
+<div class="file-loading">
+    @*<input id="file-0b" name="file-0b" class="file"  multiple type="file" data-min-file-count="1">*@
+</div>
+
+
+
+
+

@@ -1,0 +1,385 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "AssignLeave";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Assign Leave</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>Assign Leave</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <form action="@Url.Action("AssignLeave","Leave")" method="post">
+
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Apply Leave </h5>
+
+                    </div>
+                    <div class="ibox-content">
+
+
+
+
+                        <div class="row">
+
+                            <div class="col-lg-6">
+
+                                <div class="form-group">
+                                    <label>Employee</label>
+                                    <select id="e6" required name="employee"></select> 
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Leave Type</label>
+                                    @Html.DropDownList("leave_type", new SelectList(OptionUtil.GetLeaveTypes(), "id", "name"), "- Please Select -", new { @class = "form-control" })
+
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group" id="data_1">
+                                    <label class="font-noraml">From Date</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" required readonly class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group" id="data_1">
+                                    <label class="font-noraml">To Date</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" required readonly class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row" style="display:none">
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Partial Days</label>
+                                    <select class="form-control" id="sel_partial_days" name="sel_partial_days" onchange="toggle_partial()">
+                                        <option value="1">None</option>
+                                        <option value="2">All Days</option>
+                                        <option value="3">Start Day only</option>
+                                        <option value="4">End Day only</option>
+                                        <option value="5">Start and End Day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row" id="rw_start" style="display:none">
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Start Day</label>
+                                    <select class="form-control" id="sel_duration_1" name="sel_duration_1" onchange="toggle_duration('.sp_day_1','.sp_time_1')">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_day_1">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_1" name="sel_time_1">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_1">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_1">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_1" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="row" id="rw_end" style="display:none">
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>End Day</label>
+                                    <select class="form-control" id="sel_duration_2" name="sel_duration_2" onchange="toggle_duration('.sp_day_2','.sp_time_2',this)">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_day_2">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_2" name="sel_time_2">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_2">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_2">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_2" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="row" id="rw_all" style="display:none">
+
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <select class="form-control" id="sel_duration_a" name="sel_duration_a" onchange="toggle_duration('.sp_day_a','.sp_time_a',this)">
+                                        <option value="1">Half Day</option>
+                                        <option value="2">Specify Time</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_day_a">
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control" id="sel_time_a" name="sel_time_a">
+                                        <option value="1">Morning</option>
+                                        <option value="2">Afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <select class="form-control" name="from_a">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select class="form-control" name="to_a">
+                                        <option value="1">09:00</option>
+                                        <option value="2">10:00</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 sp_time_a" style="display:none">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" class="form-control" readonly />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group"><label>Leave Type</label> <textarea name="comment" rows="4" class="form-control"></textarea></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+
+                            <div class="col-lg-12 ">
+                                <div class="pull-right">
+
+
+                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+<script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+<script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('#e6').select2({
+                placeholder: 'Search for an employee',
+              
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+
+
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

@@ -1,0 +1,149 @@
+﻿@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "Price";
+    var price = (pricing)ViewBag.price;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update complain</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Complain</a>
+            </li>
+            <li class="active">
+                <strong>complain status</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="@Url.Action("UpdateP","Laundry")" method="post" data-parsley-validate>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Compalint Details </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                            <input type="hidden" name="Id" required value="@price.id" class="form-control" readonly>
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Clothe Name</label>
+                                    <input type="text" required value="@price.ClothName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Clothe Type</label>
+                                    <input type="text" required value="@price.clotheType" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Washing Rate</label>
+                                    <input type="number" required value="@price.washing_price" class="form-control">
+                                </div>
+                            </div>
+
+                            @*<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Clothe description</label>
+                                        <input type="text" required value="@price.Description" class="form-control">
+                                    </div>
+                                </div>*@
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Clothe description</label>
+                                    <textarea name="Comment" rows="3" class="form-control">@price.Description</textarea>
+                                </div>
+                            </div>
+
+                            @*<div class="col-lg-6">
+                                    <div class="form-group" id="">
+                                        <label class="font-noraml">Price description</label>
+                                        <input id="Createdate" value="@category.date_created.ToString("dd-MM-yyyy")" required type="text" class="form-control" readonly>
+                                    </div>
+                                </div>*@
+                            @*<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-noraml">Description</label>
+                                        <input type="text" required value="@category.description" class="form-control">
+                                    </div>
+                                </div>*@
+                            @*<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="font-noraml">Resolved By</label>
+                                        <input type="text" required value="@complain.ResolvedBy" class="form-control" readonly>
+                                    </div>
+                                </div>*@
+                            @*<div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Complaint:</label>
+                                        <textarea name="Comment" rows="3" class="form-control">@complain.Comment</textarea>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="ibox-footer">
+                            <div class="row">
+                                <div class="col-lg-12 ">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Update Price</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                daysOfWeekDisabled: [0, 6]
+            });
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+

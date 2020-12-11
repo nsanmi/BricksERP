@@ -1,0 +1,384 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_objective_activity
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading navy-bg">
+    <div class="col-lg-12">
+        <h2>@Model.activity</h2>
+        <ol class="breadcrumb navy-bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.pm_project_strategic_objective.project_id })">@Model.pm_project_strategic_objective.pm_project.code</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Objective","Project",new { id = Model.pm_project_strategic_objective.id })">@Model.pm_project_strategic_objective.code</a>
+            </li>
+            <li class="active">
+                <strong>@Model.activity</strong>
+            </li>
+        </ol>
+    </div>
+   
+</div>
+
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Edit Activity</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            @using (Html.BeginForm("Edit", "Activity", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+
+                                <input type="hidden" name="id" value="@Model.id" />
+
+                                        <input type="hidden" name="objective_id" value="@Model.objective_id" />
+
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Activity</label>
+
+                                            <div class="col-lg-9">
+                                                <input type="text" class="form-control" value="@Model.activity" name="activity" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Number</label>
+
+                                            <div class="col-lg-9">
+                                                <input type="text" class="form-control" value="@Model.num" name="num" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Description</label>
+
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" name="description" rows="3"> @Model.description</textarea>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Requirements</label>
+
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" name="requirements" rows="3">@Model.requirements</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Outputs</label>
+
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" name="output" rows="3">@Model.output</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Performance indicator</label>
+
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" name="performance_indicator" rows="3">@Model.performance_indicator</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Target</label>
+
+                                            <div class="col-lg-9">
+                                                <textarea class="form-control" name="target" rows="3">@Model.target</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Completion</label>
+
+                                            <div class="col-lg-9">
+                                                <input type="number" class="form-control" name="completion" value="@Model.completion" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label"></label>
+                                            <div class="col-lg-9">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Activity Admins</th>
+                                                            <th></th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.pm_activity_admin.Any())
+                                                        {
+                                                            foreach (var admin in Model.pm_activity_admin)
+                                                            {
+                                                                <tr>
+                                                                    <td>@string.Format("{0} {1} {2}", admin.admin_hrm_employee.emp_lastname, admin.admin_hrm_employee.emp_firstname, admin.admin_hrm_employee.emp_middle_name)</td>
+                                                                    <td>
+                                                                        <a href="@Url.Action("RemoveAdmin","Activity",new { emp_number = admin.emp_number,activity_id=admin.activity_id })" class="btn btn-danger btn-circle">
+                                                                            <i class="fa fa-trash-o"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Activity Admin</label>
+
+                                            <div class="col-lg-9">
+                                                <select id="e6" name="employee" multiple></select>
+                                                <span class="help-block m-b-none">Select person</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Status</label>
+
+                                            <div class="col-lg-9">
+                                                @*<select class="form-control" name="status"></select>*@
+                                                @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", Model.status), null, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="data_1">
+                                            <label class="col-lg-3 control-label">Start Date</label>
+                                            <div class="input-group date col-lg-9">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" value="@Model.start_date" readonly class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="data_1">
+                                            <label class="col-lg-3 control-label">End Date</label>
+                                            <div class="input-group date col-lg-9">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" value="@Model.end_date" readonly class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="data_1">
+                                            <label class="col-lg-3 control-label">Ex. Start Date</label>
+                                            <div class="input-group date col-lg-9">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="expected_start_date" name="expected_start_date" value="@Model.expected_start_date" type="text" readonly class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="data_1">
+                                            <label class="col-lg-3 control-label">Due Date</label>
+                                            <div class="input-group date col-lg-9">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="due_date" value="@Model.due_date" name="due_date" type="text" readonly class="form-control">
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label"></label>
+
+                                            <div class="col-lg-9">
+                                                <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+
+
+
+                                   
+
+                            }
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="table-responsive">
+                                <button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#myModal2">Add Budget Item</button>
+                                <br />
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" style="text-align:center">Budget Items</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Budget Item</th>
+                                            <th>Amount</th>
+                                            <th>Date Created</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.pm_activity_budget.Any())
+                                        {
+                                            foreach (var budget in Model.pm_activity_budget)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>@budget.pm_budget_item.name</td>
+                                                    <td>@budget.amount</td>
+                                                    <td>@budget.created_at.ToString("dd MMM, yyyy: HH:mm tt")</td>
+                                                    <td><a href="@Url.Action("DeleteBudget","Activity",new { id = budget.id })" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a> </td>
+                                                </tr>
+                                            }
+
+                                         }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddBudget", "Activity", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Budget</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="activity_id" value="@Model.id" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Amount</label>
+
+                        <div class="col-lg-9">
+                            <input type="number" class="form-control" name="amount" />
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Budget Item</label>
+
+                        <div class="col-lg-9">
+                            @*<select class="form-control" name="status"></select>*@
+                            @Html.DropDownList("budget_item_id", new SelectList(OptionUtil.GetBudgetItems(), "id", "name", null), null, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           $('#e6').select2({
+               placeholder: 'Search...',
+               //dropdownParent: $("#myModal2"),
+               ajax: {
+                   url: function (params) {
+                       return baseUrl() + "employeeapi/getsearch/"+ params.term;
+                   },
+                   dataType: 'json',
+                   quietMillis: 100,
+
+                   processResults: function (data) {
+                       return {
+                           results: $.map(data, function (obj) {
+                               return { id: obj.id, text: obj.name };
+                           })
+                       };
+                   }
+
+               }
+           });
+
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

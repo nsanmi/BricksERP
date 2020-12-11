@@ -1,0 +1,113 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<admin_hrm_leave_request>
+@{
+    ViewBag.Title = "MyLeave";
+    //var requests = (IQueryable<admin_hrm_leave_request>)ViewBag.requests;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>MY LEAVE</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>My Leave</strong>
+            </li>
+
+
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                      
+                            <h5 style="padding-left: 10px;">My Leave </h5>
+                          
+                        </div>
+                    <div class="ibox-content">
+
+                        <div class="col">
+                            @if (ViewBag.messages != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.messages
+                                </div>
+                            }
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Leave Type</th>
+                                        <th>Leave Balance(Days)</th>
+                                        <th>Number of Days</th>
+                                        <th>Status</th>
+                                        <th>Details</th>
+                                        <th>Cancel</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Any())
+                                    {
+                                        foreach (var request in Model)
+                                        {
+                                            var entitlement = request.admin_hrm_employee.admin_hrm_leave_entitlement.FirstOrDefault(e => e.leave_type_id == request.leave_type_id && (e.from_date <= DateTime.Now && e.to_date >= DateTime.Now));
+                                            <tr>
+                                                <td>@string.Format("{0} {1} {2}", request.admin_hrm_employee.emp_firstname, request.admin_hrm_employee.emp_lastname, request.admin_hrm_employee.emp_middle_name)</td>
+                                                <td>@request.leave_start_date.ToString("yyyy-MM-dd")</td>
+                                                <td>@request.admin_hrm_leave_type.name</td>
+                                                <td>@string.Format("{0}", entitlement.no_of_days - entitlement.days_used)</td>
+                                                <td>@request.admin_hrm_leave.Count()</td>
+                                                <td>@OptionUtil.GetLeaveStatus(request.admin_hrm_leave.ToList())</td>
+                                                <td>
+                                                    @*<button class="btn btn-sm btn-warning btn-outline" type="button" onclick="delete_row()"><i class="fa fa-comment-o"></i></button>
+                                    &nbsp;<button class="btn btn-sm btn-info" type="button" onclick="clear_row(this)"><i class="fa fa-info"></i></button>
+                                    &nbsp;<button class="btn btn-sm btn-primary" type="button" onclick="clear_row(this)"><i class="fa fa-power-off"></i></button>*@
+
+                                                    <button class="btn btn-xs btn-warning btn-outline" type="button" data-toggle="tooltip" title="View comment" onclick="show_comment('c_@request.id')">Comment <i class="fa fa-comment-o"></i></button>
+                                                    &nbsp;<a class="btn btn-xs btn-info" data-toggle="tooltip" title="Leave details" href="@Url.Action("LeaveDetails","Leave",new { request_id = request.id })" onclick="">Details <i class="fa fa-info"></i></a>
+                                                </td>
+
+                                                <td>@if (request.leave_start_date < DateTime.Now) { } <a href="@Url.Action("Cancel", "Leave", new { id = request.id})" onClick="return confirm('Are you sure ? ');" class="btn btn-sm"><i class="fa fa-trash"></i></a> </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                </tbody>
+
+                            </table>
+
+                            <div id='Paging' style="text-align:center">
+                                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                of @Model.PageCount
+
+                                @Html.PagedListPager(Model, page => Url.Action("myleave", new { page }))
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+

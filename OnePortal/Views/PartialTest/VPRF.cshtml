@@ -1,0 +1,112 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    double total = 0;
+}
+
+<div class="form-group" id="data_1">
+    <label>Date Received by</label>
+    <div class="input-group date">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <input type="text" readonly value="" name="date_received_by" class="form-control">
+    </div>
+
+</div>
+
+<div class="form-group">
+
+    
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                <th style="background-color:transparent">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var tc = Convert.ToDouble(item.Element("quantity").Value) * Convert.ToDouble(item.Element("vendors_unit_price").Value);
+                    total += tc;
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        <td>@item.Element("description").Value</td>
+                        <td>@string.Format("{0:N}", item.Element("vendors_unit_price").Value)</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="4" style="text-align:right">
+                    <strong>Total</strong>
+                </td>
+                <td>
+                    @string.Format("{0:N}", total)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    @if (form.Element("payments") != null)
+    {
+        if (form.Element("payments").Elements("vprf_amount").Any())
+        {
+            foreach(var element in form.Element("payments").Elements("vprf_amount"))
+            {
+    <tr>
+        <td>@element.Value</td>
+    </tr>
+            }
+            
+        }
+    }
+    </div>
+<div class="form-group">
+        <label>Amount being paid</label>
+        <input type="text" class="form-control" name="vprf_amount" />
+    </div>
+    <div class="form-group">
+        <label>Reason for purchase</label>
+        <textarea class="form-control" name="reason_for_purchase">@form.Element("justification").Value</textarea>
+
+    </div>
+
+    <div class="form-group">
+        <label>Final Deilvery location</label>
+        @if (form.Element("final_delivery_location") != null)
+        {
+            <input type="text" class="form-control" value="@form.Element("final_delivery_location").Value" name="final_delivery_location" />
+        }
+        else
+        {
+            <input type="text" class="form-control" name="final_delivery_location" />
+        }
+    </div>
+
+
+    <div class="form-group">
+        <label>Additional Comments</label>
+        <textarea class="form-control" name="comment"></textarea>
+    </div>
+
+
+
+
+
+
+
+
+

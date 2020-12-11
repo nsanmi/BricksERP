@@ -1,0 +1,214 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using OnePortal.Models;
+@model HtmlInput
+
+@{
+    var step = (Step)ViewBag.step;
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+}
+@{
+    ViewBag.Title = "Step";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@workflow.title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">
+                <strong>Manage Requests</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    @*<div class="col-lg-7">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            @if (ViewBag.message != null && ViewBag.message != "")
+            {
+        <div class="alert alert-success alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                @ViewBag.message
+        </div>
+            }
+            @using (Html.BeginForm("Step", "ProcessFlow", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Step @step.Id - @step.Name</h5>
+
+            </div>
+            <div class="ibox-content">
+                <input type="hidden" name="workflow_id" value="@ViewBag.workflow_id" />
+
+                <div class="project-list">
+                    @Html.Partial("~/Views/Partial/" + step.Definition.Element("html_form_id").Value + ".cshtml")
+
+                </div>
+            </div>
+            <div class="ibox-footer">
+                <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+
+}
+        </div>
+    </div>*@
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content" id="ibox-content">
+
+                    <div class="pre-scrollable" style="max-height:600px">
+
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tab-1">Transaction Flow</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-2">Documents</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+                                            @foreach (var element in definition.Element("steps").Elements("step"))
+                                            {
+                                                var bg = "yellow-bg";
+                                                if (element.Element("status").Value == "1")
+                                                {
+                                                    bg = "navy-bg";
+                                                }
+                                                <div class="vertical-timeline-block">
+
+                                                    <div class="vertical-timeline-icon @bg">
+                                                        @if (element.Element("type").Value == "complete")
+                                                        {
+                                                            <i class="fa fa-check"></i>
+                                                        }
+                                                        else if (element.Element("type").Value == "approval")
+                                                        {
+                                                            <i class="fa fa-eyedropper"></i>
+                                                        }
+                                                        else if (element.Element("type").Value == "input")
+                                                        {
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fa fa-briefcase"></i>
+                                                        }
+
+                                                    </div>
+
+                                                    <div class="vertical-timeline-content">
+                                                        @if (element.Element("status").Value == "1")
+                                                        {
+                                                            <h2><a href="@Url.Action("Step","ProcessFlow",new { id = workflow.id, step_id = element.Element("code").Value })">@element.Element("code").Value - @element.Element("name").Value</a> </h2>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h2>@element.Element("code").Value - @element.Element("name").Value</h2>
+                                                        }
+                                                        <p>
+                                                            @Util.GetXELementValue(element, "comments")
+                                                        </p>
+
+                                                        <span class="vertical-date">
+                                                            @Util.GetXELementValue(element, "created_by_name") <br />
+                                                            <small>@Util.FormatXELementDate(element, "created_at")</small>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-2" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="col-lg-12">
+                                            @if (workflow.bpm_workflow_document.Any())
+                                            {
+                                                foreach (var doc in workflow.bpm_workflow_document)
+                                                {
+                                                    <div class="file-box">
+                                                        <div class="file">
+                                                            <a href="@Url.Action("Document", "ProcessFlow", new { id = doc.id })" target="_blank">
+                                                                <span class="corner"></span>
+
+                                                                <div class="icon">
+                                                                    <i class="fa fa-file"></i>
+                                                                </div>
+                                                                <div class="file-name">
+                                                                    @doc.name
+                                                                    <br />
+                                                                    <small>Added: @doc.created_at.ToShortDateString()</small>
+                                                                </div>
+                                                            </a>
+                                                            <a href="@Url.Action("Download","File",new { id = doc.id })" class="btn btn-xs btn-default">Download</a>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/workflow.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+
+            });
+        });
+
+        $('#data_1 .input-group.date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        $(function () {
+            $('.number').keypress(function (e) {
+                if (e.which == 97 || e.which == 98 || e.which == 99 || e.which == 110 || e.which == 111 || e.which == 65 || e.which == 66 || e.which == 67 || e.which == 78 || e.which == 79 || e.which == 49 || e.which == 50 || e.which == 51 || e.which == 52 || e.which == 53 || e.which == 48 || e.which == 54 || e.which == 55 || e.which == 56 || e.which == 57) {
+                } else {
+                    return false;
+                }
+            });
+        });
+    </script>
+
+
+}
+
+
+@section styles{
+
+    <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+
+}

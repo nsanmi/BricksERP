@@ -1,0 +1,467 @@
+﻿@using HRM.DAL.Models;
+@using System.Xml.Linq;
+@using Microsoft.AspNet.Identity;
+@model pm_project_task
+@{
+    ViewBag.Title = "Task";
+    var comments = (IQueryable<pm_comment>)ViewBag.comments;
+    var main_user_id = User.Identity.GetUserId();
+    string user_pic = "";
+    string pic = "";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading red-bg" style="border-color:#ed5565">
+    <div class="col-lg-10">
+        <h2>@Model.task</h2>
+        <ol class="breadcrumb red-bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.pm_project_objective_activity.pm_project_strategic_objective.project_id })">@Model.pm_project_objective_activity.pm_project_strategic_objective.pm_project.code</a>
+            </li>
+
+           
+            <li>
+                <a href="@Url.Action("Objective","Project",new { id = Model.pm_project_objective_activity.pm_project_strategic_objective.id })">@Model.pm_project_objective_activity.pm_project_strategic_objective.code</a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("Tasks","Task",new { id = Model.objective_activity_id })">@Model.pm_project_objective_activity.activity</a>
+            </li>
+
+            <li class="active">
+                <strong>@Model.task</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button class="btn  btn-default btn-sm pull-right" data-toggle="modal" data-target="#myModal2" type="button"><i class="fa fa-plus"></i> New Comment</button>
+                        </div>
+                    </div>
+                   <br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pre-scrollable" style="max-height:650px">
+
+                                @foreach (var comment in comments)
+                        {
+                            var element = XElement.Parse(comment.comment);
+                            var date = Convert.ToDateTime(element.Element("comment_date").Value.ToString());
+
+                            pic = "/Content/images/profile_images/" + element.Element("user_id").Value + ".jpg";
+                            if (!File.Exists(Server.MapPath(pic)))
+                            { pic = "/Content/images/a4.jpg"; }
+
+
+
+                                    <div class="social-feed-separated">
+
+                                        <div class="social-avatar">
+                                            <a href="">
+                                                <img alt="image" src="@pic">
+                                            </a>
+                                        </div>
+
+                                        <div class="social-feed-box">
+
+                                            <div class="pull-right social-action dropdown">
+                                                <button data-toggle="dropdown" class="dropdown-toggle btn-white">
+                                                    <i class="fa fa-angle-down"></i>
+                                                </button>
+                                                <ul class="dropdown-menu m-t-xs">
+                                                    <li><a href="#">Edit</a></li>
+                                                    <li><a href="#">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="social-avatar">
+                                                <a href="#">
+                                                    @element.Element("employee").Value
+
+                                                </a>
+                                                <small class="text-muted">@date.ToString("ddd dd MMM, yyyy HH:mm tt")</small>
+                                            </div>
+                                            <div class="social-body">
+                                                <p>
+                                                    @MvcHtmlString.Create(WebUtility.HtmlDecode(element.Element("comment").Value))
+
+
+                                                   
+                                                </p>
+                                                <img src="img/gallery/9.jpg" class="img-responsive">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i> Like this!</button>
+                                                   
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="social-footer">
+
+                                                @{ 
+                                                    var comment_replies = element.Elements("reply_items");
+
+                    }
+                                                @if (comment_replies != null)
+                    {
+                        foreach (var comment_reply in comment_replies)
+                        {
+                            pic = "/Content/images/profile_images/" + comment_reply.Element("user_id").Value + ".jpg";
+                            if (!File.Exists(Server.MapPath(pic)))
+                            { pic = "/Content/images/a4.jpg"; }
+                                                        <div class="social-comment">
+                                                            <a href="" class="pull-left">
+                                                                <img alt="image" src="@pic">
+                                                            </a>
+                                                            <div class="media-body">
+                                                                <a href="#">
+                                                                    @comment_reply.Element("employee").Value
+                                                                </a>
+                                                                @comment_reply.Element("reply").Value
+                                                                <br />
+                                                                <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26 Like this!</a> -
+                                                                <small class="text-muted">12.06.2014</small>
+                                                            </div>
+
+
+                                                            @{
+                                                                var reply_replies = comment_reply.Elements("reply_items");
+                }
+                                                            @foreach (var reply in reply_replies)
+                {
+                    pic = "/Content/images/profile_images/" + reply.Element("user_id").Value + ".jpg";
+                    if (!File.Exists(Server.MapPath(pic)))
+                    { pic = "/Content/images/a4.jpg"; }
+                                                                <div class="social-comment">
+                                                                    <a href="" class="pull-left">
+                                                                        <img alt="image" src="@pic">
+                                                                    </a>
+                                                                    <div class="media-body">
+                                                                        <a href="#">
+                                                                            @reply.Element("employee").Value
+                                                                        </a>
+                                                                        @comment_reply.Element("reply").Value
+                                                                        <br />
+                                                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11 Like this!</a> -
+                                                                        <small class="text-muted">10.07.2014</small>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+                                                            <div class="social-comment">
+                                                                @{
+                                                                    user_pic = "/Content/images/profile_images/" + main_user_id + ".jpg";
+                                                                    if (!File.Exists(Server.MapPath(pic)))
+                                                                    { pic = "/Content/images/a4.jpg"; }
+                                                                }
+
+                                                                <a href="" class="pull-left">
+                                                                    <img alt="image" src="@user_pic">
+                                                                </a>
+                                                                <div class="media-body">
+                                                                    <textarea class="form-control" placeholder="Write comment..."></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="social-comment">
+
+                                                            @{
+                                                                user_pic = "/Content/images/profile_images/" + main_user_id + ".jpg";
+                                                                if (!File.Exists(Server.MapPath(pic)))
+                                                                { pic = "/Content/images/a4.jpg"; }
+                                                            }
+
+                                                            <a href="" class="pull-left">
+                                                                <img alt="image" src="@user_pic">
+                                                            </a>
+                                                            <form>
+                                                                <input type="hidden" name="reply_id" value="@comment_reply.Element("reply_id").Value" />
+                                                                <input type="hidden" name="comment_type" value="1" />
+                                                                <div class="media-body">
+                                                                    <textarea class="form-control" name="reply" placeholder="Write comment..."></textarea>
+                                                                </div>
+                                                            </form>
+                                                            
+                                                        </div>
+                                                                    }
+                                                                }
+                                             
+
+                                                <div class="social-comment">
+
+                                                    @{
+                                                        user_pic = "/Content/images/profile_images/" + main_user_id + ".jpg";
+                                                        if (!File.Exists(Server.MapPath(pic)))
+                                                        { pic = "/Content/images/a4.jpg"; }
+                                                    }
+
+                                                    <a href="" class="pull-left">
+                                                        <img alt="image" src="@user_pic">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <textarea class="form-control" placeholder="Write comment..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                                            }
+
+
+                               
+
+                            </div>
+                        </div>
+                    </div>
+            
+                    
+                    </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>@Model.task</h3>
+                    <p class="small">@Model.description</p>
+                    <hr />
+                    <p>Start date: <span style="font-weight:bold">@Model.start_date.Value.ToString("MMMM dd, yyyy")</span></p>
+                    <p>End date: <span style="font-weight:bold">@Model.end_date.Value.ToString("MMMM dd, yyyy")</span></p>
+                    <p>Expected start date: <span style="font-weight:bold">@Model.expected_start_date.Value.ToString("MMMM dd, yyyy")</span></p>
+                    <p>Due date: <span style="font-weight:bold">@Model.due_date.Value.ToString("MMMM dd, yyyy")</span></p>
+
+
+                    <div class="team-members">
+                        @if (Model.pm_task_admin.Any())
+                {
+                    foreach (var admin in Model.pm_task_admin)
+                    {
+
+                        pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                        if (!File.Exists(Server.MapPath(pic)))
+                        { pic = "/Content/images/a4.jpg"; }
+
+                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                            }
+                        }
+
+
+                    </div>
+                    <ul class="todo-list m-t small-list">
+                        @if (Model.pm_task_deliverables.Any())
+                {
+                    foreach (var deliverable in Model.pm_task_deliverables)
+                    {
+                        if (deliverable.status == 1)
+                        {
+                                    <li>
+
+                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
+                                        <span class="m-l-xs todo-completed">@deliverable.name</span>
+
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
+                                        <span class="m-l-xs">@deliverable.name</span>
+
+                                    </li>
+                                }
+
+                            }
+                        }
+                   
+                    </ul>
+                    <form method="post" enctype="multipart/form-data" id="frmFile">
+                        <input type="file" style="display:none" name="file" id="file" />
+                        <input type="hidden" value="task" name="module" />
+                        <input type="hidden" value="@Model.id" name="task_id" />
+                    </form>
+                    <h4>
+                        Files <div class="pull-right">
+                            <a href="#" onclick="$('#file').click()" class="btn btn-xs btn-primary">Add files</a><label style="display:none" id="progress">
+                                <img src="~/Content/images/loading-spinner-blue.gif" style="height:18px" alt="" />
+
+                            </label>
+                        </div>
+                    </h4>
+
+                    @if (Model.pm_task_files.Any())
+            {
+                        <table class="table" style="font-size:11px">
+                            <tbody>
+                                @foreach (var file in Model.pm_task_files.OrderByDescending(e => e.uploaded_at).Take(10))
+                                {
+                                    <tr>
+                                        <td><a href=""><i class="fa fa-file"></i> @file.file_name</a></td>
+                                        <td>@file.uploaded_at.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <a href="@Url.Action("Files","Task",new {id=Model.id})" class="btn btn-xs btn-default">View all project files</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="800px">
+        @*@using (Html.BeginForm("PostComment", "Comment", FormMethod.Post, new { @class = "form-horizontal", role = "form",id="frm_comment" }))
+        {*@
+        
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Comment</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" id="item_id" name="item_id" value="@Model.id" />
+                    <input type="hidden" id="module" name="module" value="task" />
+                    <input type="hidden" id="category" name="category" value="1" />
+
+                    <input type="hidden" id="comment" name="comment" value="" />
+                    
+                    <div class="form-group" style="border:1px solid #ccc;">
+                        <div class="summernote" name="message">
+                        </div>
+                       
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="frm_submit()"   class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+          
+        @*}*@
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+<script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="~/Content/libs/summernote/summernote.min.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+
+           $('.summernote').summernote({});
+
+           $("#frm_comment").submit(function () {
+               $("#comment").val($('.summernote').code());
+           });
+
+
+         
+
+
+
+       });
+        function frm_submit() {
+            var aHTML = $('.summernote').code();
+
+            $.ajax({
+                url:baseUrl()+ '/Comment/PostComment',
+                method: "POST",
+                data: JSON.stringify({ comment: aHTML, item_id:parseInt($("#item_id").val()), category: $("#category").val(), module: $("#module").val() }),
+                success: function () {
+                      window.location.reload(true);
+
+                }
+            })
+
+
+
+        }
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+<link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+<link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

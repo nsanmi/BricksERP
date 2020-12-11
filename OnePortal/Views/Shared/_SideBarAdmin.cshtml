@@ -1,0 +1,634 @@
+﻿@using OnePortal.Helper;
+<ul class="nav metismenu" id="side-menu">
+    <li class="nav-header">
+        @Html.Partial("_SidebarProfile")
+        <div class="logo-element">BRICKS</div>
+    </li>
+    @if (User.IsInRole("sub") || User.IsInRole("sup"))
+    {
+        <li class="@Html.IsSelected(controller: "admin", action: "noticeboard", cssClass: "active")">
+            <a href="@Url.Action("Noticeboard", "Admin")"> <i class="fa fa-bullhorn"></i> <span class="nav-label">Notice Board</span></a>
+        </li>
+        @*@if (PermissionHelper.CanAccess("employee.index", User.Identity.Name))
+            {
+                <li class="@Html.IsSelected(controller: "employee")">
+                    <a href="@Url.Action("Index","Employee")">
+                        <i class="fa fa-folder-open"></i> <span class="nav-label">Employee Mgt.</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "employee", cssClass: "in")">
+
+                        <li class="@Html.IsSelected(action: "index")">
+                            <a href="@Url.Action("Index","Employee")">Employees</a>
+                        </li>
+                    </ul>
+                </li>
+            }*@
+        @*<li class="@Html.IsSelected(controller: "admin", action: "policies", cssClass: "active")">
+                <a href="@Url.Action("Policies", "Admin")"> <i class="fa fa-book"></i> <span class="nav-label">MGIC Policies</span></a>
+            </li>*@
+        <li class="@Html.IsSelectedFirst(controllers: new string[] { "timesheet", "leave", "employee", "suggestion"})">
+            <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Human Resource</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                @if (PermissionHelper.CanAccess("employee.index", User.Identity.Name))
+                {
+                    <li class="@Html.IsSelected(action: "index")">
+                        <a href="@Url.Action("Index", "Employee")">Employees</a>
+                    </li>
+                }
+                @if (PermissionHelper.CanAccess("employee.create", User.Identity.Name))
+                {
+                    <li class="@Html.IsSelected(action: "create")">
+                        <a href="@Url.Action("Create", "Employee")">Add Employee</a>
+                    </li>
+                }
+                <li class="#">
+                    <a href="@Url.Action("EmpRecord", "Employee")">My Record</a>
+                </li>
+                <li class="@Html.IsSelected(controller: "timesheet")">
+                    <a href="#">Timesheet<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+
+                        @if (PermissionHelper.CanAccess("timesheet.mytimesheet", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "mytimesheet")">
+                                <a href="@Url.Action("MyTimesheet", "Timesheet")">My Timesheet</a>
+                            </li>
+                        }
+
+
+                        @if (PermissionHelper.CanAccess("timesheet.viewtimesheet", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "viewtimesheet")">
+                                <a href="@Url.Action("ViewTimesheet", "Timesheet")">Employee Timesheets</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "audit")">
+                                <a href="@Url.Action("audit", "Timesheet")">Timesheet Audit</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("finance") || User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "timesheet.index")">
+                                <a href="@Url.Action("Index", "TimeSheet")">Timesheet Summary</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+
+                <li class="@Html.IsSelected(controller: "leave")">
+                    <a href="#">Leave<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+                        @if (PermissionHelper.CanAccess("leave.apply", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "apply")">
+                                <a href="@Url.Action("Apply", "Leave")">Apply</a>
+                            </li>
+                        }
+                        @if (PermissionHelper.CanAccess("leave.myleave", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "myleave")">
+                                <a href="@Url.Action("MyLeave", "Leave")">My Leave</a>
+                            </li>
+                        }
+                        @if (PermissionHelper.CanAccess("leave.myentitlements", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "myentitlements")">
+                                <a href="@Url.Action("MyEntitlements", "Leave")">My Entitlements</a>
+                            </li>
+                        }
+                        @if (PermissionHelper.CanAccess("leave.assignleave", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "assignleave")">
+                                <a href="@Url.Action("AssignLeave", "Leave")">Assign Leave</a>
+                            </li>
+                        }
+                        @if (PermissionHelper.CanAccess("leave.leavelist", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "leavelist")">
+                                <a href="@Url.Action("LeaveList", "Leave")">Leave List</a>
+                            </li>
+                        }
+                        @if (PermissionHelper.CanAccess("leave.holiday", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "holiday")">
+                                <a href="@Url.Action("holiday", "Leave")">Holiday</a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+                <li class="#">
+                    <a href="@Url.Action("Organogram", "Admin")">Organogram</a>
+                </li>
+                <li class="@Html.IsSelected(action: "MakeSuggestion")">
+                    <a href="@Url.Action("Make", "Suggestion")">Make Suggestion</a>
+                </li>
+
+                @if (User.IsInRole("suggestion"))
+                {
+                    <li class="@Html.IsSelected(action: "ViewSuggestion")">
+                        <a href="@Url.Action("Index", "Suggestion")">Received Suggestions</a>
+                    </li>
+                }
+                @*<li>
+                        <a href="#">Performance<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li class="">
+                                <a href="#">Appraisal</a>
+                            </li>
+
+
+                        </ul>
+                    </li>*@
+
+            </ul>
+        </li>
+
+        <li class="@Html.IsSelectedFirst(controllers: new string[] { "workflow", "vendor", "report" })">
+            <a href="#">
+                <i class="fa fa-list"></i> <span class="nav-label">Procurement</span><span class="fa arrow">
+                </span>
+            </a>
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(action: "myrequest")">
+                    <a href="@Url.Action("MyRequest", "Workflow")">My Requests</a>
+                </li>
+
+
+                <li class="@Html.IsSelected(action: "mypendingapproval")">
+                    <a href="@Url.Action("mypendingapproval", "Workflow")">Pending Approvals</a>
+                </li>
+
+                @if (User.IsInRole("procurement"))
+                {
+                    <li class="@Html.IsSelected(action: "vendors")">
+                        <a href="@Url.Action("vendors", "Vendor")">Vendors</a>
+                    </li>
+                    <li class="@Html.IsSelected(action: "pendingrequests")">
+                        <a href="@Url.Action("pendingrequests", "Workflow")">Pending Requests</a>
+                    </li>
+
+                    <li class="@Html.IsSelected(action: "completed")">
+                        <a href="@Url.Action("Completed", "Workflow")">Complete Requests</a>
+                    </li>
+
+
+                    <li class="@Html.IsSelected(action: "wrequest")">
+                        <a href="@Url.Action("WRequest", "Workflow")">Requests</a>
+                    </li>
+
+                    <li class="@Html.IsSelected(controller: "report")">
+                        <a href="#">Reports<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+
+                            <li class="@Html.IsSelected(action: "expenditure")">
+                                <a href="@Url.Action("expenditure", "Report")">Expenditure</a>
+                            </li>
+
+
+                            <li class="@Html.IsSelected(action: "tracker")">
+                                <a href="@Url.Action("Tracker", "Workflow")">Tracker</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                }
+
+            </ul>
+        </li>
+
+        @*<li class="@Html.IsSelectedFirst(controllers: new string[] { "processflow", "vendor", "report" })">
+                <a href="#">
+                    <i class="fa fa-list"></i> <span class="nav-label">ProcessFlow</span><span class="fa arrow">
+                    </span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li class="@Html.IsSelected(action: "myrequest")">
+                        <a href="@Url.Action("MyRequest", "ProcessFlow")">My Requests</a>
+                    </li>
+                    <li class="@Html.IsSelected(action: "mypendingapproval")">
+                        <a href="@Url.Action("mypendingapproval", "ProcessFlow")">Pending Approvals</a>
+                    </li>
+                    @if (User.IsInRole("procurement"))
+                    {
+                        if (User.IsInRole("procurement_manager"))
+                        {
+                            <li class="@Html.IsSelected(action: "vendors")">
+                                <a href="@Url.Action("vendors", "Vendor")">Vendors</a>
+                            </li>
+                        }
+                        <li class="@Html.IsSelected(action: "pendingrequests")">
+                            <a href="@Url.Action("pendingrequests", "ProcessFlow")">Pending Requests</a>
+                        </li>
+                        <li class="@Html.IsSelected(action: "completed")">
+                            <a href="@Url.Action("Completed", "ProcessFlow")">Complete Requests</a>
+                        </li>
+                        <li class="@Html.IsSelected(action: "wrequest")">
+                            <a href="@Url.Action("WRequest", "ProcessFlow")">Requests</a>
+                        </li>
+                        <li class="@Html.IsSelected(action: "wrequest")">
+                            <a href="@Url.Action("ARequests", "ProcessFlow")">Genrate Files</a>
+                        </li>
+                        <li class="@Html.IsSelected(controller: "report")">
+                            <a href="#">Reports<span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li class="@Html.IsSelected(action: "expenditure")">
+                                    <a href="@Url.Action("expenditure", "Report")">Expenditure</a>
+                                </li>
+                                <li class="@Html.IsSelected(action: "tracker")">
+                                    <a href="@Url.Action("Tracker", "ProcessFlow")">Tracker</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </li>*@
+
+
+        if (User.IsInRole("finance"))
+        {
+
+            <li class="@Html.IsSelectedFirst(controllers: new string[] { "payments" })">
+                <a href="#">
+                    <i class="fa fa-list"></i> <span class="nav-label">Accounting</span><span class="fa arrow">
+                    </span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li class="@Html.IsSelected(action: "transactions")">
+                        <a href="@Url.Action("Transactions", "Payments")">Transactions</a>
+                    </li>
+
+                    <li class="@Html.IsSelected(action: "paymentvoucher")">
+                        <a href="@Url.Action("PaymentVoucher", "Payments")">Payment Vouchers</a>
+                    </li>
+
+                    <li class="@Html.IsSelected(action: "comppv")">
+                        <a href="@Url.Action("CompPV", "Payments")">Payments</a>
+                    </li>
+                </ul>
+            </li>
+
+        }
+
+
+
+
+        <li class="@Html.IsSelected(controller: "Booking")">
+            <a href=""> <i class="fa fa-home"></i> <span class="nav-label">Hotel Booking </span><span class="fa arrow"></span></a>
+
+
+
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(controller: "Hotel_Room")">
+                    <a href="#">Manage Rooms<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+
+                        @if (PermissionHelper.CanAccess("Hotel_Room.Index", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Hotel_Room")">Room Management</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Hotel_Room")">Rooms</a>
+                            </li>
+
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Hotel_Room_Type")">Rooms Category</a>
+                            </li>
+
+                            <li class="@Html.IsSelected(action: "ManageBooking")">
+                                <a href="@Url.Action("Index", "Hotel_amenity")">Amenities</a>
+                            </li>
+                        }
+
+                    </ul>
+
+                </li>
+            </ul>
+
+
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(controller: "Hotel_Room")">
+                    <a href="#">Manage Reservation<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+
+                        @if (PermissionHelper.CanAccess("Hotel_Room.Index", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Hotel_Room")">Reservation Management</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Hotel_guest")">Guest</a>
+                            </li>
+
+                            <li class="@Html.IsSelected(action: "Index")">
+                                <a href="@Url.Action("Index", "Reservation")">Room Booking</a>
+                            </li>
+                        }
+
+                    </ul>
+
+                </li>
+            </ul>
+
+
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(action: "ManageBooking")">
+                    <a href="@Url.Action("Index", "Booking")">Booking Audit</a>
+                </li>
+                @if (User.IsInRole("hr"))
+                {
+                    @*<li class="@Html.IsSelected(action: "ManageBooking")">
+                            <a href="@Url.Action("Index", "Booking")">Amenities</a>
+                        </li>*@
+
+                    @*<li class="@Html.IsSelected(action: "ManageGuest")">
+                            <a href="@Url.Action("Index", "Hotel_guest")">Guest</a>
+                        </li>*@
+
+                    <li class="@Html.IsSelected(action: "ManageAddon")">
+                        <a href="@Url.Action("Index", "Hotel_Addons")">Addon</a>
+                    </li>
+
+                    <li class="@Html.IsSelected(action: "ManagePayment")">
+                        <a href="@Url.Action("Index", "Hotel_PaymentOption")">Payment</a>
+                    </li>
+
+                    @*<li class="@Html.IsSelected(action: "ManageBooking")">
+                            <a href="@Url.Action("Index", "Hotel_Room")">Room</a>
+                        </li>*@
+
+                    @*<li class="@Html.IsSelected(action: "ManageReservation")">
+                            <a href="@Url.Action("Index", "Reservation")">Reservation</a>
+                        </li>*@
+                    @*<li class="@Html.IsSelected(action: "ManageReservation")">
+                            <a href="@Url.Action("Index", "Reservation")">Reservation</a>
+                        </li>*@
+                }
+
+
+
+            </ul>
+        </li>
+
+
+
+
+        <li class="@Html.IsSelected(controller: "Inventory")">
+            <a href="#">
+                <i class="fa fa fa-shopping-cart"></i><span class="nav-label">Inventory</span> <span class="fa arrow">
+                </span>
+            </a>
+            <ul class="nav nav-second-level">
+                @*<li class="@Html.IsSelected(action: "ManageInventory")">
+                        <a href="@Url.Action("Index", "Inventory")">Products</a>
+                    </li>*@
+
+                <li class="@Html.IsSelected(action: "ManageInventory")">
+                    <a href="@Url.Action("IndexAll", "Inventory")">Products</a>
+                </li>
+
+                <li class="@Html.IsSelected(action: "ManageInventory")">
+                    <a href="@Url.Action("IndexCategory", "Inventory")">Products Category</a>
+                </li>
+                @*@if (User.IsInRole("product_admin"))
+                    {
+                        <li class="@Html.IsSelected(action: "ManageInventory")">
+                            <a href="@Url.Action("AdminIndex", "Inventory")">All Products</a>
+                        </li>
+                    }*@
+
+
+
+            </ul>
+        </li>
+
+
+        <li class="@Html.IsSelected(controller: "Laundry")">
+            <a href="#"> <i class="fa fa-ship"></i> <span class="nav-label">Laundry Service</span> <span class="fa arrow"></span></a>
+
+            @if (User.IsInRole("admin"))
+            {
+                <ul class="nav nav-second-level">
+                    @*<li class="@Html.IsSelected(action: "ManageLaundry")">
+                            <a href="@Url.Action("Index", "Laundry")">Manage Laundry</a>
+                        </li>*@
+
+                    <li class="@Html.IsSelected(action: "ManageLaundry")">
+                        <a href="@Url.Action("IndexPrice", "Laundry")">Manage price</a>
+                    </li>
+
+                    @if (User.IsInRole("laundry_admin"))
+                    {
+                        <li class="@Html.IsSelected(action: "ManageLaundry")">
+                            <a href="@Url.Action("Index", "Laundry")">Laundry Report</a>
+                        </li>
+                    }
+
+                </ul>
+            }
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(controller: "Laundry")">
+                    <a href="#">Manage Laundry<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+
+                        @if (PermissionHelper.CanAccess("Laundry.IndexAll", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "IndexAll")">
+                                <a href="@Url.Action("IndexAll", "Laundry")">Laundry Record</a>
+                            </li>
+                        }
+
+                        <li class="@Html.IsSelected(action: "create")">
+                            <a href="@Url.Action("Create", "Laundry")">Clothe Entry</a>
+                        </li>
+                        <li class="@Html.IsSelected(action: "IndexAll")">
+                            <a href="@Url.Action("IndexAll", "Laundry")">Laundry Record</a>
+                        </li>
+
+                        @if (User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "audit")">
+                                <a href="@Url.Action("audit", "Laundry")">Laundry Audit</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("finance") || User.IsInRole("hr"))
+                        {
+                            <li class="@Html.IsSelected(action: "laundry.summary")">
+                                <a href="@Url.Action("Summary", "TimeSheet")">Laundry Summary</a>
+                            </li>
+                        }
+                    </ul>
+
+                </li>
+            </ul>
+
+
+        </li>
+
+
+
+
+
+        <li class="@Html.IsSelected(controller: "Complain")">
+            <a href="#">
+                <i class="fa fa-comments fa-commenting"></i><span class="nav-label">Complaint</span> <span class="fa arrow">
+                </span>
+            </a>
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(action: "MakeComplain")">
+                    <a href="@Url.Action("Index", "Complain")">Complaints</a>
+                </li>
+                @if (User.IsInRole("complain_admin"))
+                {
+                    <li class="@Html.IsSelected(action: "ViewComplain")">
+                        <a href="@Url.Action("AdminIndex", "Complain")">All Complaints</a>
+                    </li>
+                }
+
+
+
+            </ul>
+        </li>
+
+
+        <li class="@Html.IsSelected(controller: "Employee")">
+            <a href="#">
+                <i class="fa fa-cogs"></i> <span class="nav-label">Configuration</span><span class="fa arrow">
+                </span>
+            </a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="#">User Management<span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+                        @if (PermissionHelper.CanAccess("employee.manageusers", User.Identity.Name))
+                        {
+                            <li class="@Html.IsSelected(action: "ManageUsers")">
+                                <a href="@Url.Action("ManageUsers", "Employee")">Users</a>
+                            </li>
+                        }
+                        @*<li class="">
+                                <a href="">User Roles</a>
+                            </li>*@
+                    </ul>
+                </li>
+            </ul>
+            @if (User.IsInRole("admin"))
+            {
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="#">System Management<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li class="@Html.IsSelected(action: "Settings")">
+                                <a href="@Url.Action("Index", "Settings")">Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+        </li>
+
+
+
+        <li class="@Html.IsSelected(controller: "Admin")">
+            <a href="#">
+                <i class="fa fa-comments fa-institution"></i><span class="nav-label">Administration</span> <span class="fa arrow">
+                </span>
+            </a>
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(action: "Noticeboard")">
+                    <a href="@Url.Action("Noticeboard", "Admin")">Admin area</a>
+                </li>
+
+                <li class="@Html.IsSelected(action: "ProjectSpace")">
+                    <a href="@Url.Action("ProjectSpace", "Project")">Project</a>
+                </li>
+
+
+
+
+            </ul>
+        </li>
+
+    }
+    else
+    {
+        <li class="@Html.IsSelected(action: "myrequest")">
+            <a href="@Url.Action("MyRequest", "Workflow")">My Requests</a>
+        </li>
+    }
+
+
+
+
+    <li class="@Html.IsSelected(controller: "Network")">
+        <a href=""> <i class="fa fa-wifi"></i> <span class="nav-label">Network Access</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level">
+            <li class="@Html.IsSelected(action: "ManageNetwork")">
+                <a href="@Url.Action("Index", "Network")">Network Users</a>
+            </li>
+            @if (User.IsInRole("network_admin"))
+            {
+                <li class="@Html.IsSelected(action: "ManageNetwork")">
+                    <a href="@Url.Action("Index", "Network")">Network Config</a>
+                </li>
+            }
+
+
+
+        </ul>
+    </li>
+
+    <li class="@Html.IsSelected(controller: "Reporting")">
+        <a href="#"> <i class="fa fa-file"></i> <span class="nav-label">Reporting</span><span class="fa arrow"></span></a>
+
+        <ul class="nav nav-second-level">
+            <li class="@Html.IsSelected(action: "ManageReport")">
+                <a href="@Url.Action("Index", "Reporting")">Audit</a>
+            </li>
+            @if (User.IsInRole("product_admin"))
+            {
+                <li class="@Html.IsSelected(action: "ManageReport")">
+                    <a href="@Url.Action("Index", "Reporting")">Report Summary</a>
+                </li>
+            }
+
+
+
+        </ul>
+    </li>
+
+
+
+    @*<li class="">
+            <a href=""> <i class="fa fa-shopping-cart"></i> <span class="nav-label">Inventory</span></a>
+        </li>*@
+
+    @*<li class="">
+            <a href=""> <i class="fa fa-file"></i> <span class="nav-label">Booking report</span></a>
+        </li>
+
+        <li class="">
+            <a href=""> <i class="fa fa-ship"></i> <span class="nav-label">Laundry Service</span></a>
+        </li>
+
+        <li class="">
+            <a href=""> <i class="fa fa-wifi"></i> <span class="nav-label">Network Access</span></a>
+        </li>
+
+        <li class="">
+            <a href=""> <i class="fa fa-file"></i> <span class="nav-label">Reporting</span></a>
+        </li>*@
+
+    <li class="">
+        <a href=""> <i class=""></i> <span class="nav-label"></span></a>
+    </li>
+</ul>

@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Menu";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Manage Users</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>Admin</a>
+            </li>
+            <li>
+                <a>Settings</a>
+            </li>
+            <li class="active">
+                <strong>Menu</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Job Title  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="@Url.Action("IndexJobTitle", "Settings")">Click to Manage Job Title</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Look up  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="@Url.Action("IndexLookup", "Settings")">Click to Manage Look up</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Location  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="@Url.Action("IndexLocation", "Settings")">Click to Manage Location</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Sub Unit  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="@Url.Action("IndexSubunit", "Settings")">Click to Manage Sub unit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Emploment Status  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="@Url.Action("IndexEmploymentStatus", "Settings")">Click to Manage Employment Status</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Vendor Category  </h5>
+                        <span class="label label-success float-right">Management</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="#">Click to Manage Vendor Category</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Vendor Category  </h5>
+                        <span class="label label-success float-right">Leave Status</span>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="btn btn-info" href="#">Click to Manage Leave Status</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+       });
+        
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        
+    </style>
+
+}

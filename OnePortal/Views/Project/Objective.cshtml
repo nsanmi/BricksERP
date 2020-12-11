@@ -1,0 +1,580 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_strategic_objective
+@{
+    ViewBag.Title = "Objective";
+
+    var chunks = Utils.Partition<pm_project_objective_activity>(Model.pm_project_objective_activity.ToList(),3);
+}
+
+<div class="row wrapper border-bottom white-bg page-heading yellow-bg">
+    <div class="col-sm-12 yellow-bg">
+        <h2>@Model.objectve</h2>
+        <ol class="breadcrumb yellow-bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            @if (Model.pm_project.pm_project2 != null)
+            {
+                <li>
+                    <a href="@Url.Action("Home","Project",new { id = Model.pm_project.sub_parent })">@Model.pm_project.pm_project2.code</a>
+                </li>
+            }
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.project_id })">@Model.pm_project.code</a>
+            </li>
+            <li class="active">
+                <strong>@Model.code</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-9" style="margin-bottom:30px">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+
+                <div class="col-lg-4">
+                    @if (chunks[0].Any())
+        {
+            foreach (var activity in chunks[0])
+            {
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title navy-bg" style="border:none">
+
+                            <h5><a style="color:white" href="@Url.Action("Tasks","Task",new { id = activity.id })">@activity.activity</a>  </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="team-members">
+                                @if (activity.pm_activity_admin.Any())
+                    {
+                        foreach (var admin in activity.pm_activity_admin)
+                        {
+
+                            string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                            if (!File.Exists(Server.MapPath(pic)))
+                            { pic = "/Content/images/a4.jpg"; }
+
+                            <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+            }
+        }
+
+
+                            </div>
+                            @if (activity.start_date.HasValue && @activity.end_date.HasValue)
+                {
+                    <h4>From @activity.start_date.Value.ToString("MMMM dd, yyyy") to @activity.end_date.Value.ToString("MMMM dd, yyyy")</h4>
+    }
+
+                            <p>
+                                @activity.description
+                            </p>
+                            <div>
+                                <span>Status of current project:</span>
+                                <div class="stat-percent">@activity.completion%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: @activity.completion%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="row  m-t-sm">
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Tasks","Task",new { id = activity.id })">TASKS</a></div>
+                                    @activity.pm_project_task.Count() <i class="fa fa-tasks text-navy"></i>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Comments","Activity",new { id = activity.id })">COMMENTS</a></div></div>
+                                    0 <i class="fa fa-comments-o text-navy"></i>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="font-bold"><a href="#" style="color:#1ab394">BUDGET</a></div>
+                                    $0 <i class="fa fa-level-up text-navy"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ibox-footer">
+                            <a href="@Url.Action("Edit","Activity",new { id = activity.id })" class="btn btn-white btn-xs" style="color:black"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="@Url.Action("DeleteActivity","Activity",new { id = activity.id })" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+
+                        </div>
+                    </div>
+
+                </div>
+}
+}
+                </div>
+
+
+                <div class="col-lg-4">
+                    @if (chunks[1].Any())
+        {
+            foreach (var activity in chunks[1])
+            {
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title navy-bg" style="border:none">
+
+                            <h5><a style="color:white" href="@Url.Action("Tasks","Task",new { id = activity.id })">@activity.activity</a>  </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="team-members">
+                                @if (activity.pm_activity_admin.Any())
+                    {
+                        foreach (var admin in activity.pm_activity_admin)
+                        {
+
+                            string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                            if (!File.Exists(Server.MapPath(pic)))
+                            { pic = "/Content/images/a4.jpg"; }
+
+                            <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+            }
+        }
+
+
+                            </div>
+                            @if (activity.start_date.HasValue && @activity.end_date.HasValue)
+                {
+                    <h4>From @activity.start_date.Value.ToString("MMMM dd, yyyy") to @activity.end_date.Value.ToString("MMMM dd, yyyy")</h4>
+    }
+
+                            <p>
+                                @activity.description
+                            </p>
+                            <div>
+                                <span>Status of current project:</span>
+                                <div class="stat-percent">@activity.completion%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: @activity.completion%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="row  m-t-sm">
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Tasks","Task",new { id = activity.id })">TASKS</a></div>
+                                    @activity.pm_project_task.Count() <i class="fa fa-tasks text-navy"></i>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Comments","Activity",new { id = activity.id })">COMMENTS</a></div></div>
+                                    0 <i class="fa fa-comments-o text-navy"></i>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="font-bold"><a href="#" style="color:#1ab394">BUDGET</a></div>
+                                    $0 <i class="fa fa-level-up text-navy"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ibox-footer">
+                            <a href="@Url.Action("Edit","Activity",new { id = activity.id })" class="btn btn-white btn-xs" style="color:black"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="@Url.Action("DeleteActivity","Activity",new { id = activity.id })" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+
+                        </div>
+                    </div>
+
+                </div>
+}
+}
+                </div>
+
+
+                <div class="col-lg-4">
+                    @if (chunks[2].Any())
+        {
+            foreach (var activity in chunks[2])
+            {
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title navy-bg" style="border:none">
+
+                            <h5><a style="color:white" href="@Url.Action("Tasks","Task",new { id = activity.id })">@activity.activity</a>  </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="team-members">
+                                @if (activity.pm_activity_admin.Any())
+                    {
+                        foreach (var admin in activity.pm_activity_admin)
+                        {
+
+                            string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                            if (!File.Exists(Server.MapPath(pic)))
+                            { pic = "/Content/images/a4.jpg"; }
+
+                            <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+            }
+        }
+
+
+                            </div>
+                            @if (activity.start_date.HasValue && @activity.end_date.HasValue)
+                {
+                    <h4>From @activity.start_date.Value.ToString("MMMM dd, yyyy") to @activity.end_date.Value.ToString("MMMM dd, yyyy")</h4>
+    }
+
+                            <p>
+                                @activity.description
+                            </p>
+                            <div>
+                                <span>Status of current project:</span>
+                                <div class="stat-percent">@activity.completion%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: @activity.completion%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="row  m-t-sm">
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Tasks","Task",new { id = activity.id })">TASKS</a></div>
+                                    @activity.pm_project_task.Count() <i class="fa fa-tasks text-navy"></i>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><div class="font-bold"><a style="color:#1ab394" href="@Url.Action("Comments","Activity",new { id = activity.id })">COMMENTS</a></div></div>
+                                    0 <i class="fa fa-comments-o text-navy"></i>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="font-bold"><a href="#" style="color:#1ab394">BUDGET</a></div>
+                                    $0 <i class="fa fa-level-up text-navy"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="ibox-footer">
+                            <a href="@Url.Action("Edit","Activity",new { id = activity.id })" class="btn btn-white btn-xs" style="color:black"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="@Url.Action("DeleteActivity","Activity",new { id = activity.id })" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+
+                        </div>
+                    </div>
+
+                </div>
+}
+}
+                </div>
+
+
+
+                @*@if (Model.pm_project_objective_activity.Any())
+            {
+
+        }*@
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="wrapper wrapper-content project-manager" style="background-color:white;margin-top:20px; min-height:680px">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="@Url.Action("EditObjective","Project",new { id = Model.id })" class="btn btn-white btn-xs pull-right">Edit Objective</a>
+
+                    <button class="btn btn-xs btn-primary pull-right" type="button" data-toggle="modal" data-target="#myModal2">Add Activity</button>
+                   @* <p><strong>Activities :</strong>  <a href="@Url.Action("Activities","Activity",new { id = Model.id })">@Model.pm_project_objective_activity.Count()</a></p>*@
+                   
+                </div>
+               
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+
+
+
+
+                    <div class="team-members">
+
+                        @if (Model.pm_objective_admin.Any())
+                        {
+                            foreach (var admin in Model.pm_objective_admin)
+                            {
+
+                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                if (!File.Exists(Server.MapPath(pic)))
+                                { pic = "/Content/images/a4.jpg"; }
+
+                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                            }
+                        }
+                        
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <h2 style="margin:10px">@Model.code </h2>
+            <h4 style="margin:10px">@Model.objectve</h4>
+
+            <p class="small">
+                @MvcHtmlString.Create(WebUtility.HtmlDecode(Model.description))
+             
+            </p>
+            <hr />
+            <form method="post" enctype="multipart/form-data" id="frmFile">
+                <input type="file" style="display:none" name="file" id="file" />
+                <input type="hidden" value="objective" name="module" />
+                <input type="hidden" value="@Model.id" name="objective_id" />
+            </form>
+            <h4>
+                Objective files <div class="pull-right">
+                    <a href="#" onclick="$('#file').click()" class="btn btn-xs btn-primary">Add files</a><label style="display:none" id="progress">
+                        <img src="~/Content/images/loading-spinner-blue.gif" style="height:18px" alt="" />
+
+                    </label>
+                </div>
+            </h4>
+          
+            @if (Model.pm_objective_files.Any())
+            {
+                <table class="table" style="font-size:11px">
+                    <tbody>
+                        @foreach (var file in Model.pm_objective_files.OrderByDescending(e => e.uploaded_at).Take(10))
+                        {
+                            <tr>
+                                <td><a href=""><i class="fa fa-file"></i> @file.file_name</a></td>
+                                <td>@file.uploaded_at.ToString("yyyy-MM-dd HH:mm tt")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <a href="@Url.Action("ObjectiveFiles","Project",new {id=Model.id})" class="btn btn-xs btn-default">View all project files</a>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            }
+           
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddActivity", "Activity", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Activity</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="objective_id" value="@Model.id" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Activity</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="activity" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Number</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="num" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Requirements</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="requirements" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Outputs</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="output" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Performance indicator</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="performance_indicator" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Target</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="target" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Completion</label>
+
+                        <div class="col-lg-9">
+                            <input type="number" class="form-control" name="completion" value="0" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Activity Admin</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="employee" multiple></select>
+                            <span class="help-block m-b-none">Select person</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Status</label>
+
+                        <div class="col-lg-9">
+                            @*<select class="form-control" name="status"></select>*@
+                            @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", null), null, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">End Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Ex. Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Due Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="due_date" name="due_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section scripts{
+<script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           $('#e6').select2({
+               placeholder: 'Search...',
+               dropdownParent: $("#myModal2"),
+               ajax: {
+                   url: function (params) {
+                       return baseUrl() + "employeeapi/getsearch/"+ params.term;
+                   },
+                   dataType: 'json',
+                   quietMillis: 100,
+
+                   processResults: function (data) {
+                       return {
+                           results: $.map(data, function (obj) {
+                               return { id: obj.id, text: obj.name };
+                           })
+                       };
+                   }
+
+               }
+           });
+
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+<link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

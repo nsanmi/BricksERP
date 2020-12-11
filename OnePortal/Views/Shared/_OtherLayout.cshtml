@@ -1,0 +1,120 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @*<title>@ViewBag.Title - Brickspoint ERP</title>*@
+    <title>Brickspoint - ERP</title>
+    <link sizes="16x16" href="../Bricks/images/logo/logo.png" rel="icon" />
+
+    @Styles.Render("~/Content/themecss")
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", required: false)
+    @*<link rel="stylesheet" href="~/Content/css/fullcalendar/fullcalendar.css">
+    <link rel="stylesheet" href="~/Content/css/iCheck/custom.css">
+    <link rel="stylesheet" href="~/Content/css/fullcalendar/fullcalendar.print.css" media='print'>
+
+    <link rel="stylesheet" href="~/Content/css/jQueryUI/jquery-ui.css">*@
+
+</head>
+<body class="">
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                @*@Html.Partial("_Sidebar")*@
+                @{
+                    if (Context.Request.Path.StartsWith("/timesheet", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/employee", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/leave", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/account", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/admin", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/manage", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/workflow", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/processflow", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/vendor", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/payments", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/report", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/complain", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/inventory", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/laundry", StringComparison.OrdinalIgnoreCase)
+                          || Context.Request.Path.StartsWith("/room", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/booking", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/network", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/reporting", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/suggestion", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/settings", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/Reservation", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/Hotel_AddOns", StringComparison.OrdinalIgnoreCase)
+                         || Context.Request.Path.StartsWith("/Hotel_amenity", StringComparison.OrdinalIgnoreCase)
+                          || Context.Request.Path.StartsWith("/Hotel_Payment", StringComparison.OrdinalIgnoreCase)
+                           || Context.Request.Path.StartsWith("/Hotel_ReservationType", StringComparison.OrdinalIgnoreCase)
+                            || Context.Request.Path.StartsWith("/Hotel_Room_Type", StringComparison.OrdinalIgnoreCase)
+                             || Context.Request.Path.StartsWith("/Hotel_Room", StringComparison.OrdinalIgnoreCase)
+                           || Context.Request.Path.StartsWith("/hotel_guest", StringComparison.OrdinalIgnoreCase)
+                           || Context.Request.Path.StartsWith("/HotelLaundry", StringComparison.OrdinalIgnoreCase)
+                        || Context.Request.Path.StartsWith("/CompanyPages", StringComparison.OrdinalIgnoreCase)
+
+
+                        )
+                    {
+                        @Html.Partial("_SideBarAdmin")
+                    }
+                    else if (Context.Request.Path.StartsWith("/project", StringComparison.OrdinalIgnoreCase)
+                             || Context.Request.Path.StartsWith("/task", StringComparison.OrdinalIgnoreCase)
+                             || Context.Request.Path.StartsWith("/activity", StringComparison.OrdinalIgnoreCase))
+                    {
+                        @Html.Partial("_SideBarProject")
+                    }
+                    else
+                    {
+                        @Html.Partial("_Sidebar")
+                    }
+                }
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            @*<div class="row simple-nav">
+                    <ul class="nav nav-pills pull-right">
+                        @*<li class=""><a href="#">Personal</a></li>*
+                        @if (User.IsInRole("sub") || User.IsInRole("sup"))
+                        {
+                            <li class="green-tab @Html.IsSelected(controller: "admin",action:"noticeboard", cssClass: "active")"><a href="@Url.Action("Noticeboard","Admin")">Administration</a></li>
+                            <li class="purple-tab @Html.IsSelected(controller: "project",action:"projectspace", cssClass: "active")"><a href="@Url.Action("ProjectSpace","Project")">Projects</a></li>
+                        }
+                    </ul>
+                </div>*@
+            <div class="row border-bottom">
+                @Html.Partial("_HeaderPartial")
+            </div>
+
+
+            @RenderBody()
+            <!-- Footer -->
+            <div class="footer">
+                <div>
+                    <strong>Brickspoint</strong> &copy; @DateTime.Now.Year Brickspoint
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/themeplugins")
+
+    @RenderSection("scripts", required: false)
+
+    @*<script src="~/Content/js/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="~/Content/js/fullcalendar/moment.min.js" type="text/javascript"></script>
+    <script src="~/Content/js/iCheck/icheck.min.js" type="text/javascript"></script>
+    <script src="~/Content/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>*@
+
+
+</body>
+</html>

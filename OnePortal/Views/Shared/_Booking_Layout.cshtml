@@ -1,0 +1,690 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <!-- ========== SEO ========== -->
+    <title>Brickspoint - Hotel</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- ========== FAVICON ========== -->
+    <link rel="apple-touch-icon-precomposed" href="images/favicon-apple.png" />
+    <link rel="icon" href="~/Asset/images/logo/logo.png">
+    <!-- ========== STYLESHEETS ========== -->
+
+    <link rel="stylesheet" href="~/Asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Asset/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/Asset/css/jquery.mmenu.css">
+    <link rel="stylesheet" href="~/Asset/revolution/css/layers.css">
+    <link rel="stylesheet" href="~/Asset/revolution/css/settings.css">
+    <link rel="stylesheet" href="~/Asset/revolution/css/navigation.css">
+    <link rel="stylesheet" href="~/Asset/css/animate.min.css">
+    <link rel="stylesheet" href="~/Asset/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Asset/css/daterangepicker.css">
+    <link rel="stylesheet" href="~/Asset/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Asset/css/style.css">
+    <link rel="stylesheet" href="~/Asset/css/responsive.css">
+    <!-- ========== ICON FONTS ========== -->
+    <link href="~/Asset/fonts/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Asset/fonts/flaticon.css" rel="stylesheet">
+    <!-- ========== GOOGLE FONTS ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700%7CRoboto:100,300,400,400i,500,700" rel="stylesheet">
+
+
+
+    <title>@ViewBag.Title - Brickspoint - Hotel</title>
+
+    @*@Styles.Render("~/Content/themecss")
+    @Styles.Render("~/Asset/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", required: false)*@
+
+</head>
+<body class="">
+    <!-- ========== PRELOADER ========== -->
+    @*<div class="loader loader3 dark">
+        <div class="loader-inner">
+            <div class="spin">
+                <span></span>
+                <img src="images/logo/logo.png" alt="Hotel Brickspoint">
+            </div>
+        </div>
+    </div>*@
+
+    <div class="wrapper">
+        <!-- ========== TOP MENU ========== -->
+        <div class="topbar dark">
+            <div class="container" style="padding-top: 10px;">
+                <div class="welcome-mssg">
+                    Welcome to Brickspoint Hotel.
+                </div>
+                <div class="top-right-menu">
+                    <ul class="top-menu">
+                        <li class="d-none d-md-inline">
+                            <a href="tel:+18881234567">
+                                <i class="fa fa-phone"></i>(+234) 806-789-1230
+                            </a>
+                        </li>
+                        <li class="d-none d-md-inline">
+                            <a href="mailto:contact@hotelBrickspoint.com">
+                                <i class="fa fa-envelope-o "></i>reservations@brickspoint.com
+                            </a>
+                        </li>
+                        <li class="language-menu">
+                            <a href="#" class="active-language">
+                                <img src="~/Asset/images/icons/flags/gb.png" alt="Image">English
+                            </a>
+                            <ul class="languages">
+                                <!--  <li class="language">
+                              <a href="#">
+                                <img src="images/icons/flags/it.png" alt="Image">Italiano</a>
+                            </li>
+                            <li class="language">
+                              <a href="#">
+                                <img src="images/icons/flags/gr.png" alt="Image">Ελληνικα</a>
+                            </li>
+                            <li class="language">
+                              <a href="#">
+                                <img src="images/icons/flags/al.png" alt="Image">Shqip</a>
+                            </li>
+                            <li class="language">
+                              <a href="#">
+                                <img src="images/icons/flags/fr.png" alt="Image">Français</a>
+                            </li>
+                            <li class="language">
+                              <a href="#">
+                                <img src="images/icons/flags/es.png" alt="Image">Español</a>
+                            </li> -->
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== HEADER ========== -->
+        <header class="horizontal-header sticky-header transparent-header" data-menutoggle="991">
+            <div class="container">
+                <!-- BRAND -->
+                <div class="brand">
+                    <div class="logo">
+                        <a href="index.html">
+                            <img src="~/Asset/images/logo/logo.png" alt="Hotel Brickspoint">
+                        </a>
+                    </div>
+                </div>
+                <!-- MOBILE MENU BUTTON -->
+                <div id="toggle-menu-button" class="toggle-menu-button">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </div>
+                <!-- MAIN MENU -->
+                <nav id="main-menu" class="main-menu">
+                    <ul class="menu">
+                        <li class="menu-item dropdown active">
+                            <a href="index.html">HOME</a>
+                            <!--  <ul class="submenu">
+                            <li class="menu-item">
+                              <a href="index.html">Home Version 1</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index2.html">Home Version 2</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index3.html">Home Version 3</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index4.html">Home Version 4</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index5.html">Home Version 5</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index6.html">Home Version 6</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index7.html">Home Version 7</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="index8.html">Home Version 8</a>
+                            </li>
+                          </ul>-->
+                        </li>
+                        <li class="menu-item dropdown">
+                            <a href="rooms-list.html">ROOMS</a>
+                            <ul class="submenu">
+                                <li class="menu-item dropdownn">
+                                    <a href="rooms-list.html">Rooms</a>
+                                    <!--   <ul class="submenu">
+                                    <li class="menu-item">
+                                      <a href="rooms-list.html">List View</a>
+                                    </li>
+                                    <li class="menu-item">
+                                      <a href="rooms-grid.html">Grid View</a>
+                                    </li>
+                                    <li class="menu-item">
+                                      <a href="rooms-block.html">Block View</a>
+                                    </li>
+                                  </ul> -->
+                                </li>
+                                <li class="menu-item dropdown">
+                                    <a href="#">Room Details</a>
+                                    <ul class="submenu">
+                                        <li class="menu-item dropdown">
+                                            <a href="room.html">Features</a>
+                                            <ul class="submenu">
+                                                <!--  <li class="menu-item">
+                                                <a href="room.html">Right Sidebar</a>
+                                              </li>
+                                              <li class="menu-item">
+                                                <a href="room-left-sidebar.html">Left Sidebar</a>
+                                              </li>
+                                              <li class="menu-item">
+                                                <a href="room-full-width.html">Full Width</a>
+                                              </li> -->
+                                            </ul>
+                                        </li>
+                                        <li class="menu-item dropdown">
+                                            <a href="room-style2.html">Slide</a>
+                                            <!--  <ul class="submenu">
+                                            <li class="menu-item">
+                                              <a href="room-style2.html">Right Sidebar</a>
+                                            </li>
+                                            <li class="menu-item">
+                                              <a href="room-style2-left-sidebar.html">Left Sidebar</a>
+                                            </li>
+                                            <li class="menu-item">
+                                              <a href="room-style2-full-width.html">Full Width</a>
+                                            </li>
+                                          </ul> -->
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item dropdown">
+                            <a href="blog.html">BLOG</a>
+                            <!-- <ul class="submenu">
+                          <li class="menu-item dropdown">
+                            <a href="blog.html">Blog Archive</a>
+                            <ul class="submenu">
+                               <li class="menu-item dropdown">
+                                <a href="blog.html">List View</a>
+                                <ul class="submenu">
+                                  <li class="menu-item">
+                                    <a href="blog.html">Right Sidebar</a>
+                                  </li> -->
+                            <!--    <li class="menu-item">
+                                    <a href="blog-left-sidebar.html">Left Sidebar</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="blog-full-width.html">Full Width</a>
+                                  </li>
+                                </ul>
+                          </li> -->
+                            <!--    <li class="menu-item dropdown">
+                                <a href="#">Classic View</a>
+                                <ul class="submenu">
+                                  <li class="menu-item">
+                                    <a href="blog-classic.html">Right Sidebar</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="blog-classic-left-sidebar.html">Left Sidebar</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="blog-classic-full-width.html">Full Width</a>
+                                  </li>
+                                </ul>
+                              </li> -->
+                            <!--   <li class="menu-item dropdown">
+                                <a href="#">Grid View</a>
+                                <ul class="submenu">
+                                  <li class="menu-item">
+                                    <a href="blog-grid.html">Right Sidebar</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="blog-grid-left-sidebar.html">Left Sidebar</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="blog-grid-full-width.html">Full Width</a>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </li> -->
+                            <!--  <li class="menu-item dropdown">
+                                <a href="#">Blog Post</a>
+                                <ul class="submenu">
+                                  <li class="menu-item dropdown">
+                                    <a href="#">Style 1</a>
+                                    <ul class="submenu">
+                                      <li class="menu-item">
+                                        <a href="blog-post.html">Right Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="blog-post-left-sidebar.html">Left Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="blog-post-full-width.html">Full Width</a>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                  <li class="menu-item dropdown">
+                                    <a href="#">Style 2</a>
+                                    <ul class="submenu">
+                                      <li class="menu-item">
+                                        <a href="blog-post-style2.html">Right Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="blog-post-style2-left-sidebar.html">Left Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="blog-post-style2-full-width.html">Full Width</a>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </li>
+                        </ul> -->
+                        </li>
+                        <li class="menu-item dropdown">
+                            <a href="gallery.html">Gallery</a>
+                            <!--   <ul class="submenu">
+                          <li class="menu-item dropdown">
+                            <a href="#">Gallery</a>
+                            <ul class="submenu">
+                                <li class="menu-item">
+                                  <a href="gallery.html">Gallery 4 Columns</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="gallery-3columns.html">Gallery 3 Columns</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="gallery-2columns.html">Gallery 2 Columns</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="gallery-without-filters.html">Gallery Without Filters</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="gallery-slider.html">Gallery Slider</a>
+                                </li>
+                              </ul> -->
+                            <!--  </li>
+                            <li class="menu-item dropdown">
+                              <a href="#">More Pages</a>
+                              <ul class="submenu">
+                                <li class="menu-item">
+                                  <a href="places.html">Places</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="place-details.html">Place Details</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="events.html">Events</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="event-details.html">Event Details</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="offers.html">Offers</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="offer.html">Offer Details</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="staff.html">Our Staff</a>
+                                </li>
+                                <li class="menu-item dropdown">
+                                  <a href="#">Loading Page</a>
+                                  <ul class="submenu">
+                                    <li class="menu-item">
+                                      <a href="loading.html">Loading Page 1</a>
+                                    </li>
+                                    <li class="menu-item">
+                                      <a href="loading-style2.html">Loading Page 2</a>
+                                    </li>
+                                    <li class="menu-item">
+                                      <a href="loading-style3.html">Loading Page 3</a>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li class="menu-item dropdown">
+                                  <a href="#">Coming Soon</a>
+                                  <ul class="submenu">
+                                    <li class="menu-item">
+                                      <a href="coming-soon.html">Coming Soon Image</a>
+                                    </li>
+                                    <li class="menu-item">
+                                      <a href="coming-soon-video.html">Coming Soon Video</a>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="page.html">Right Sidebar Page</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="page-left-sidebar.html">Left Sidebar Page</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="page-full-width.html">Full Width Page</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="404.html">404 Style 1</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="404-style2.html">404 Style 2</a>
+                                </li>
+                                <li class="menu-item">
+                                  <a href="testimonials.html">Testimonials</a>
+                                </li>
+                              </ul>
+                            </li> -->
+                            <!--    <li class="menu-item dropdown">
+                                <a href="#">Contact</a>
+                                <ul class="submenu">
+                                  <li class="menu-item">
+                                    <a href="contact.html">Contact Style 1</a>
+                                  </li>
+                                  <li class="menu-item">
+                                    <a href="contact-style2.html">Contact Style 2</a>
+                                  </li>
+                                </ul>
+                              </li> -->
+                            <!--       <li class="menu-item dropdown">
+                                <a href="#">Shop</a>
+                                <ul class="submenu">
+                                  <li class="menu-item dropdown">
+                                    <a href="#">Shop</a>
+                                    <ul class="submenu">
+                                      <li class="menu-item">
+                                        <a href="shop.html">Right Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="shop-left-sidebar.html">Left Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="shop-full-width.html">Full Width</a>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                  <li class="menu-item dropdown">
+                                    <a href="#">Shop Details</a>
+                                    <ul class="submenu">
+                                      <li class="menu-item">
+                                        <a href="shop-details.html">Right Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="shop-details-left-sidebar.html">Left Sidebar</a>
+                                      </li>
+                                      <li class="menu-item">
+                                        <a href="shop-details-full-width.html">Full Width</a>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </li> -->
+                            <!-- <li class="menu-item">
+                                <a href="restaurant.html">Our Restaurant</a>
+                              </li>
+                              <li class="menu-item">
+                                <a href="spa.html">Our Spa</a>
+                              </li>
+                              <li class="menu-item">
+                                <a href="about-us.html">About Us</a>
+                              </li>
+                              <li class="menu-item">
+                                <a href="location.html">Our Location</a>
+                              </li>
+                        </ul>
+                        </li> -->
+                        <li class="menu-item dropdown">
+                            <a href="about-us.html">About-us</a>
+                            <!--  <ul class="submenu">
+                            <li class="menu-item">
+                              <a href="style-guide.html">Style Guide</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="buttons.html">Buttons</a>
+                            </li>
+                            <li class="menu-item">
+                              <a href="icons.html">Icons</a>
+                            </li>
+                          </ul> -->
+                        </li>
+                        <li class="menu-item">
+                            <a href="contact.html">CONTACT US</a>
+                        </li>
+                        <li class="menu-item menu-btn">
+                            <a href="booking-form.html" class="btn">
+                                <i class="fa fa-calendar"></i>
+                                BOOK ONLINE
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+
+        @RenderBody()
+
+
+
+        <!-- ========== FOOTER ========== -->
+        <footer>
+            <div class="footer-widgets">
+                <div class="container">
+                    <div class="row">
+                        <!-- WIDGET -->
+                        <div class="col-md-3">
+                            <div class="footer-widget">
+                                <img src="~/Asset/images/logo/logo.png" class="footer-logo" alt="Hotel Brickspoint">
+                                <div class="inner">
+                                    <p>
+                                        With good reputation worldwide, Bricks Point Hotel Group offers a wide variety of hotels catering for a
+                                        perfect stay no matter where your destination.
+                                    </p>
+                                    <a href="https://www.tripadvisor.com/" target="_blank">
+                                        <div class="tripadvisor-banner">
+                                            <span class="review">Recommended</span>
+                                            <img src="~/Asset/images/icons/tripadvisor.png" alt="Image">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- WIDGET -->
+                        <div class="col-md-3">
+                            <div class="footer-widget">
+                                <h3>LATEST NEWS</h3>
+                                <div class="inner">
+                                    <ul class="latest-posts">
+                                        <li>
+                                            <a href="blog-post.html">10 Tips for holiday travel</a>
+                                        </li>
+                                        <li>
+                                            <a href="blog-post.html">Are you ready to enjoy your holidays</a>
+                                        </li>
+                                        <li>
+                                            <a href="blog-post.html">Honeymoon at Brickspoint</a>
+                                        </li>
+                                        <li>
+                                            <a href="blog-post.html">Travel gift ideas for every type of traveler</a>
+                                        </li>
+                                        <li>
+                                            <a href="blog-post.html">Breakfast with coffee and perfect juice</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- WIDGET -->
+                        <div class="col-md-3">
+                            <div class="footer-widget">
+                                <h3>USEFUL LINKS</h3>
+                                <div class="inner">
+                                    <ul class="useful-links">
+                                        <li>
+                                            <a href="about-us.html">About Us</a>
+                                        </li>
+                                        <li>
+                                            <a href="contact.html">Contact Us</a>
+                                        </li>
+                                        <li>
+                                            <a href="shop.html">Rooms</a>
+                                        </li>
+                                        <li>
+                                            <a href="gallery.html">Brickspoint Gallery</a>
+                                        </li>
+                                        <li>
+                                            <a href="location.html">Our Location</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- WIDGET -->
+                        <div class="col-md-3">
+                            <div class="footer-widget">
+                                <h3>Contact Info</h3>
+                                <div class="inner">
+                                    <ul class="contact-details">
+                                        <li>
+                                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                            Kumasi Cresent, 25, Wuse2, Abuja
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            Phone: +1 888 123 4567
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-fax"></i>
+                                            Fax: (+234) 806-789-1230
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-globe"></i>
+                                            Web: www.brickspoint.com
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-envelope"></i>
+                                            Email:
+                                            <a href="mailto:info@site.com">contact@brickspoint.com</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SUBFOOTER -->
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="copyrights">
+                                &copy; 2020 Brickspoint hotel.
+                                <a href="https://brickspoint.com/" target="_blank"></a>.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="social-media">
+                                <a class="facebook" data-original-title="Facebook" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                                <a class="twitter" data-original-title="Twitter" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                                <a class="googleplus" data-original-title="Google Plus" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>
+                                <!-- <a class="pinterest" data-original-title="Pinterest" data-toggle="tooltip" href="#">
+                              <i class="fa fa-pinterest"></i>
+                            </a> -->
+                                <a class="linkedin" data-original-title="Linkedin" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                                <a class="youtube" data-original-title="Youtube" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-youtube"></i>
+                                </a>
+                                <a class="instagram" data-original-title="Instagram" data-toggle="tooltip" href="#">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- ========== NOTIFICATION ========== -->
+    <div id="booking-notification" class="notification fixed"></div>
+    <!-- ========== BACK TO TOP ========== -->
+    <div class="back-to-top">
+        <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </div>
+
+
+
+
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script src="~/Assetjs/jquery.min.js"></script>
+    <script src="http://maps.google.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script src="~/Assetjs/bootstrap.min.js"></script>
+    <script src="~/Assetjs/bootstrap-select.min.js"></script>
+    <script src="~/Assetjs/jquery.mmenu.js"></script>
+    <script src="~/Assetjs/jquery.inview.min.js"></script>
+    <script src="~/Assetjs/jquery.countdown.min.js"></script>
+    <script src="~/Assetjs/jquery.magnific-popup.min.js"></script>
+    <script src="~/Assetjs/owl.carousel.min.js"></script>
+    <script src="~/Assetjs/owl.carousel.thumbs.min.js"></script>
+    <script src="~/Assetjs/isotope.pkgd.min.js"></script>
+    <script src="~/Assetjs/imagesloaded.pkgd.min.js"></script>
+    <script src="~/Assetjs/masonry.pkgd.min.js"></script>
+    <script src="~/Assetjs/wow.min.js"></script>
+    <script src="~/Assetjs/countup.min.js"></script>
+    <script src="~/Assetjs/moment.min.js"></script>
+    <script src="~/Assetjs/daterangepicker.js"></script>
+    <script src="~/Assetjs/parallax.min.js"></script>
+    <script src="~/Assetjs/smoothscroll.min.js"></script>
+    <script src="~/Assetjs/instafeed.min.js"></script>
+    <script src="~/Assetjs/main.js"></script>
+    <!-- ========== REVOLUTION SLIDER ========== -->
+    <script src="~/Assetrevolution/js/jquery.themepunch.tools.min.js"></script>
+    <script src="~/Assetrevolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.migration.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script src="~/Assetrevolution/js/extensions/revolution.extension.video.min.js"></script>
+
+
+
+
+
+
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/themeplugins")
+
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>

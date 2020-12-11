@@ -1,0 +1,393 @@
+﻿@using HRM.DAL.Models;
+@model PagedList.IPagedList<admin_hrm_employee>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@{
+    ViewBag.Title = "Users";
+    ApplicationDbContext context = new ApplicationDbContext();
+    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Manage Users</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Configuration</a>
+            </li>
+            <li class="active">
+                <strong>Manage Users</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-sm btn-circle btn-primary pull-right"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row m-b-sm m-t-sm">
+                                <form action="@Url.Action("ManageUsers","Employee")" method="get">
+                                    <div class="col-md-1">
+                                        <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <div class="input-group">
+                                            <input type="text" name="search" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="project-list">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="i-checks" /></th>
+                                                <th>Username</th>
+                                                <th>Roles</th>
+                                                <th>
+                                                    Employee Name
+                                                </th>
+                                                <th>LockedOut</th>
+                                                <th>Reg. Date</th>
+                                                <th>Last Login</th>
+                                                <th>Add Role</th>
+                                                <th></th>
+                                                @if (User.IsInRole("admin"))
+                                                {
+                                                    <th></th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                var user = UserManager.FindById(item.user_id);
+                                                var user_roles = user.Roles.ToList();
+                                                var role_names = from user_role in user_roles join role in roleManager.Roles.ToList() on user_role.RoleId equals role.Id select role.Name;
+                                                <tr>
+                                                    <th><input type="checkbox" class="i-checks" /></th>
+                                                    <td>@item.AspNetUser.UserName</td>
+                                                    <td>@string.Join(",", role_names)</td>
+                                                    <td>@string.Format("{0} {1} {2}", item.emp_lastname, item.emp_firstname, item.emp_middle_name)</td>
+                                                    <td>@item.AspNetUser.LockoutEnabled</td>
+                                                    <td>@user.RegistrationDate</td>
+                                                    <td>@user.LastLoginTime</td>
+                                                    <td>
+                                                        <form action="@Url.Action("AddRole","Employee")" method="post">
+                                                            <input type="hidden" name="user_id" value="@user.Id" />
+                                                            <select name="new_role">
+                                                                @foreach (var role in roleManager.Roles.ToList())
+                                                                {
+                                                                    <option value="@role.Name">@role.Name</option>
+                                                                }
+                                                            </select>
+                                                            <button class="btn btn-warning btn-xs" type="submit">Add</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form asp-controller="Account" asp-action="ForgotPassword" action="@Url.Action("ForgotPassword","Account")" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <input asp-for="Email" name="email" type="hidden" value="@user.Email" />
+                                                            <button class="btn btn-warning btn-xs" type="submit">Reset Password</button>
+                                                        </form>
+                                                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal1" type="button" onclick="$('#username').val('@user.UserName')">Link User to account</button>
+                                                    </td>
+                                                    @if (User.IsInRole("admin"))
+                                                    {
+                                                        <td>
+                                                            <a class="btn btn-danger btn-xs" href="@Url.Action("Impersonate","Employee",new { username = user.UserName })">Impersonate</a>
+
+                                                        </td>
+
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                    <div id='Paging' style="text-align:center">
+                                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                        of @Model.PageCount
+
+                                        @Html.PagedListPager(Model, page => Url.Action("manageusers", new { page }))
+                                    </div>
+
+                                </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("ManageUsers", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New User</h4>
+                    <small class="font-bold">Add an employee as a user</small>
+                </div>
+                <div class="modal-body">
+
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Employee</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="employee"></select>
+                            <span class="help-block m-b-none">Select the employee</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Username</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" placeholder="username" name="username" class="form-control"> <span class="help-block m-b-none">username of the employee</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Roles</label>
+
+                        <div class="col-lg-9">
+                            <select class="form-control" name="role">
+                                @foreach (var role in roleManager.Roles.ToList())
+                                {
+                                    <option value="@role.Name">@role.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Password</label>
+
+                        <div class="col-lg-9"><input type="password" name="password" id="password" placeholder="Password" class="form-control"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Re Password</label>
+
+                        <div class="col-lg-9">
+                            <input type="password" name="repassword" id="repassword" placeholder="Password" class="form-control">
+                            <span class="help-block error" style="color:orangered"></span>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" disabled class="btn btn-primary">Add User</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal" id="myModal1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("LinkUserToAccount", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Link User</h4>
+                    <small class="font-bold">Link user account to employee</small>
+                </div>
+                <div class="modal-body">
+
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Employee</label>
+                        <input type="hidden" id="username" name="username" />
+                        <div class="col-lg-9">
+                            <select id="e7" name="employee"></select>
+                            <span class="help-block m-b-none">Select the employee</span>
+                        </div>
+                    </div>
+ 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Link User</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('#e6').select2({
+                placeholder: 'Search for a user',
+                dropdownParent: $("#myModal2"),
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+            $('#e7').select2({
+                placeholder: 'Search for a user',
+                dropdownParent: $("#myModal1"),
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+            $("#password,#repassword").keyup(function () {
+                var password = $("#password").val();
+                var repassword = $("#repassword").val();
+                if (password != "") {
+                    if (password == repassword) {
+
+                        if (checkPassword(password)) {
+                            $("#btn_submit").removeAttr("disabled");
+                            $(".error").hide();
+                        }
+                        else {
+                            $("#btn_submit").attr("disabled", "disabled");
+                            $(".error").text("Password does not meet minimum requirement.");
+
+                            $(".error").show();
+                        }
+                    }
+                    else {
+                        $("#btn_submit").attr("disabled", "disabled");
+                        $(".error").text("Password does not match.");
+                        $(".error").show();
+                    }
+                }
+                else {
+                    $("#btn_submit").attr("disabled", "disabled");
+                    $(".error").text("Password cannot be empty.");
+                    $(".error").show();
+                }
+            });
+
+
+
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

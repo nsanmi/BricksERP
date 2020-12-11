@@ -1,0 +1,186 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using OnePortal.Models;
+@using OnePortal.Helper;
+@using HRM.DAL.Util;
+@model HtmlInput
+@{
+    ViewBag.Title = "Step";
+
+    var step = (Step)ViewBag.step;
+    //var workflow = (bpm_workflow)ViewBag.workflow;
+    //var definition = XElement.Parse(workflow.workflow);
+
+    var workflows = (IQueryable<bpm_workflow>
+    )ViewBag.workflows;
+
+    var process_types = workflows.Select(e => e.bpm_process.process_name).Distinct();
+
+    var sums = new double[process_types.Count()];
+    }
+    @{
+
+    }
+
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-4">
+            <h2></h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="#">Home</a>
+                </li>
+                <li class="active">
+                    <strong>Manage Requests</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content animated fadeInUp">
+
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Expenditure Report</h5>
+                        <div class="ibox-tools">
+                            <form action="@Url.Action("Expenditure","Report")" method="get" id="frm">
+
+
+                                @Html.DropDownList("project_id", new SelectList(OptionUtil.GetProjects(), "id", "name", ViewBag.project), null, new { @class = "", @onchange = "$('#frm').submit()" })
+
+
+
+                                @*<button type="submit" class="btn-circle btn btn-default" id="btn_refresh"><i class="fa fa-refresh"></i></button>*@
+
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="hidden" name="workflow_id" value="" />
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Req. No</th>
+                                        <th>Title</th>
+                                        <th>Proces type</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Project</th>
+                                        <th>Requestor</th>
+                                        <th>Status</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var w_flow in workflows)
+                                    {
+                                    var defn = XElement.Parse(w_flow.workflow);
+                                    <tr>
+                                        <td>@defn.Element("process_number").Value</td>
+                                        <td>@w_flow.title</td>
+                                        <td>@w_flow.bpm_process.process_name</td>
+                                        <td>@w_flow.created_at</td>
+                                        <td>@Util.GetTransactionCost(w_flow.id)</td>
+                                        <td>@w_flow.pm_project.name</td>
+                                        <td>@w_flow.admin_hrm_employee.emp_lastname</td>
+                                        <td>@w_flow.ws_lookup.lookup_name</td>
+                                    </tr>
+
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="project-list">
+
+
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        @*<button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>*@
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    @section scripts{
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/workflow.js"></script>
+
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+        });
+
+        $('table').DataTable({
+            dom: '<"html5buttons"B>lTfgitp',
+            "pageLength": 50,
+            columnDefs: [{
+                orderable: true,
+                width: '100px'
+            }],
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'employee_list' },
+                { extend: 'pdf', title: 'employee_list' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+        $('#data_1 .input-group.date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+
+    </script>
+
+
+    }
+
+
+    @section styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <style>
+
+        th {
+            background-color: white;
+        }
+    </style>
+
+    }
+

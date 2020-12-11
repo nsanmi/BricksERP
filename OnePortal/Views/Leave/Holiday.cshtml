@@ -1,0 +1,194 @@
+﻿@using HRM.DAL.Models;
+@model PagedList.IPagedList<admin_hrm_holiday>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Holiday";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Holidays</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>Holiday</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-sm btn-circle btn-primary pull-right"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" class="i-checks" /></th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>
+                                               Full Day/Half Day
+                                            </th>
+                                            <th>Repeats Annually</th>
+                                           
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       @if (Model.Any())
+                                       {
+                                           foreach(var holiday in Model)
+                                           {
+                                               <tr>
+                                                   <td><input type="checkbox" class="i-checks" /></td>
+                                                   <td>@holiday.description</td>
+                                                   <td>@holiday.date</td>
+                                                   <td>Full Day</td>
+                                                   <td>@holiday.recurring</td>
+                                               </tr>
+                                           }
+                                       }
+                                    </tbody>
+                                </table>
+
+                                <div id='Paging' style="text-align:center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                    of @Model.PageCount
+
+                                    @Html.PagedListPager(Model, page => Url.Action("holiday", new { page }))
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("Holiday", "Leave", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Holiday</h4>
+                   
+                </div>
+                <div class="modal-body">
+
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+
+                        <div class="col-lg-9">
+                          <input type="text" class="form-control" required name="description" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="data_1">
+                        <label class="font-noraml col-lg-3 control-label">From Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" required readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="font-noraml col-lg-3 control-label">To Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" required readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label"></label>
+                        <div class="col-lg-9">
+                            <label> <input type="checkbox" name="repeats" class="i-checks" /> Repeats Annually </label>
+                        </div>
+                    </div>
+                   
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Add User</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}

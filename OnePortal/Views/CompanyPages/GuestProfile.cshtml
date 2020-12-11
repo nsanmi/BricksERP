@@ -1,0 +1,317 @@
+﻿
+@{
+    ViewBag.Title = "GuestProfile";
+    Layout = "~/Views/Shared/_OtherLayout.cshtml";
+
+    var loggeduser = ViewBag.User;
+    var profile = ViewBag.profile;
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Profile</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.html">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Extra Pages</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Profile</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-md-4">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Guest Profile Detail</h5>
+                    <input type="hidden" id="check" value="@ViewBag.User" name="module" hidden />
+
+                </div>
+                <div>
+                    <div class="ibox-content no-padding border-left-right">
+                        <img alt="image" class="img-fluid" src="~/Content/images/guest.jpg">
+                    </div>
+                    <div class="ibox-content profile-content">
+                        <h4><strong>@profile.First_name  @profile.Last_name</strong></h4>
+                        <p><i class="fa fa-map-marker"></i> 32/106</p>
+                        @*<h5>
+                            Full Name: @profile.First_name  @profile.Last_name
+                        </h5>*@
+                        <h5>
+                            Phone: @profile.Phone_number
+                        </h5>
+                        <h5>
+                            Email: @profile.Email
+                        </h5>
+                        <h5>
+                            Full Address: @profile.Address
+                        </h5>
+                        <h5>
+                            Next of kin address: @profile.Nextofkin_fulladdress
+                        </h5>
+                        <h5>
+                            Next of kin phone: @profile.Nextofkin_phonenumber
+                        </h5>
+                        <h5>
+                            Discount Percentage: @profile.DiscountPercentage
+                        </h5>
+                        @*<h5>
+                                About me
+                            </h5>*@
+                        @*<p >
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
+                            </p>*@
+                        <div class="row m-t-lg" style=" display:none; margin-bottom: 50px;" id="frontdesk">
+                            <div class="col-md-12">
+                                @*<button type="button" class="btn btn-default btn-md btn-block"> Give Discount 5%</button>*@
+
+                                <a class="btn btn-default col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = profile.Id, percentage = 5 })">
+                                    Give Discount 5%
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="user-button" id="request" style=" display:none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-primary btn-sm btn-block"> Request Discount MD</button>*@
+                                    <a class="btn btn-primary col-md-12" href="@Url.Action("RequestDiscount", "CompanyPages", new {guestId = profile.Id, emp_number = 6357, guestname = profile.First_name + " " + profile.Last_name })">
+                                        Discount MD
+                                    </a>
+
+                                </div>
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-success btn-sm btn-block">Request Discount GM</button>*@
+                                    <a class="btn btn-success col-md-12" href="@Url.Action("RequestDiscount", "CompanyPages", new {guestId = profile.Id, emp_number = 6357, guestname = profile.First_name + " " + profile.Last_name })">
+                                        Discount GM
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="user-button" id="md" style=" display:none;">
+                            <div class="row" style="margin-bottom: 50px; margin-top: 30px">
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-primary btn-sm btn-block"> Give Discount 20%</button>*@
+                                    <a class="btn btn-primary col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = profile.Id, percentage = 20 })">
+                                        Give Discount 20%
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-success btn-sm btn-block">Give Discount 25%</button>*@
+                                    <a class="btn btn-success col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = @profile.Id, percentage = 25 })">
+                                        Give Discount 25%
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                @*<button type="button" class="btn btn-default btn-md btn-block"> Give Discount 30%</button>*@
+                                <a class="btn btn-default col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = @profile.Id, percentage = 30 })">
+                                    Give Discount 30%
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="user-button" id="manager" style=" display:none;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-primary btn-sm btn-block"> Give Discount 10%</button>*@
+                                    <a class="btn btn-primary col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = profile.Id, percentage = 10 })">
+                                        Give Discount 10%
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    @*<button type="button" class="btn btn-success btn-sm btn-block">Give Discount 15%</button>*@
+                                    <a class="btn btn-success col-md-12" href="@Url.Action("GiveDiscount", "CompanyPages", new {guestId = profile.Id, percentage = 15 })">
+                                        Give Discount 15%
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="user-button">
+                            <div class="row">
+                                @*<div class="col-md-12">
+                                        <button type="button" class="btn btn-default btn-md btn-block"> Give Discount</button>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-default btn-md btn-block"> Give Discount</button>
+
+                                    </div>*@
+
+                                @*<div class="col-md-6">
+                                        <button type="button" class="btn btn-primary btn-sm btn-block"> Request Discount MD</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-success btn-sm btn-block">Request Discount GM</button>
+                                    </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="ibox float-e-margins" style="margin-top:50px;">
+                    <div class="ibox-content">
+                        <div class="file-manager">
+                            <h5>Show:</h5>
+                            <a href="#" class="file-control active">All</a>
+
+
+
+                            <div class="hr-line-dashed"></div>
+                            <form method="post" enctype="multipart/form-data" id="frmFile">
+                                <input type="file" style="display:none" name="file" id="file" />
+                                <input type="hidden" value="hrm" name="module" />
+                                <div class="form-group col-lg-9">
+                                    <label>File Type</label>
+                                    @*@Html.DropDownList("file_type", new SelectList(OptionUtil.GetLookupOptions("hr_file_type"), "lookup_name", "lookup_name"), new { @class = "form-control", @required = "required" })*@
+
+                                </div>
+
+                                @*<input type="hidden" value="@employee.emp_number" name="emp_number" />*@
+                            </form>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <button type="button" onclick="$('#file').click()" class="btn btn-primary btn-block">
+                                        Upload Files
+                                    </button>
+                                </div>
+
+                                <div class="col-lg-3">
+
+                                    <label id="progress" style="margin-top:5px;display:none">
+                                        <img src="~/Content/images/loading-spinner-blue.gif" alt="" />
+
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <h5>Files</h5>
+                            <ul class="folder-list" style="padding: 0">
+                                @*@if (employee.admin_hrm_emp_file.Any())
+                                    {
+                                        foreach (var file in employee.admin_hrm_emp_file)
+                                        {
+                                            <li><a href="/api/fileapi/getfile/@file.file_id"><i class="fa fa-file"></i> <span>@file.admin_hrm_uploaded_document.file_name</span></a></li>
+                                        }
+                                    }*@
+
+
+                            </ul>
+                            <form method="post" enctype="multipart/form-data" id="frmFile">
+                                <input type="file" style="display:none" name="file" id="file" />
+                                <input type="hidden" value="hrm" name="module" />
+                                @*<input type="hidden" value="@employee.emp_number" name="emp_number" />*@
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5> Past Booking Activites</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item">Config option 1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+
+                                    <th>#</th>
+                                    <th>Room number </th>
+                                    <th>Payment status </th>
+                                    <th>Phone </th>
+                                    <th>Amount Paid </th>
+                                    <th>Completed </th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td> 101</td>
+                                    <td>Paid</td>
+                                    <td>0800 051213</td>
+
+                                    <td><span class="pie">#100,000</span></td>
+                                    <td>20%</td>
+                                    <td>Jul 14, 2013</td>
+                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ 
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            debugger;
+            var text_val = $('#check').val();
+
+            if (text_val == '5081') {
+                $("#manager").show(1000);
+            } else if (text_val == '5077') {
+                $("#md").show(1000);
+                console.log("sanmi");
+            }
+            else if (text_val == '4037') {
+                $("#request").show(1000);
+                $("#frontdesk").show(1000);
+            }
+
+
+        });
+
+    </script>
+}

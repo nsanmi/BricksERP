@@ -1,0 +1,366 @@
+﻿@model OnePortal.Models.ViewModels.RoomVModel
+@{
+    ViewBag.Title = "IndexBooking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using HRM.DAL.Models;
+@using Hotel.Dal.Models;
+@using HRM.DAL.Util;
+@using System.Linq;
+@using PagedList;
+
+@using PagedList.Mvc;
+@*@model IPagedList<Hotel_reservation>*@
+@{
+    ViewData["Title"] = "Inventory";
+
+
+
+    var search = (string)ViewBag.search;
+
+    //var month = (int)ViewBag.month;
+    //var year = (int)ViewBag.year;
+
+
+}
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5> </h5>
+                    <div class="ibox-tools">
+                        <form action="@Url.Action("IndexAll","Inventory")" method="get" id="frm">
+                            <button style="float:left;" type="button" data-toggle="modal" data-target="#reservationModal" class="btn btn-primary btn-sm" id="step1">Make Reservation</button>
+
+                            <button onclick="$('#search').val('NEW');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm  btn-xs btn-primary">New Products</button>
+                            <button onclick="$('#search').val('GOOD');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm btn-outline  btn-xs btn-success">Old/instore Products</button>
+                            <button onclick="$('#search').val('BAD');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm btn-outline  btn-xs btn-warning">Replaced Products</button>
+
+                            @Html.DropDownList("category_id", new SelectList(OptionUtil.GetCategory(), "category_id", "name", ViewBag.procategory), null, new { @class = "", @onchange = "$('#frm').submit()" })
+
+
+                            @*@Html.DropDownList("name", new SelectList(OptionUtil.GetCategory("name"), "id", "name", null), "- Please Select -", new { @class = "form-control" })*@
+
+                            @*@Html.DropDownList("category", new SelectList(OptionUtil.GetProductCategory(), "Value", "Name", category), "- Select Category -", new { @class = "", @onchange = "$('#frm').submit()" })*@
+                            @*<select name="category" id="year" onchange="$('#frm').submit()">
+
+
+                                </select>*@
+
+
+                            @*@Html.DropDownList("month", new SelectList(OptionUtil.GetMonths(), "Value", "Name", month), "- Select Month -", new { @class = "", @onchange = "$('#frm').submit()" })
+
+                                <select name="year" id="year" onchange="$('#frm').submit()">
+                                    @for (var i = 2017; i <= DateTime.Now.Year; i++)
+                                    {
+                                        if (i == year)
+                                        {
+                                            <option selected value="@i">@i</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+
+                                    }
+
+                                </select>
+                                <input type="hidden" name="search" id="search" />*@
+                            @*<button type="submit" class="btn-circle btn btn-default" id="btn_refresh"><i class="fa fa-refresh"></i></button>*@
+
+                        </form>
+
+                    </div>
+                </div>
+                @*<div class="ibox-content">
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="full-height-scroll">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-bordered" id="tb_employees" data-page-length='15'>
+                                        <thead>
+                                            <tr>
+                                                <th>Avatar</th>
+                                                <th>Description</th>
+                                                <th>Type</th>
+                                                <th>Capacity</th>
+                                                <th>Max adult</th>
+                                                <th>Max children</th>
+                                                <th>Max people</th>
+                                                <th>Rate</th>
+
+                                                <th>Created date</th>
+
+                                                <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var reservation in Model)
+                                            {
+
+                                                string reservationimage = "/Content/images/profile_images/" + ".jpg";
+                                                if (!File.Exists(Server.MapPath(reservationimage)))
+                                                { reservationimage = "/Content/images/a4.jpg"; }
+
+                                                if (search == null || search == "")
+                                                {
+
+                                                    <tr>
+
+                                                        <td class="client-avatar"><img alt="image" src="@reservationimage"> </td>
+                                                        <td>@reservation.reservation_date </td>
+                                                        @*<td><a data-toggle="tab" href="#" class="client-link">@string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)</a></td>*@
+                                                        @*<td>
+                                                            <a data-toggle="modal" href="#description_modal" data-target="#modal" class="openCommentDialog" data-id="@reservation.reservation_comment">@reservation.reservation_comment</a>
+                                                        </td>
+                                                        <td>@reservation.session</td>
+
+                                                        <td>@reservation.total products.created_date</td>
+                                                        <td>@reservation.reservation_status products.purchased_date</td>
+                                                        <td>@reservation.reservation_comment products.purchase_price</td>
+                                                        <td>@reservation.payment_status</td>
+                                                        <td>@reservation.payment_date</td>
+                                                        <td>@reservation.reservation_date</td>*@
+                                                        <td>
+                                                            @*<a>@Html.ActionLink(prices.clotheType, "UpdatePrice", new { id = prices.id }, new { title = "Click to view complain details" })</a>*@
+
+                                                            @*<a data-toggle="modal" data-target="#UModal" class="btn btn-primary btn-sm" style="margin-right:20px" onclick="populateData(@prices.id)">Edit <i class="fa fa-edit"></i></a>*@
+                                                            @*<a class="btn btn-primary btn-sm"
+                                                               onclick="location.href ='@Url.Action("UpdateReservation", "HotelBooking")?Id=@reservation.Id'">
+                                                                Edit
+                                                            </a>*@
+
+                                                            @*<a data-toggle="modal" data-target="#UModal" class="btn btn-primary btn-sm" style="margin-right:20px" onclick="populateData(@products.product_id)">Edit <i class="fa fa-edit"></i></a>*@
+                                                            @*<a class="btn btn-sm btn-danger" onclick="DeleteProduct(@reservation.Id) " type="button">Delete <i class="fa fa-trash"></i></a>*@
+
+                                                            @*@Html.ActionLink("Delete", "Delete", "Complain", new { delete = complain.Deleted}, new { @class = "btn btn-sm btn-danger fa fa-trash" })*@
+                                                            @*<button class="btn btn-sm btn-danger" onclick="DeleteProduct(@@products.product_id)" type="button"><i class="fa fa-trash"></i></button>*@
+                                                        </td>
+                                                    </tr>
+
+
+
+                                                }
+
+
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal inmodal" id="reservationModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddR", "Inventory", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Product</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Category</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownList("Category", new SelectList(OptionUtil.GetCategoryOptions(), "category_id", "name", null), "- Please Select -", new { @class = "form-control" })
+
+                            @*@Html.DropDownList("Priority", new SelectList(DProcess.GetLookup("priority"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-4 form-group">
+
+                            @*<label class=" control-label">Name</label>*@
+                            <input type="text" class="form-control" id="form" placeholder="Name">
+
+                        </div>
+
+
+
+                        <div class="col-md-offset-1 col-md-4 form-group">
+
+                            @*<label class=" control-label">Quantity</label>*@
+                           
+                                <input type="text" class="form-control" id="form" placeholder="Quantity">
+
+                                @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                          
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="Name">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Quantity</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="Quantity">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Supliers name</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="suppliers name">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Purchase Price</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+                        <div class="col-lg-9">
+                            <textarea name="Comment" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Receipt if Any</label>
+                        <div class="col-lg-9">
+                            <input type="file" name="screenshot" multiple accept="image/x-png,image/gif,image/jpeg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="modal inmodal " id="description_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated flipInY">
+            <div class="modal-header">
+                Description
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div id="comment_box"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_employee.js"></script>
+    <script>
+
+         function DeleteProduct(id) {
+            if (confirm("Are you sure you want to remove this Product?")) {
+                $.ajax({
+                    url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Inventory/DeleteProduct/?id=" + id,
+                    context: document.body
+                }).done(function (returnVal) {
+                    alert(returnVal);
+                    location.reload();
+                });
+            }
+        }
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+
+        $(document).ready(function () {
+            $('#tb_employees').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'employee_list' },
+                    { extend: 'pdf', title: 'employee_list' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+
+        function change_selection(ctrl) {
+            if ($(ctrl).is(":checked")) {
+                $('.selected').prop('checked', true);
+            }
+            else {
+                $('.selected').prop('checked', false);
+            }
+        }
+    </script>
+}
+
+@section Styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+

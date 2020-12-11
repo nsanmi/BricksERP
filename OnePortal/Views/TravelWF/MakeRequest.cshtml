@@ -1,0 +1,48 @@
+﻿ @model WorkFlow.DAL.ViewModels.TravelRequestViewModel
+
+
+<div class="col-lg-7">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Travel Request form <small>Kindly fill out the details and submit</small></h5>           
+        </div>
+        <div class="ibox-content" style="display: block;">
+            <div class="row">
+                <div class="col-sm-6 b-r">                  
+                    <form role="form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" value="@Model.EmployeeFullName">
+                        </div>
+                        <div class="form-group">
+                            <label>Supervisor</label>
+                            <input type="text" class="form-control" value="@Model.SupervisorFullName">
+                        </div>
+                        <div class="form-group">
+                            <label>Destination</label>
+                            <input type="text" class="form-control" placeholder="enter full destination address" >
+                        </div>
+                        <div class="form-group">
+                            <label>Travel Reason</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>                        
+                        <div class="form-group" id="data_5">
+                            <label class="font-noraml">Travel dates</label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" name="start">
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="input-sm form-control" name="end">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white" type="submit">Cancel</button>
+                                <button class="btn btn-primary" type="submit">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

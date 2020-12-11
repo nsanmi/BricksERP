@@ -1,0 +1,213 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+    var travel_expenses = Util.GetTravelExpenses(Convert.ToInt32(form.Element("travel_class").Value));
+    double total = 0;
+}
+<div class="form-group">
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+                <th>Expense</th>
+                <th>Daily Rate</th>
+                <th>No of Days</th>
+                <th>Dates</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("expenses").Elements("expense").Any())
+            {
+                foreach (var expense in form.Element("expenses").Elements("expense"))
+                {
+                    if (expense.Element("name") != null && expense.Element("name").Value != "")
+                    {
+                        double rate = 0;
+                        if (expense.Element("rate") != null && expense.Element("rate").Value != "")
+                        {
+                            double.TryParse(expense.Element("rate").Value, out rate);
+                        }
+                        double no_of_days = 1;
+                        if (expense.Element("no_of_days").Value != null && expense.Element("no_of_days").Value != "")
+                        {
+                            no_of_days = Convert.ToDouble(expense.Element("no_of_days").Value);
+                        }
+                        var amount = rate * no_of_days;
+                        total += amount;
+                        <tr>
+                            <td>@expense.Element("name").Value</td>
+                            <td>@expense.Element("rate").Value</td>
+                            <td>@expense.Element("no_of_days").Value</td>
+                            <td>
+                                <small> @expense.Element("start_date").Value</small> |  <small>@expense.Element("end_date").Value</small>
+                            </td>
+                            <td>
+                                @String.Format("{0:N}", amount)
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+
+                }
+            }
+            else
+            {
+                if (travel_expenses.Any())
+                {
+                    foreach (var expense in travel_expenses)
+                    {
+                        <tr class="txtMult">
+                            <td> @expense.bpm_travel_expenses.name </td>
+                            <td><input type="text" class="form-control val1" readonly value="@expense.amount" /> </td>
+                            <td><input type="text" class="form-control number val2" onpaste="return false" name=@string.Format("{0}_no_of_days", expense.expense_id) /></td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-lg-6" id="data_1">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name=@string.Format("{0}_start_date", expense.expense_id) type="text" readonly class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" id="data_1">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name=@string.Format("{0}_end_date", expense.expense_id) type="text" readonly class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="multTotal">0.00</span></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+
+
+                <tr class="txtMult">
+                    <td>Hotel</td>
+                    <td><input type="text" onpaste="return false" name="hotel" class="form-control allownumericwithdecimal number val1" /></td>
+                    <td><input type="text" class="form-control number allownumericwithdecimal val2" onpaste="return false" name="h_no_of_days" /></td>
+                    <td>
+                        <div class="row">
+                            <div class="col-lg-6" id="data_1">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="h_start_date" type="text" readonly class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="data_1">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="h_end_date" type="text" readonly class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="multTotal">0.00</span></td>
+                    <td></td>
+
+
+                </tr>
+                <tr class="txtMult">
+                    <td>Transportation</td>
+                    <td><input type="text" onpaste="return false" name="transportation" class="form-control number val1 allownumericwithdecimal" /></td>
+                    <td><input type="text" class="form-control number allownumericwithdecimal val2" name="t_no_of_days" /></td>
+                    <td>
+                        <div class="row">
+                            <div class="col-lg-6" id="data_1">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="t_start_date" type="text" readonly class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="data_1">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="t_end_date" type="text" readonly class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="multTotal">0.00</span></td>
+                    <td></td>
+
+
+                </tr>
+                <tr class="txtMult">
+                    <td colspan="4">Others</td>
+                    @*<td>
+                        <button type="button" class="btn btn-sm btn-outline btn-success" onclick="$('#tr_others').show(); $('#btn_add').show();">Enable others</button>
+                    </td>*@
+
+                    <td>
+                        <button id="btn_add" type="button" class="btn btn-sm btn-primary btn-outline" onclick="add_row('tb_items')">Add Row</button>
+                    </td>
+                </tr>
+
+                @*style="display:none"*@
+
+                <tr id="tr_others" class="txtMult">
+                    <td><input type="text" name="other" class="form-control" /></td>
+                    <td><input type="text" onpaste="return false" name="other_amount" class="form-control number val1 allownumericwithdecimal" /></td>
+                    <td><input type="text" class="form-control number val2 allownumericwithdecimal" onpaste="return false" name="o_no_of_days" /></td>
+                    <td>
+                        <div class="row">
+                            <div class="col-lg-6" id="data_1">
+                                <input name="o_start_date" type="date" class="form-control">
+                                @*<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="o_start_date" type="text" readonly class="form-control">
+                                    </div>*@
+                            </div>
+                            <div class="col-lg-6" id="data_1">
+                                <input name="o_end_date" type="date" class="form-control">
+                                @*<div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="o_end_date" type="text" readonly class="form-control">
+                                    </div>*@
+                            </div>
+                        </div>
+                    </td>
+
+                    <td><span class="multTotal">0.00</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tb_items')"><i class="fa fa-trash"></i></button>
+                        @*<button type="button" class="btn btn-sm btn-primary" onclick="add_row('tb_items')">Add Row</button>*@
+                    </td>
+
+
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+
+            @if (!form.Element("expenses").Elements("expense").Any())
+            {
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td id="grandTotal" colspan="2">0.00</td>
+                </tr>
+            }
+        </tfoot>
+    </table>
+
+</div>
+
+<div class="form-group">
+    <label>Account Name</label>
+    <input class="form-control" name="account_name" required type="text" value="" />
+</div>
+
+<div class="form-group">
+    <label>Account Number</label>
+    <input class="form-control" name="account_number" required type="text" value="" />
+</div>
+
+<div class="form-group">
+    <label>Bank Name</label>
+    <input class="form-control" name="bank_name" type="text" value="" required />
+</div>
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>

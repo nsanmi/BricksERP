@@ -1,0 +1,146 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var doc = XElement.Parse(workflow.workflow);
+    double total = 0;
+}
+
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" placeholder="approval token" class="input form-control" name="approval_token">
+        <span class="input-group-btn">
+
+            <button type="submit" class="btn btn btn-primary" onclick="generate_approval_token()"> <i class="fa fa-refresh"></i> Refresh</button>
+        </span>
+    </div>
+</div>
+
+
+<div class="form-group" id="data_1">
+    <label>Date Received by</label>
+    <div class="input-group date">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        <input type="text" readonly value="@form.Element("date_received_by").Value" name="date_received_by" class="form-control">
+    </div>
+
+</div>
+<div class="form-group">
+
+
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                <th style="background-color:transparent">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var tc = Convert.ToDouble(item.Element("quantity").Value) * Convert.ToDouble(item.Element("vendors_unit_price").Value);
+                    total += tc;
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        <td>@item.Element("description").Value</td>
+                        <td>@string.Format("{0:N}", item.Element("vendors_unit_price").Value)</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="4" style="text-align:right">
+                    <strong>Total</strong>
+                </td>
+                <td>
+                    @string.Format("{0:N}", total)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    @if (form.Element("payments") != null)
+    {
+        if (form.Element("payments").Elements("payment").Any())
+        {
+            <label>Payments</label>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Payment Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var element in form.Element("payments").Elements("payment"))
+                    {
+                        <tr>
+                            <td>@element.Element("id").Value</td>
+                            <td>@element.Element("vprf_amount").Value</td>
+                            <td>
+                                @if (element.Element("new_description") != null)
+                                {
+                                    @element.Element("new_description").Value
+                                }
+                            </td>
+                            <td>@element.Element("p_date").Value</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+</div>
+<div class="form-group">
+    <label>Reason for purchase</label>
+    <textarea class="form-control" readonly name="reason_for_purchase">@form.Element("reason_for_purchase").Value</textarea>
+</div>
+
+<div class="form-group">
+    <label>Final Deilvery location</label>
+    <input type="text" class="form-control" readonly name="final_delivery_location" value="@form.Element("final_delivery_location").Value" />
+</div>
+
+
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control" onchange="toggleRejection(this)">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+
+<div class="form-group" id="rejection_step">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

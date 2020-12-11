@@ -1,0 +1,447 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using OnePortal.Models;
+@model HtmlInput
+
+@{
+    var step = (Step)ViewBag.step;
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+
+}
+@{
+    ViewBag.Title = "Step";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>@workflow.title</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">
+                <strong>Manage Requests</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-7">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            @if (ViewBag.message != null && ViewBag.message != "")
+            {
+                <div class="alert alert-success alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    @ViewBag.message
+                </div>
+            }
+            @using (Html.BeginForm("Step", "Workflow", FormMethod.Post, new { role = "form", enctype = "multipart/form-data", id = "process_form" }))
+            {
+                <div class="ibox">
+                    <div class="ibox-title">
+                        @if (definition.Element("next_step").Value == "-1")
+                        {
+                            <h5>Assign Procurement Officer</h5>
+                        }
+                        else
+                        {<h5>Step @step.Id - @step.Name</h5>}
+
+                        </div>
+                    <div class="ibox-content">
+                        <input type="hidden" name="workflow_id" value="@ViewBag.workflow_id" />
+
+                        <div class="project-list">
+                            @if (definition.Element("next_step").Value == "-1")
+                            {
+                                @Html.Partial("~/Views/Partial/PR3.cshtml")
+                            }
+                            else
+                            {
+                                @Html.Partial("~/Views/Partial/" + step.Definition.Element("html_form_id").Value + ".cshtml")
+                            }
+
+
+                            @* @Html.Partial("~/Views/Partial/hq.cshtml")*@
+
+                        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        @if (workflow.status == 22)
+                        {
+                            <button type="submit" id="btn_submit" onclick="checkForm()" class="btn btn-primary">Submit</button>
+                        }
+
+                    </div>
+                </div>
+
+            }
+        </div>
+
+        @*<form class="dropzone" action="@Url.Action("Post","Home")" enctype="multipart/form-data"></form>*@
+    </div>
+    <div class="col-lg-5">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content" id="ibox-content">
+
+                    <div class="pre-scrollable" style="max-height:600px">
+
+
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tab-1">Transaction Flow</a></li>
+                                <li class=""><a data-toggle="tab" href="#tab-2">Documents</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="panel-body">
+
+                                        <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+                                            @foreach (var element in definition.Element("steps").Elements("step"))
+                                            {
+                                                var bg = "yellow-bg";
+                                                if (element.Element("status").Value == "1")
+                                                {
+                                                    bg = "navy-bg";
+                                                }
+                                                <div class="vertical-timeline-block">
+
+                                                    <div class="vertical-timeline-icon @bg">
+                                                        @if (element.Element("type").Value == "complete")
+                                                        {
+                                                            <i class="fa fa-check"></i>
+                                                        }
+                                                        else if (element.Element("type").Value == "approval")
+                                                        {
+                                                            <i class="fa fa-eyedropper"></i>
+                                                        }
+                                                        else if (element.Element("type").Value == "input")
+                                                        {
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="fa fa-briefcase"></i>
+                                                        }
+                                                    </div>
+                                                    <div class="vertical-timeline-content">
+                                                        @if (element.Element("status").Value == "1")
+                                                        {
+                                                            <h2><a href="@Url.Action("Step","Workflow",new { id = workflow.id, step_id = element.Element("code").Value })">@element.Element("code").Value - @element.Element("name").Value</a> </h2>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h2>@element.Element("code").Value - @element.Element("name").Value</h2>
+                                                        }
+                                                        <p>
+                                                            @Util.GetXELementValue(element, "comments")
+                                                        </p>
+
+                                                        <span class="vertical-date">
+                                                            @Util.GetXELementValue(element, "created_by_name") <br />
+                                                            <small>@Util.FormatXELementDate(element, "created_at")</small>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-2" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div class="col-lg-12">
+                                            @if (workflow.bpm_workflow_document.Any())
+                                            {
+                                                foreach (var doc in workflow.bpm_workflow_document)
+                                                {
+                                                    <div class="file-box">
+                                                        <div class="file">
+                                                            <a href="@Url.Action("Document", "Workflow", new { id = doc.id })" target="_blank">
+                                                                <span class="corner"></span>
+
+                                                                <div class="icon">
+                                                                    <i class="fa fa-file"></i>
+                                                                </div>
+                                                                <div class="file-name">
+                                                                    @doc.name
+                                                                    <br />
+                                                                    <small>Added: @doc.created_at.ToShortDateString()</small>
+                                                                </div>
+                                                            </a>
+                                                            <a href="@Url.Action("Download","File",new { id = doc.id })" class="btn btn-xs btn-default">Download</a>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/workflow.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Content/libs/file-input/fileinput.min.js"></script>
+    <script src="~/Content/libs/file-input/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="~/Content/libs/file-input/themes/fa/theme.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
+    <script src="~/Content/libs/jasny/jasny-bootstrap.min.js"></script>
+
+    <script>
+        $(".txtMult input").keyup(multInputs);
+        $(".txtMult_n input").keyup(multInputs_n);
+        $(".txtMult_r input").keyup(multInputs_r);
+
+        function multInputs() {
+            var mult = 0;
+            // for each row:
+            $("tr.txtMult").each(function () {
+                var $val3 = 1;
+                // get the values from this row:
+                var $val1 = $('.val1', this).val();
+                var $val2 = $('.val2', this).val();
+                if ($('.val3', this).length) {
+                    $val3 = $('.val3', this).val();
+                }
+                var $total = 0;
+                if($val1 !== undefined && $val2 !== undefined && $val3 !== undefined)
+                    $total = ($val1 * 1) * ($val2 * 1) * ($val3 * 1);
+                // set total for the row
+                $('.multTotal', this).text(numberWithCommas($total));
+                mult += $total;
+            });
+            $("#grandTotal").text(numberWithCommas(mult));
+        }
+
+        $(document).ready(function () {
+            $('.summernote').summernote({
+            });
+
+            $("#file-0b").fileinput({
+                'theme': 'explorer-fa',
+                browseClass: "btn btn-primary btn-xs",
+                fileType: "any",
+                'mainClass': "input-group-lg"
+            });
+
+            //Hide the rejection input
+            $("#rejection_step").hide();
+        });
+
+        $('#data_1 .input-group.date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        var dateToday = new Date();
+        //var reqDate
+        $('#data_2 .input-group.date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            minDate: dateToday,
+            daysOfWeekDisabled: [0, 6]
+        });
+
+        $(".txtMult_n input").keyup(multInputs_n);
+
+        function multInputs_n() {
+            var mult = 0;
+            // for each row:
+            $("tr.txtMult_n").each(function () {
+                var $val3 = 1;
+                // get the values from this row:
+                //var $val1 = $('.val1', this).val();
+                var $val2 = $('.val2', this).val();
+                if ($('.val3', this).length) {
+                    $val3 = $('.val3', this).val();
+                }
+
+                var $total = ($val2 * 1) * ($val3 * 1);
+                // set total for the row
+                $('.multTotal', this).text(numberWithCommas($total));
+                mult += $total;
+            });
+            $("#grandTotal").text(numberWithCommas(mult));
+        }
+
+        function multInputs_r() {
+            var mult = 0;
+            // for each row:
+            $("tr.txtMult_r").each(function () {
+                var $val3 = 1;
+                // get the values from this row:
+                var $val1 = $('.val1', this).val();
+
+                var $total = ($val1 * 1);
+                // set total for the row
+                $('.multTotal', this).text(numberWithCommas($total));
+                mult += $total;
+            });
+            $("#grandTotal").text(numberWithCommas(mult));
+        }
+
+        function numberWithCommas(number) {
+            var parts = number.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
+        }
+
+        $(function () {
+            $('.number').keypress(function (e) {
+                if (e.which === 97 ||
+                    e.which === 98 ||
+                    e.which === 99 ||
+                    e.which === 110 ||
+                    e.which === 111 ||
+                    e.which === 65 ||
+                    e.which === 66 ||
+                    e.which === 67 ||
+                    e.which === 78 ||
+                    e.which === 79 ||
+                    e.which === 49 ||
+                    e.which === 50 ||
+                    e.which === 51 ||
+                    e.which === 52 ||
+                    e.which === 53 ||
+                    e.which === 48 ||
+                    e.which === 54 ||
+                    e.which === 55 ||
+                    e.which === 56 ||
+                    e.which === 57) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+
+        $('#vendors').select2({ placeholder: "Search vendors" });
+
+        /*
+         * Edited by Johnbosco
+         * added functionality to search vendors by category
+         */
+        $('#vendors_n').select2({
+            placeholder: 'Search Vendors...',
+            //dropdownParent: $("#myModal"),
+            ajax: {
+                url: function (params) {
+                    if ($("#category").val() !== undefined && $("#category").val() !== null && $("#category").val() !== "")
+                        return baseUrl() + "utils/GetVendorsByCategory?category=" + $("#category").val();
+                },
+                dataType: 'json',
+                quietMillis: 100,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data,
+                            function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                    };
+                }
+            }
+        });
+
+
+        $('.iselect').select2({
+            placeholder: 'Search for an item',
+
+            ajax: {
+                url: function (params) {
+                    return baseUrl() + "utils/GetItems/" + params.term;
+                },
+                dataType: 'json',
+                quietMillis: 100,
+
+                processResults: function (data) {
+                    return {
+                        results: $.map(data,
+                            function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                    };
+                }
+
+            }
+        });
+
+
+        $(".allownumericwithdecimal").on("keypress keyup blur",
+            function (event) {
+                //this.value = this.value.replace(/[^0-9\.]/g,'');
+                $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+                if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                    event.preventDefault();
+                }
+            });
+
+        $(".allownumericwithoutdecimal").on("keypress keyup blur",
+            function (event) {
+                $(this).val($(this).val().replace(/[^\d].+/, ""));
+                if ((event.which < 48 || event.which > 57)) {
+                    event.preventDefault();
+                }
+            });
+
+        function checkForm() {
+            var form = $('#process_form');
+            form.validate();
+            if (form.valid()) {
+                $("#btn_submit").hide();
+            }
+            
+
+        }
+
+        function toggleRejection(control) {
+            if (control.value === "rejected")
+                $("#rejection_step").show(350);
+            else
+                $("#rejection_step").hide(350);
+        }
+
+    </script>
+
+
+}
+
+
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/file-input/fileinput.min.css"  media="all"  rel="stylesheet" />
+    <link href="~/Content/libs/file-input/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="~/Content/libs/jasny/jasny-bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+}

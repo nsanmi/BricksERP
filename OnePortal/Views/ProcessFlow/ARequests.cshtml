@@ -1,0 +1,243 @@
+﻿@using WorkFlow.DAL.Data;
+@using PagedList.Mvc;
+@using HRM.DAL.Util;
+@using WorkFlow.DAL;
+@model PagedList.IPagedList<bpm_workflow>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "MyRequest";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>My Requests</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li class="active">
+                <strong>Requests</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>All Requests</h5>
+                    @*<div class="ibox-tools">
+                            <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-primary btn-xs">Make a Request</button>
+                        </div>*@
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <div class="col-md-11">
+                            <form action="@Url.Action("arequests","ProcessFlow")" method="get">
+                                <div class="input-group">
+                                    @*<input type="hidden" value="@ViewBag.page" name="page" />*@
+                                    <input type="text" placeholder="Search" class="input-sm form-control" value="@ViewBag.search" name="search"> <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div class="project-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Process</th>
+                                        <th>Project</th>
+                                        <th>Completion</th>
+                                        <th>Status</th>
+                                        <th>Date created</th>
+                                        <td>Requestor</td>
+                                        <th>My Action Required</th>
+                                        @if (User.IsInRole("procurement"))
+                                        {
+                                            <th>Documents</th>
+                                        }
+                                        <th></th>
+                                        <th>Buzz</th>
+                                        <th>DOC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model.Any())
+                                    {
+                                        foreach (var workflow in Model)
+                                        {
+                                            //string style = "";
+                                            //string action_required = "No";
+                                            //if (workflow.pending == 1)
+                                            //{
+                                            //    action_required = "Yes";
+                                            //    style = "background-color: lavenderblush;";
+                                            //}
+                                    <tr>
+                                        <td>@workflow.id.ToString().Substring(0, 5)</td>
+                                        <td><strong><a href="@Url.Action("Step","ProcessFlow",new { id = workflow.id })">@workflow.title</a> </strong></td>
+                                        <td>@workflow.bpm_process.process_name</td>
+                                        <td>@workflow.pm_project.name</td>
+                                        <td>
+                                            <div class="progress progress-striped active m-b-sm">
+                                                <div style="width: @Util.GetWorkflowPercentage(workflow.workflow)%;" class="progress-bar"></div>
+                                            </div>
+                                        </td>
+                                        <td>@workflow.ws_lookup.lookup_name</td>
+                                        <td>@workflow.created_at.ToString("dd MMM, yyyy HH:mm tt")</td>
+                                        <td>@string.Format("{0} {1}", workflow.admin_hrm_employee.emp_lastname, workflow.admin_hrm_employee.emp_firstname)</td>
+                                        <td></td>
+                                        @if (User.IsInRole("procurement"))
+                                        {
+                                            var documents = workflow.bpm_workflow_document;
+                                            <td>
+
+                                                @if (documents.Any())
+                                                {
+                                                    <a href="#" onclick="$('#dv_@workflow.id.ToString().Substring(0, 5)').toggle()">@documents.Count()</a>
+                                                    <div id="dv_@workflow.id.ToString().Substring(0, 5)" style="display:none">
+                                                        @foreach (var document in documents)
+                                                        {
+                                                            <a href="@Url.Action("Document","ProcessFlow",new { id = document.id })" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="@document.name"><i class="fa fa-file"></i> @document.name</a>
+                                                        }
+                                                    </div>
+                                                }
+                                            </td>
+                                        }
+                                            <td>
+                                                @if (workflow.status != 23)
+                                                {
+                                                    <a href="@Url.Action("Discard","ProcessFlow",new {id=workflow.id})" class="btn btn-danger btn-xs">Delete</a>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Buzz","ProcessFlow",new {workflow_id=workflow.id})" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-bell"></i></a>
+
+                                                
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("generate_document","ProcessFlow",new {workflow_id=workflow.id})" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-download"></i></a>
+                                            </td>
+                                    </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id='Paging' style="text-align:center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+
+                            @Html.PagedListPager(Model, page => Url.Action("arequests", new { page = page, search = ViewBag.search }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("MyRequest", "ProcessFlow", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Make a Request</h4>
+
+                </div>
+                <div class="modal-body">
+
+
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Title</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="title" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Request Type</label>
+
+                        <div class="col-lg-9">
+                            @Html.DropDownList("process_id", new SelectList(Util.GetProcesses(), "id", "process_name", null), null, new { @class = string.Format("form-control") })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Project</label>
+
+                        <div class="col-lg-9">
+                            @Html.DropDownList("project_id", new SelectList(OptionUtil.GetProjects(), "id", "name", null), null, new { @class = string.Format("form-control") })
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+   @* <script src="~/Content/libs/pace/pace.min.js"></script>*@
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+
+            $('[data-toggle="tooltip"]').tooltip(); 
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+}
+

@@ -1,0 +1,386 @@
+﻿@using Hotel.Dal.Models;
+@using HRM.DAL.Util;
+@using System.Linq;
+@using PagedList;
+@using HRM.DAL.Util;
+
+@using System.Data
+@using Microsoft.AspNet.Identity;
+@using HRM.DAL.Util;
+@using OnePortal.Helper
+@using OnePortal.Models.ViewModels
+@using WorkFlow.DAL;
+@using PagedList;
+
+
+
+@using PagedList.Mvc;
+@model IPagedList<collection_register>
+@{
+    ViewData["Title"] = "Laundry";
+    //var entry = (IQueryable<collection_register>)ViewBag.entry;
+
+    var search = (string)ViewBag.search;
+
+    //var month = (int)ViewBag.month;
+    //var year = (int)ViewBag.year;
+
+
+}
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5> </h5>
+                    <div class="ibox-tools">
+                        <form action="@Url.Action("IndexAll","HLaundry")" method="get" id="frm">
+                            @*<button style="float:left;" type="button" data-toggle="modal" data-target="#productModal" class="btn btn-primary btn-sm" id="step1">Back to Noticeboard</button>*@
+
+                            <button onclick="$('#search').val('NEW');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm  btn-xs btn-primary">Pending</button>
+                            <button onclick="$('#search').val('GOOD');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm btn-outline  btn-xs btn-success">Ready</button>
+                            <button onclick="$('#search').val('BAD');$('#frm').submit()" style="margin-top:-3px" class="btn btn-sm btn-outline  btn-xs btn-warning">Deliverd</button>
+
+                            @*@Html.DropDownList("category_id", new SelectList(OptionUtil.GetCategory(), "category_id", "name", ViewBag.procategory), null, new { @class = "", @onchange = "$('#frm').submit()" })*@
+
+
+                            @*@Html.DropDownList("name", new SelectList(OptionUtil.GetCategory("name"), "id", "name", null), "- Please Select -", new { @class = "form-control" })*@
+
+                            @*@Html.DropDownList("category", new SelectList(OptionUtil.GetProductCategory(), "Value", "Name", category), "- Select Category -", new { @class = "", @onchange = "$('#frm').submit()" })*@
+                            @*<select name="category" id="year" onchange="$('#frm').submit()">
+
+
+                                </select>*@
+
+
+                            @*@Html.DropDownList("month", new SelectList(OptionUtil.GetMonths(), "Value", "Name", month), "- Select Month -", new { @class = "", @onchange = "$('#frm').submit()" })
+
+                                <select name="year" id="year" onchange="$('#frm').submit()">
+                                    @for (var i = 2017; i <= DateTime.Now.Year; i++)
+                                    {
+                                        if (i == year)
+                                        {
+                                            <option selected value="@i">@i</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+
+                                    }
+
+                                </select>
+                                <input type="hidden" name="search" id="search" />
+                                @*<button type="submit" class="btn-circle btn btn-default" id="btn_refresh"><i class="fa fa-refresh"></i></button>*@
+
+                        </form>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="full-height-scroll">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-bordered" id="tb_employees" data-page-length='15'>
+                                        <thead>
+                                            <tr>
+
+                                                <th>Guest Name</th>
+
+                                                <th>Total Clothe</th>
+                                                <th>Total Price</th>
+                                                <th>Collected Date</th>
+                                                <th>Proposed Delivery Date</th>
+
+                                                <th>Description</th>
+                                                  <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var entrys in Model)
+                                            {
+
+
+                                            <tr>
+                                                <td>@entrys.Guest_name</td>
+                                                @*<td><a data-toggle="tab" href="#" class="client-link">@string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)</a></td>*@
+                                                @*<td>
+            <a data-toggle="modal" href="#description_modal" data-target="#modal" class="openCommentDialog" data-id="@prices.Description">@prices.Description</a>
+        </td>*@
+
+                                                <td>@entrys.cloth_quantity</td>
+                                                <td>₦@entrys.price</td>
+                                                <td>@entrys.collection_date</td>
+                                                <td>@entrys.proposed_delivery_date</td>
+                                                <td>@entrys.Description</td>
+                                                <td>
+
+                                                    @*<a data-toggle="modal" data-target="#UModal" class="btn btn-primary btn-sm" style="margin-right:20px" onclick="populateData(@entrys.id)">Edit <i class="fa fa-edit"></i></a>*@
+                                                    <a class="btn btn-sm btn-danger" onclick="DeleteProduct(@entrys.id) " type="button">Delete <i class="fa fa-trash"></i></a>
+
+                                                    @*@Html.ActionLink("Delete", "Delete", "HotelLaundry", new { delete = entrys.Deleted }, new { @class = "btn btn-sm btn-danger fa fa-trash" })*@
+                                                    @*<button class="btn btn-sm btn-danger" onclick="DeleteProduct(@@products.product_id)" type="button"><i class="fa fa-trash"></i></button>*@
+                                                </td>
+                                            </tr>
+
+
+
+
+
+
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal inmodal" id="productModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddPrice", "HLaundry", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Pricing</h4>
+                </div>
+                <div class="modal-body">
+                    @*<div class="form-group">
+                            <label class="col-lg-3 control-label">Category</label>
+                            <div class="col-lg-9">
+                                @Html.DropDownList("Priority", new SelectList(DProcess.GetLookup("priority"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })
+                            </div>
+                        </div>*@
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Clothe Name</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="Enter Clothe Name">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Clothe Type</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="Enter Clothe Type">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Price</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="form" placeholder="Input Price in Naira(₦)">
+
+                            @*@Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+                        <div class="col-lg-9">
+                            <textarea name="Comment" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="modal inmodal" id="UModal" aria-hidden="true">
+    <div class="modal-dialog" @*style="width:1250px; height:1000px;"*@>
+        <div class="modal-content animated flipInY" @*style="width:1250px; height:600px;"*@>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Edit Price of Clothe</h4>
+            </div>
+            <div class="modal-body" @*style="width:1248px; height:450px;"*@>
+                <form method="post" action="@Url.Action("UpdatePrice", "HLaundry")" class="form-horizontal">
+                    <input type="hidden" name="category_id" id="category_id" />
+                    <div class="form-group">
+                        <label for="utitle" class="col-lg-3">Name</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="name" id="uname" placeholder="Name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="utitle" class="col-lg-3">Type</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="type" id="utype" placeholder="Type">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="utitle" class="col-lg-3">Price</label>
+                        <div class="col-lg-9">
+                            <input type="number" class="form-control" name="price" id="uprice" placeholder="Price">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unotes" class="col-lg-3">Description</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="description" id="udescription" placeholder="">
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label for="ujob_description" class="col-lg-3">Job description</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="job_description" id="ujob_description" placeholder="Job description">
+                            </div>
+                        </div>*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btn_submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal " id="description_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated flipInY">
+            <div class="modal-header">
+                Description
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div id="comment_box"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_employee.js"></script>
+    <script>
+
+
+          function populateData(id) {
+            $.ajax({
+                url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/HLaundry/UpdatePrice/?id=" + id,
+                context: document.body
+            }).done(function (returnVal) {
+                var data = JSON.parse(returnVal);
+                if (returnVal === "not found")
+                    alert("Data was not found");
+                $("#uname").val(data.name);
+                $("#utype").val(data.type);
+                $("#uprice").val(data.price);
+                $("#udescription").val(data.description);
+
+                $("#id").val(data.id);
+            });
+        }
+
+
+
+
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+
+        $(document).ready(function () {
+            $('#tb_employees').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'employee_list' },
+                    { extend: 'pdf', title: 'employee_list' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+
+        function change_selection(ctrl) {
+            if ($(ctrl).is(":checked")) {
+                $('.selected').prop('checked', true);
+            }
+            else {
+                $('.selected').prop('checked', false);
+            }
+        }
+    </script>
+}
+
+@section Styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}

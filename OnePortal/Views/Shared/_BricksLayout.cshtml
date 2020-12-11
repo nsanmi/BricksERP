@@ -1,0 +1,546 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Brickspoint - Hotel</title>
+   
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link sizes="16x16" href="../Bricks/images/logo/logo.png" rel="icon" />
+
+
+    @*<link rel="stylesheet" type="text/css" href="../Bricks/css/main.css" />
+        <link rel="stylesheet" type="text/css" href="../Bricks/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="../Bricks/css/material-design-iconic-font.min.css" />
+        <link rel="stylesheet" type="text/css" href="../Bricks/css/js_composer.css" />
+        <link rel="stylesheet" type="text/css" href="../Bricks/css/responsive.css" />
+        <link href="../Bricks/css/jquery-ui.css" rel="stylesheet" type="text/css">
+
+        <script src="../Bricks/js/jquery.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/main.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.mousewheel.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/isotope.pkgd.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.cbpBGSlideshow.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.imageloaded.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.infinitescroll.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.stellar.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery.waypoints.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/jquery-easing.js" type="text/javascript"></script>
+        <script src="../Bricks/js/owl.carousel.min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/ripple.js" type="text/javascript"></script>
+        <script src="../Bricks/js/sequence.jquery.js" type="text/javascript"></script>
+        <script src="../Bricks/js/sequence.jquery-min.js" type="text/javascript"></script>
+        <script src="../Bricks/js/zoom-effect.js" type="text/javascript"></script>
+        <script src="../Bricks/js/datepicker.min.js" type="text/javascript"></script>*@
+
+    <link rel="stylesheet" type="text/css" href="~/Bricks/css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/Bricks/css/font-awesome.min.css" />*@
+
+    @*<link rel="stylesheet" type="text/css" href="~/Bricks/css/material-design-iconic-font.min.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/Bricks/css/js_composer.css" />
+    <link rel="stylesheet" type="text/css" href="~/Bricks/css/responsive.css" />
+    <link href="~/Bricks/css/jquery-ui.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="~/Bricks/css/event.css" />
+    <link rel="stylesheet" type="text/css" href="~/Bricks/css/popular.css" />
+
+
+
+    <!-- ========== GOOGLE FONTS ========== -->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,500,600,700%7CRoboto:100,300,400,400i,500,700" rel="stylesheet">
+
+
+
+    <title>@ViewBag.Title - Brickspoint - Hotel</title>
+
+    @*@Styles.Render("~/Content/themecss")
+        @Styles.Render("~/Asset/css")
+
+        @Scripts.Render("~/bundles/modernizr")
+        @RenderSection("Styles", required: false)*@
+
+</head>
+
+
+<body class="offcanvas-type-default offcanvas-right" style="background: url(../Bricks/images/upload/bg.jpg)">
+    <div id="loader-wrapper">
+        <div class="loader">
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="k2t-btt" style="display: block;"></a>
+    <header class="k2t-header full">
+        <div class="k2t-header-mid ">
+            <div class="k2t-wrap">
+                <div class="k2t-row">
+                    <div class="col-2 left col-find-hotel">
+
+                    </div>
+                    <div class="col-8 center">
+                        <ul class="h-element k2t-menu " id="menu-menu-1">
+
+
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2029" id="menu-item-2029">
+                                <a class="btn-ripple" href="@Url.Action("Rooms", "HotelBooking")">
+                                    <span class="k2t-title-menu">Rooms</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="sub-menu"></ul>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type current-menu-item menu-item-object-page menu-item-1876" id="menu-item-1876">
+                                <a class="btn-ripple" href="@Url.Action("ChooseDate", "HotelBooking")">
+                                    <span class="k2t-title-menu">Reservation</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="h-element">
+                            <a href="www.brickspoint.com" rel="home" class="k2t-logo">
+                                <img alt="Lyon" src="~/Bricks/images/logo/logo.png" />
+                            </a>
+                        </div>
+                        <ul class="h-element k2t-menu " id="menu-menu-2">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1706 " id="menu-item-1706">
+                                <a class="btn-ripple" href="@Url.Action("RoomGallery", "HotelBooking")">
+                                    <span class="k2t-title-menu">Room Gallery</span>
+                                    <span class="caret"></span>
+                                </a>
+
+                            </li>
+
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1880 " id="menu-item-1880">
+                                <a class="btn-ripple" href="@Url.Action("Contact", "HotelBooking")">
+                                    <span class="k2t-title-menu">Contact Us</span>
+                                    <span class="caret"></span>
+                                </a>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- 	<div class="col-2 right col-right-language">
+                        <div class="h-element select-language relative">
+                            <a href="#" class="current-language">ENGLISH &nbsp;
+                                <i class="zmdi zmdi-chevron-down"></i>
+                            </a>
+                            <ul class="absolute ul-select">
+                                <li>
+                                    <a href="">Spainese</a>
+                                </li>
+                                <li>
+                                    <a href="">English</a>
+                                </li>
+                                <li>
+                                    <a href="">Germanese</a>
+                                </li>
+                                <li>
+                                    <a href="">French</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- .row -->
+            </div>
+            <!-- .k2t-wrap -->
+        </div>
+        <!-- .k2t-header-mid -->
+        <div class="k2t-header-m">
+            <div class="k2t-menu-m">
+                <a class="m-trigger mobile-menu-toggle">
+                    <span></span>
+                </a>
+                <div class="mobile-menu-wrap dark-div">
+                    <a href="#" class="mobile-menu-toggle">
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                    <ul class="mobile-menu">
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-187 children">
+                            <a href="index.html">Home</a>
+                            <ul class="sub-menu">
+                                <li id="menu-item-2055" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2055">
+                                    <a href="index.html">Homepage 1</a>
+                                </li>
+                                <li id="menu-item-2056" class="menu-item menu-item-type-post_type menu-item-object-page page_item page-item-159 current_page_item menu-item-2056 active">
+                                    <a href="index2.html">Homepage 2</a>
+                                </li>
+                                <li id="menu-item-2057" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2057">
+                                    <a href="index3.html">Homepage 3</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-197 children">
+                            <a href="#">Rooms</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page">
+                                    <a href="rooms-listing-2-columns.html">Room Listing 2 Columns</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page">
+                                    <a href="rooms-listing-3-columns.html">Room Listing 3 Columns</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2208">
+                                    <a href="rooms-listing-grid-3-columns.html">Room Listing Grid 3 Columns</a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-619">
+                                    <a href="single-room.html">Single Room</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-628">
+                                    <a href="single-room-gallery.html">Single Room Gallery</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2219 children">
+                            <a href="#">Pages</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1077 children">
+                                    <a href="about-us.html">About</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-195">
+                                    <a href="gallery.html">Gallery</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-193">
+                                    <a href="gallery-2-columns.html">Gallery 2 columns</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-649">
+                                    <a href="404.html">404</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1079 children">
+                                    <a href="contact.html">Contact</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1078 children">
+                            <a href="http://themeforest.net/item/lyon-luxury-hotel-booking-html5-template/13472406?ref=sunrisetheme&amp;license=regular&amp;open_purchase_for_item_id=13472406&amp;purchasable=source">Purchase</a>
+                        </li>
+                        <li id="menu-item-224" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-224 children">
+                            <a href="#">Blog</a>
+                            <ul class="sub-menu">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2060">
+                                    <a href="medium-thumbnail.html">Medium Thumbnail</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2061">
+                                    <a href="medium-full-width.html">Medium Full Width</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2063">
+                                    <a href="medium-left-sidebar.html">Medium Left Sidebar</a>
+                                </li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2059">
+                                    <a href="medium-right-sidebar.html">Medium Right Sidebar</a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2066 children">
+                                    <a href="single-post-standard.html">Single Post</a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-2069">
+                                            <a href="single-post-video.html">Post Format: Video</a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-2070">
+                                            <a href="single-post-gallery.html">Post Format: Gallery</a>
+                                        </li>
+                                        <li id="menu-item-1078" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1078">
+                                            <a href="single-post-soundcloud.html">Post Format: SoundCloud</a>
+                                        </li>
+                                        <li id="menu-item-1087" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1087">
+                                            <a href="single-post-audio.html">Post Format: Audio</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="k2t-logo-m">
+                <a href="index.html" rel="home" class="k2t-logo">
+                    <img alt="Lyon" src="~/Bricks/images/upload/logo.png" />
+                </a>
+                <!-- .k2t-logo -->
+            </div>
+            <!-- .k2t-logo-m -->
+
+            <div class="k2t-right-m">
+                <div class="canvas-sidebar">
+                    <a href="#" class="open-sidebar" onclick="javascript:return false;">
+                        <div class="inner"></div>
+                    </a>
+                </div>
+            </div>
+            <!-- .k2t-right-m -->
+        </div>
+        <!-- .k2t-header-m -->
+    </header>
+
+
+
+    @RenderBody()
+
+    <footer class="k2t-footer">
+        <div style="background-image:url(../Bricks/images/upload/bgmap.png); background-color:#252525; background-repeat:no-repeat; background-size:cover; background-position:center top;"
+             class="k2t-bottom">
+            <div class="k2t-wrap">
+                <div class="k2t-row">
+                    <div class="col-12 k2t-floatleft">
+                        <aside class="widget widget_black_studio_tinymce" id="black-studio-tinymce-3">
+                            <div class="textwidget">
+                                <p>
+                                    <a href="#">
+                                        <img width="252" height="26" alt="logo-footer" src="../Bricks/images/logo/logo.png" class="alignnone size-full  wp-image-1755">
+                                    </a>
+                                </p>
+                            </div>
+                        </aside>
+                        <aside class="widget widget_text widget-f-info" id="text-4">
+                            <div class="textwidget">
+                                <i class="zmdi zmdi-phone zmdi-hc-fw"></i> Hoteline: +234-8099999620 &nbsp; &nbsp; &nbsp;
+                                <i class="zmdi zmdi-email zmdi-hc-fw"></i> Email: reservation@brickspoint.com
+                            </div>
+                        </aside>
+                        <aside class="widget social-widget" id="k2t_social-2">
+                            <ul>
+                                <li class="facebook">
+                                    <a href="#" target="_blank">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li class="twitter">
+                                    <a href="#" target="_blank">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li class="google">
+                                    <a href="#" target="_blank">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </li>
+                                <li class="instagram">
+                                    <a href="#" target="_blank">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li class="linkedin">
+                                    <a href="#" target="_blank">
+                                        <i class="fa fa-linkedin"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                </div>
+                <!-- .k2t-row -->
+            </div>
+            <!-- .k2t-wrap -->
+        </div>
+        <!-- .k2t-bottom -->
+        <div style="background-color:#1f1f1f;" class="k2t-info">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="k2t-footer-menu">
+                            <div class="menu-footer-menu-container">
+                                <ul class="menu" id="menu-footer-menu">
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom current_page_item menu-item-home menu-item-1857 active"
+                                        id="menu-item-1857">
+                                        <a href="about-us.html">About us</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1858" id="menu-item-1858">
+                                        <a href="#">Gifts</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1859" id="menu-item-1859">
+                                        <a href="#">Careers</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1860" id="menu-item-1860">
+                                        <a href="contact.html">Contact us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="footer-copyright-right" class="col-7">
+                        &copy; Copyright 2020. Powered by Brickspoint LTD.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .k2t-info -->
+
+
+
+
+    </footer>
+    <!-- footer -->
+    <!-- Show Offcanvas sidebar -->
+    <div class="offcanvas-sidebar" style="">
+        <div class="k2t-sidebar relative" style="padding:0">
+            <a id="close-canvas" onclick="javascript:return false;" class="open-sidebar" href="#">
+                <span class="zmdi zmdi-close"></span>
+            </a>
+            <div class="menu-main-menu-container">
+                <ul id="menu-main-menu-1" class="menu">
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home current-menu-ancestor current-menu-parent menu-item-has-children menu-item-1536 active children">
+                        <a href="index.html">Home</a>
+                        <ul class="sub-menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-1538 active">
+                                <a href="index.html">Homepage 1</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1539">
+                                <a href="index2.html">Homepage 2</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1540">
+                                <a href="index3.html">Homepage 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1600"><a href="about-us.html">About</a>
+                    </li> -->
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1541 children">
+                        <a href="#">Rooms</a>
+                        <ul class="sub-menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1840">
+                                <a href="rooms-listing-2-columns.html">Room listing 2 colums</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1852">
+                                <a href="rooms-listing-3-columns.html">Room Listing 3 columns</a>
+                            </li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1843">
+                                <a href="rooms-listing-grid-3-columns.html">Room Listing grid 3 columns</a>
+                            </li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1842">
+                                <a href="single-room.html">Single Room</a>
+                            </li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1844">
+                                <a href="single-room-gallery.html">Single Room Gallery</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1601">
+                        <a href="choose-date.html">Reservation</a>
+                    </li>
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1542 children">
+                        <a href="#">Pages</a>
+                        <ul class="sub-menu">
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2118">
+                                <a href="gallery.html">Gallery</a>
+                            </li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2069">
+                                <a href="gallery-2-columns.html">Gallery 2 columns</a>
+                            </li>
+                            <li class="menu-item current-menu-item menu-item-type-post_type menu-item-object-page menu-item-2119">
+                                <a href="404.html">404</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1721 children">
+                        <a href="">Blog</a>
+                        <ul class="sub-menu">
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2208">
+                                <a href="medium-thumbnail.html">Medium Thumbnail</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1717">
+                                        <a href="medium-full-width.html">Medium Full Width</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1716">
+                                        <a href="medium-left-sidebar.html">Medium Left Sidebar</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1715">
+                                        <a href="medium-right-sidebar.html">Medium Right Sidebar</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2213">
+                                <a href="single-post-standard.html">Single Post</a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2210">
+                                        <a href="single-post-video.html">Video Post</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2211">
+                                        <a href="single-post-gallery.html">Gallery Post</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2212">
+                                        <a href="single-post-audio.html">Audio Post</a>
+                                    </li>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2326">
+                                        <a href="single-post-soundcloud.html">Soundcloud Post</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1604"><a href="contact.html">Contact</a>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="canvas-sidebar-social w100">
+                <aside class="widget social-widget" id="k2t_social-3">
+                    <ul>
+                        <li class="facebook">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li class="twitter">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="google">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                        <li class="instagram">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li class="linkedin">
+                            <a href="#" target="_blank">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </div>
+    <!-- End Show Offcanvas sidebar -->
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/themeplugins")
+
+        @RenderSection("scripts", required: false)*@
+
+
+    <script src="~/Bricks/js/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/owl.carousel.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery-easing.js" type="text/javascript"></script>
+
+    <script src="~/Bricks/js/main.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/isotope.pkgd.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.cbpBGSlideshow.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.imageloaded.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.infinitescroll.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.stellar.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/jquery.waypoints.min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/ripple.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/sequence.jquery.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/sequence.jquery-min.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/zoom-effect.js" type="text/javascript"></script>
+    <script src="~/Bricks/js/datepicker.min.js" type="text/javascript"></script>
+    @RenderSection("Scripts", false)
+</body>
+
+
+</html>

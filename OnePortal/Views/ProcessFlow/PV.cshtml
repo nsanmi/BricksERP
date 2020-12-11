@@ -1,0 +1,239 @@
+﻿@using WorkFlow.DAL.Data;
+@using PagedList.Mvc;
+@using HRM.DAL.Util;
+@using WorkFlow.DAL;
+@using OnePortal.Models.ViewModels
+@model PVWorkflow
+@{
+    ViewBag.Title = "Transactions";
+    
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Payment Voucher</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li class="active">
+                <strong>Payment Voucher</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+   
+
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="col-lg-6">
+                @using (Html.BeginForm("PV", "ProcessFlow", FormMethod.Post, new { role = "form", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                {
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5 id="w_title"></h5>
+                            <h5> @Model.title - Payment Voucher</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <input type="hidden" name="process_id" id="w_id" value="@Model.WorkflowId" />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Pay To</label>
+                                        <div class="col-lg-10">
+                                            @*@Html.DropDownList("pay_to", new SelectList(Util.GetVendors(), "id", "name", Model.Vendor_id), "- Please Select -", new { @class = "form-control", @required = "required" })*@
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Pay From</label>
+                                        <div class="col-lg-10">
+                                            @Html.DropDownList("pay_from", new SelectList(OptionUtil.GetLookupOptions("pay_from"), "id", "lookup_name", null), null, new { @class = "form-control", @required = "required" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Pay By</label>
+                                        <div class="col-lg-10">
+                                            @Html.DropDownList("pay_by", new SelectList(OptionUtil.GetLookupOptions("pay_by"), "id", "lookup_name", null), null, new { @class = "form-control", id = "pay_by" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Purpose</label>
+                                        <div class="col-lg-10">
+                                            <textarea class="form-control" name="purpose">@Model.Purpose</textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" id="check_number_div">
+                                        <label class="col-lg-2 control-label">Cheque number</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" name="check_number" id="check_number">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Invoice</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" name="invoice">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Conversion Rate</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" name="conversion_rate" value="@Model.ConversionRate" required>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group" id="bank_account_div">
+                                        <label class="col-lg-2 control-label">Bank Account</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" required name="bank_account" id="bank_account" value="@Model.VendorAccountNumber">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Reference</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" name="reference">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Amount in  Naira</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" required name="amount_ngn" value="@Model.Total">
+                                        </div>
+                                    </div>
+
+                                    @{
+                                        var amount_usd = Model.Total / Model.ConversionRate;
+                                    }
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">Amount in USD</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" required name="amount_usd" value="@Math.Round(Convert.ToDouble(amount_usd),2)">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="ibox-footer">
+                            <button type="submit" id="btn_submit" class="btn btn-primary">Create Payment Voucher</button>
+                        </div>
+                    </div>
+
+                }
+            </div>
+            <div class="col-lg-6 animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @if (Model.workflow.bpm_workflow_document.Any())
+                        {
+                            foreach (var doc in Model.workflow.bpm_workflow_document)
+                            {
+                                <div class="file-box">
+                                    <div class="file">
+                                        <a href="@Url.Action("Document", "ProcessFlow", new { id = doc.id })" target="_blank">
+                                            <span class="corner"></span>
+
+                                            <div class="icon">
+                                                <i class="fa fa-file"></i>
+                                            </div>
+                                            <div class="file-name">
+                                                @doc.name
+                                                <br />
+                                                <small>Added: @doc.created_at.ToShortDateString()</small>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            }
+                        }
+
+                     
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/workflow.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+           
+
+            $("#pay_by").on('change', function () {
+
+                var value = $("#pay_by").val();
+
+                if (value == 24) {
+                    $("#check_number_div").hide();
+                    $("#bank_account_div").hide();
+
+                }
+                else if (value == 25) {
+                    $("#check_number_div").show();
+                    $("#bank_account_div").hide();
+                }
+                else if (value == 26) {
+                    $("#check_number_div").hide();
+                    $("#bank_account_div").show();
+                }
+            });
+
+            $("#pay_by").trigger("change");
+
+        });
+
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+
+
+}
+
+
+

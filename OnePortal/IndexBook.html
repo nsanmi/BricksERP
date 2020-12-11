@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-2.2.3.min.js"></script>
+</head>
+<body>
+    
+    <button onclick="addData()">Add</button>
+   
+    <button>ADD</button>
+
+
+
+
+
+    <script type="text/javascript">
+
+        $("button").click(function () {
+            $.post("api/BookingApi",
+                {
+                    "Id": 2,
+                    "FirstName": "SANMI",
+                    "LastName": "DIMEJI",
+                    "Email": "nsanmiii@gmail.com"
+                },
+                function (data, status) {
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+        });
+
+        function addData() {
+            var newData = {
+                "Id": 2,
+                "FirstName": "SANMI",
+                "LastName": "DIMEJI",
+                "Email": "nsanmiii@gmail.com"
+            }
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "api/PostNewBooking/post",
+                data: newData,
+                success: function (result) {
+                    console.info(result);
+                }
+            });
+        }
+
+
+        //$(document).ready(function () {
+        //    $.getJSON("api/ContactEF", function (result) {
+        //        console.info(result);
+        //    });
+        //});
+
+        //function searchContact() {
+        //    $.ajax({
+        //        type: "GET",
+        //        dataType: "json",
+        //        url: "api/Contact/" + $("#searchID").val(),
+        //        success: function (result) {
+        //            console.info(result);
+        //        }
+        //    });
+        //}
+
+        //function deleteContact() {
+        //    $.ajax({
+        //        type: "DELETE",
+        //        dataType: "json",
+        //        url: "api/Contact/0",
+        //        success: function (result) {
+        //            console.info(result);
+        //        }
+        //    });
+        //}
+
+        //function putContact() {
+        //    var changedContact = {
+        //        "FirstName": "Spiderman"
+        //    }
+
+        //    $.ajax({
+        //        type: "PUT",
+        //        dataType: "json",
+        //        url: "api/Contact/0",
+        //        data: changedContact,
+        //        success: function (result) {
+        //            console.info(result);
+        //        }
+        //    });
+        //}
+
+        //$("button").click(function () {
+        //    $.post("api/BookingApi",
+        //        {
+        //            "Id": 2,
+        //            "FirstName": "SANMI",
+        //            "LastName": "DIMEJI",
+        //            "Email": "nsanmiii@gmail.com"
+        //        },
+        //        function (data, status) {
+        //            alert("Data: " + data + "\nStatus: " + status);
+        //        });
+        //});
+
+
+        <input type="text" id="searchID" />
+            <button onclick="searchContact()">Search</button>
+            <button onclick="addContact()">Add</button>
+            <button onclick="putContact()">Put</button>
+            <button onclick="deleteContact()">Delete</button>
+            <button>ADD</button>
+
+
+
+
+
+    </script>
+</body>
+</html>

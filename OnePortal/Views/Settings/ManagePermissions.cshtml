@@ -1,0 +1,181 @@
+﻿@using HRM.DAL.Models;
+@model PagedList.IPagedList<AspNetPermission>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@{
+    ViewBag.Title = "Users";
+    ApplicationDbContext context = new ApplicationDbContext();
+    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Manage Users</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Configuration</a>
+            </li>
+            <li class="active">
+                <strong>Manage Pernissions</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+@using (Html.BeginForm("AddPermissionsToRole", "Settings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content">
+             
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Permission</th>
+                                            <th>Section</th>
+                                            <th>
+                                                Module
+                                            </th>
+                                            <th>SubModule</th>
+                                            <th>Action Type</th>
+                                            <th>Roles</th>
+                                           
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+
+                                            <tr>
+                                                <th><input type="checkbox" name="permissions" value="@item.Id" class="i-checks" /></th>
+                                                <td>@item.Permission</td>
+                                                <td>@item.Section</td>
+                                                <td>@item.Module</td>
+                                                <td>@item.SubModule</td>
+                                                <td>@item.ActionType</td>
+                                                <td>@string.Join(",", item.AspNetRolePermissions.Select(e => e.AspNetRole.Name).Distinct().ToList())</td>
+                                               
+                                               
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <div id='Paging' style="text-align:center">
+                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                    of @Model.PageCount
+
+                                    @Html.PagedListPager(Model, page => Url.Action("managepermissions", new { page }))
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            </div>
+                            <div class="col-lg-4">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Select Role</label>
+
+                                    <div class="col-lg-9">
+                                        <select class="form-control" name="role">
+                                            @foreach (var role in roleManager.Roles.ToList())
+                                            {
+                                                <option value="@role.Id">@role.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-sm  btn-primary pull-right">Add Permissions To Role</button>
+                            </div>
+                        </div>
+
+                </div>
+
+            </div>
+
+}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+          
+        
+
+
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

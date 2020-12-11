@@ -1,0 +1,631 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project
+@{
+    ViewBag.Title = "Project Space";
+    var bg = "lazur-bg";
+    if (Model.sub_parent != null)
+    {
+        bg = "blue-bg";
+    }
+
+    var sub_width = 4;
+    var obj_width = 5;
+    var obj_visible = "block";
+    var sub_visible = "block";
+    var item_with = 12;
+
+    var sub_projects = Model.pm_project1.Count;
+    var obj = Model.pm_project_strategic_objective.Count;
+
+    if (sub_projects >= 0 && obj <= 0)
+    {
+        sub_width = 9;
+        obj_visible = "none";
+        item_with = 4;
+
+    }else if (sub_projects <=0 && obj >=0)
+    {
+        obj_width = 9;
+        sub_visible = "none";
+        item_with = 4;
+    }
+ }
+
+<div class="row wrapper border-bottom white-bg page-heading @bg">
+    <div class="col-lg-9">
+        <h2>@Model.code</h2>
+        <ol class="breadcrumb @bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            @if (Model.sub_parent != null)
+            {
+                <li>
+                    <a href="@Url.Action("Home","Project",new { id = Model.sub_parent })">@Model.pm_project2.code</a>
+                </li>
+            }
+            
+            <li class="active">
+                <strong>@Model.code</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-lg-@obj_width" style="display: @obj_visible">
+
+
+
+        <div class="wrapper wrapper-content project-manager" style="margin-top:-10px; ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title" style="border:none;background-color:#f8ac59;color:white">
+
+                            <h3 class="text-center text-capitalize">Objectives </h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    
+
+                    <div class="grid">
+
+                        @if (Model.pm_project_strategic_objective.Any())
+                        {
+                            foreach (var objective in Model.pm_project_strategic_objective)
+                            {
+
+
+                                <div class="grid-item">
+                                    <div class="ibox">
+                                        <div class="ibox-title yellow-bg" style="border:none">
+
+                                            <h5><a style="color:white" href="@Url.Action("Objective","Project",new { id = objective.id })">@objective.num - @objective.objectve</a>  </h5>
+                                            <div class="ibox-tools">
+                                                @* <button class="btn btn-xs btn-danger" type="button"><i class="fa fa-trash-o"></i> Delete</button>*@
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="team-members">
+                                                @if (objective.pm_objective_admin.Any())
+                                                    {
+                                                        foreach (var admin in objective.pm_objective_admin)
+                                                        {
+
+                                                            string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                            if (!File.Exists(Server.MapPath(pic)))
+                                                            { pic = "/Content/images/a4.jpg"; }
+
+                                                    <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                                        }
+                                                    }
+
+
+                                            </div>
+
+                                            <p>
+                                                @MvcHtmlString.Create(WebUtility.HtmlDecode(objective.description))
+                                            </p>
+
+                                            <div class="row  m-t-sm">
+                                                <div class="col-sm-4">
+                                                    <div class="font-bold"><a style="color:#f8ac59" href="@Url.Action("Objective","Project",new { id = objective.id })">ACTIVITIES</a></div>
+                                                    @objective.pm_project_objective_activity.Count() <i class="fa fa-tasks text-navy"></i>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="font-bold"><div class="font-bold"><a style="color:#f8ac59" href="#">COMMENTS</a></div></div>
+                                                    0 <i class="fa fa-comments-o text-navy"></i>
+                                                </div>
+                                                <div class="col-sm-4 text-right">
+                                                    <div class="font-bold"><a href="#" style="color:#f8ac59">BUDGET</a></div>
+                                                    $0 <i class="fa fa-level-up text-navy"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                            }
+
+                        }
+
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+    <div class="col-lg-@sub_width" style="margin-top:10px; display:@sub_visible">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="border:none;background-color:#1c84c6; color:white">
+
+                        <h3 class="text-center text-capitalize">Sub Projects </h3>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="grid">
+
+
+
+                    @if (Model.pm_project1.Any())
+                {
+                    foreach (var project in Model.pm_project1)
+                    {
+                            <div class="grid-item">
+                                <div class="ibox blue-bg">
+                                    <div class="ibox-content blue-bg">
+                                        <h3><a style="color:white" href="@Url.Action("Home","Project",new { id = project.id })">@project.num - @project.name</a></h3>
+                                        <p class="small">
+                                            @MvcHtmlString.Create(WebUtility.HtmlDecode(project.description))
+                                        </p>
+                                        <div class="user-friends">
+                                            @if (project.pm_project_admin.Any())
+                                        {
+                                            foreach (var admin in project.pm_project_admin)
+                                            {
+
+                                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                if (!File.Exists(Server.MapPath(pic)))
+                                                {
+                                                    pic = "/Content/images/a4.jpg";
+                                                }
+
+                                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                            }
+                                        }
+                                        </div>
+                                    </div>
+                                    <div class="ibox-footer">
+                                        <a href="@Url.Action("Edit","Project",new { id = project.id })" class="btn btn-white btn-xs" style="color:black"><i class="fa fa-pencil"></i> Edit </a>
+                                        <a href="@Url.Action("DeleteProject","Project",new { id = project.id })" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i> Delete</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                    }
+                }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+            <div class="col-lg-3">
+                <div class="wrapper wrapper-content project-manager" style="background-color:white;margin-top:10px; min-height:680px">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal3">Add Sub-Project</a>
+                                <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#myModal2">Add Objective</a>
+                                <a href="@Url.Action("Workplan","Project",new { id = Model.id })" class="btn btn-sm btn-white">Workplan</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 style="margin:10px">@Model.code </h2>
+                            <h4 style="margin:10px">@Model.name</h4>
+                            <br />
+                            <p class="small">
+                                @MvcHtmlString.Create(WebUtility.HtmlDecode(Model.description))
+                               
+                            </p>
+                            <hr />
+                            <form method="post" enctype="multipart/form-data" id="frmFile">
+                                <input type="file" style="display:none" name="file" id="file" />
+                                <input type="hidden" value="project" name="module" />
+                                <input type="hidden" value="@Model.id" name="project_id" />
+                            </form>
+                            <h4>
+                                Project files <div class="pull-right">
+                                    <a href="#" onclick="$('#file').click()" class="btn btn-xs btn-primary">Add files</a><label style="display:none" id="progress">
+                                        <img src="~/Content/images/loading-spinner-blue.gif" style="height:18px" alt="" />
+
+                                    </label>
+                                </div>
+                            </h4>
+
+                            @if (Model.pm_project_files.Any())
+            {
+                                <table class="table" style="font-size:11px">
+                                    <tbody>
+                                        @foreach (var file in Model.pm_project_files.OrderByDescending(e => e.uploaded_at).Take(10))
+                                        {
+                                            <tr>
+                                                <td><a href=""><i class="fa fa-file"></i> @file.file_name</a></td>
+                                                <td>@file.uploaded_at.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2" class="text-center">
+                                                <a href="@Url.Action("Files","Project",new {id=Model.id})" class="btn btn-xs btn-default">View all project files</a>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+
+                            }
+                        </div>
+                    </div>
+                    @*<img src="~/Content/images/sers.jpg" class="img-responsive">*@
+
+
+                    @*<ul class="list-unstyled project-files">
+                            <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
+                            <li><a href=""><i class="fa fa-file-picture-o"></i> Logo_zender_company.jpg</a></li>
+                            <li><a href=""><i class="fa fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
+                            <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
+                        </ul>*@
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="form-horizontal" role="form">
+                    <div class="modal-content animated flipInY">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Add Objective</h4>
+
+                        </div>
+                        <div class="modal-body">
+
+                            <input type="hidden" name="project_id" value="@Model.id" id="project_id" />
+
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Objective</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="objective" id="objective" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Code</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="code" id="objective_code" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Number</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="num" id="obj_num" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Description</label>
+
+                                <div class="col-lg-9" style="border:1px solid #ccc;">
+                                    <div class="summernote" id="description">
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Admin</label>
+
+                                <div class="col-lg-9">
+                                    <select id="e6" name="employee" multiple></select>
+                                    <span class="help-block m-b-none">Select person</span>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="add_objective()" id="btn_submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="modal inmodal" id="myModal3" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <form class="form-horizontal" role="form">
+
+                    <div class="modal-content animated flipInY">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Add Sub-Project</h4>
+
+                        </div>
+                        <div class="modal-body">
+
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Parent</label>
+
+                                <div class="col-lg-9">
+                                    @Html.DropDownList("sub_parent", new SelectList(OptionUtil.GetProjects().Where(e => e.timesheet_only == 0), "id", "name", Model.id), "- Please Select -", new { @class = "form-control", @id = "sub_parent" })
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Name</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="name" id="name" />
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Code</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="code" id="code" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Number</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="num" id="num" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Description</label>
+
+                                <div class="col-lg-9" style="border:1px solid #ccc;">
+                                    <div class="summernote" id="message">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Status</label>
+
+                                <div class="col-lg-9">
+                                    @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", Model.status), "- Please Select -", new { @class = "form-control", @id = "status" })
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Admins</label>
+
+                                <div class="col-lg-9">
+                                    <select id="employee" name="employee" multiple></select>
+                                    <span class="help-block m-b-none">Select person</span>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="sub_project()" id="btn_submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+
+        @section scripts{
+
+            <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+            <script src="~/Scripts/custom_fns/base.js"></script>
+            <script src="~/Scripts/custom_fns/file_manager.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+            <script src="~/Content/libs/summernote/summernote.min.js"></script>
+            <script src="~/Content/libs/masonary/masonry.pkgd.min.js"></script>
+            <script>
+
+                $(document).ready(function () {
+
+
+                    $('.i-checks').iCheck({
+                        checkboxClass: 'icheckbox_square-green',
+                        radioClass: 'iradio_square-green'
+                    });
+
+                    $('.summernote').summernote({
+
+                    });
+
+                    $('#e6').select2({
+                        placeholder: 'Search...',
+                        dropdownParent: $("#myModal2"),
+                        ajax: {
+                            url: function (params) {
+                                return baseUrl() + "employeeapi/getsearch/" + params.term;
+                            },
+                            dataType: 'json',
+                            quietMillis: 100,
+
+                            processResults: function (data) {
+                                return {
+                                    results: $.map(data, function (obj) {
+                                        return { id: obj.id, text: obj.name };
+                                    })
+                                };
+                            }
+
+                        }
+                    });
+
+                    $('#employee').select2({
+                        placeholder: 'Search...',
+                        dropdownParent: $("#myModal3"),
+                        ajax: {
+                            url: function (params) {
+                                return baseUrl() + "employeeapi/getsearch/" + params.term;
+                            },
+                            dataType: 'json',
+                            quietMillis: 100,
+
+                            processResults: function (data) {
+                                return {
+                                    results: $.map(data, function (obj) {
+                                        return { id: obj.id, text: obj.name };
+                                    })
+                                };
+                            }
+
+                        }
+                    });
+
+
+
+
+                });
+
+
+
+
+
+            </script>
+            <script>
+                function sub_project() {
+
+                    if ($("#name").val() == "") {
+                        alert("Please enter the name of the project.");
+                        return;
+                    }
+                    var aHTML = $('#message').code();
+
+                    $.ajax({
+                        url: baseUrl() + 'pmapi/postproject',
+                        method: "POST",
+                        data: JSON.stringify({ description: aHTML, name: $("#name").val(), code: $("#code").val(), sub_parent: $("#sub_parent").val(), status: $("#status").val(), employee: $("#employee").val(), num: $("#num").val() }),
+                        success: function () {
+                            window.location.reload(true);
+
+                        }
+                    })
+
+                }
+
+
+                function add_objective() {
+                    var aHTML = $('#description').code();
+
+                    if ($("#objective").val() == "") {
+                        alert("Please enter the title of the objective.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: baseUrl() + 'pmapi/postobjective',
+                        method: "POST",
+                        data: JSON.stringify({ description: aHTML, objective: $("#objective").val(), code: $("#objective_code").val(), employee: $("#ie6").val(), project_id: $("#project_id").val(), employee: $("#e6").val(), num: $("#obj_num").val() }),
+                        success: function () {
+                            window.location.reload(true);
+
+                        }
+                    })
+
+                }
+
+                $(window).load(function () {
+
+                    $('.grid').masonry({
+                        // options
+                        itemSelector: '.grid-item',
+                        columnWidth: 400,
+                        gutter: 10
+                    });
+
+                });
+
+            </script>
+
+        }
+
+
+
+        @section styles{
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+            <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+            <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+            <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+
+            <style>
+                .select2-close-mask {
+                    z-index: 2099;
+                }
+
+                .select2-dropdown {
+                    z-index: 3051;
+                }
+
+                .select2 {
+                    width: 100% !important;
+                }
+
+                .grid  {
+                    margin-bottom: 10px;
+                }
+
+                .grid-item {
+                    margin-bottom: 10px;
+                    width: 400px;
+                }
+            </style>
+
+        }

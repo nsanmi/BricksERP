@@ -1,0 +1,46 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var doc = XElement.Parse(workflow.workflow);
+}
+
+<div class="form-group">
+    <label>HQ Approval document</label>
+</div>
+
+<div class="form-group">
+    <input type="file" class="file-input" data-main-class="input-group-sm" name="hq" required>
+    <span class="help-block">add the approval document</span>
+</div>
+
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

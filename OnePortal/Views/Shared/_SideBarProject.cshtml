@@ -1,0 +1,43 @@
+﻿@using OnePortal.Helper;
+<ul class="nav metismenu" id="side-menu">
+
+    <li class="nav-header">
+      @Html.Partial("_SidebarProfile")
+
+        <div class="logo-element">
+            WS
+        </div>
+
+    </li>
+
+    <li class="@Html.IsSelected(controller: "admin",action:"noticeboard", cssClass: "active")">
+        <a href="@Url.Action("ProjectSpace","Project")"> <i class="fa fa-bullhorn"></i> <span class="nav-label">Project Space</span></a>
+    </li>
+
+
+    <li class="">
+        <a href="@Url.Action("MyProjects","Project")"> <i class="fa fa-briefcase"></i> <span class="nav-label">My Projects</span></a>
+    </li>
+
+    <li class="">
+        <a href="@Url.Action("MySubProjects","Project")"> <i class="fa fa-briefcase"></i> <span class="nav-label">My Sub-Projects</span></a>
+    </li>
+  
+    <li class="">
+        <a href="@Url.Action("MyObjectives","Project")"> <i class="fa fa-newspaper-o"></i> <span class="nav-label">My Objectives</span></a>
+    </li>
+
+    <li class="">
+        <a href="@Url.Action("MyActivities","Activity")"> <i class="fa fa-clock-o"></i> <span class="nav-label">My Activities</span></a>
+    </li>
+
+    <li class="">
+        <a href="@Url.Action("MyTasks","Task")"> <i class="fa fa-tasks"></i> <span class="nav-label">My Tasks</span></a>
+    </li>
+
+
+    <li class="">
+        <a href="@Url.Action("Manage","Project")"> <i class="fa fa-cog"></i> <span class="nav-label">Projects</span></a>
+    </li>
+
+</ul>

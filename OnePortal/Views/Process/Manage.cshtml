@@ -1,0 +1,194 @@
+﻿@using WorkFlow.DAL.Data;
+@model PagedList.IPagedList<bpm_process>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Manage";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Project list</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">
+                <strong>Process list</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Projects</h5>
+                    <div class="ibox-tools">
+                        <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-primary btn-xs">Create new process</button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <div class="col-md-11">
+                            <div class="input-group">
+                                <input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary"> Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-list">
+
+                        <table class="table table-hover">
+                            <tbody>
+                                @if (Model.Any())
+                                {
+                                    foreach (var process in Model)
+                                    {
+                                        <tr>
+                                            <td class="project-status">
+                                                <span class="label label-primary">Active</span>
+                                            </td>
+                                            <td class="project-title">
+                                                <a href="#">@process.process_name</a>
+                                                <br />
+                                                <small>Created </small>
+                                            </td>
+                                            <td class="project-completion">
+                                                @process.process_code
+                                            </td>
+                                            <td class="project-people">
+
+                                              
+
+                                            </td>
+                                            <td class="project-actions">
+                                                <a href="@Url.Action("Home","process",new { id = process.id })" href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
+                                                <a href="@Url.Action("Edit","process",new { id = process.id })" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+
+                        <div id='Paging' style="text-align:center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+
+                            @Html.PagedListPager(Model, page => Url.Action("manage", new { page }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("Manage", "process", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Create Process</h4>
+
+                </div>
+                <div class="modal-body">
+
+
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="process_name" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Code</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="process_code" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+
+                        <div class="col-lg-9">
+                            <textarea type="text" class="form-control" name="definition" ></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Version</label>
+
+                        <div class="col-lg-9">
+                            <input class="form-control" name="version"/>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+      
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+
+
+}
+
+
+
+

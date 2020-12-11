@@ -1,0 +1,375 @@
+﻿
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Step(FormCollection collection)
+        {
+            var user_id = User.Identity.GetUserId();
+            var employee = _employeeService.GetEmployeeByUserId(user_id);
+
+
+        
+           
+            var id = new Guid(collection["workflow_id"]);
+            var bLWorkflow = new BLWorkflow(id);
+
+            var workflow = bLWorkflow.GetWorkflow();
+            var step = bLWorkflow.GetCurrentStep();
+
+            var user_can_perform_this_action = false;
+            //check if the user is permitted to perform this action
+            //get the position
+            var position = step.Definition.Element("position");
+            switch (position.Attribute("pos_type").Value)
+            {
+                case "sup":
+                    //get the supervisor of the person that applied for the request
+                    var requestor_no = workflow.admin_hrm_employee.emp_number;
+                    if (employee.admin_hrm_emp_reportto1.FirstOrDefault(e=>e.erep_sub_emp_number==requestor_no) != null)
+                    {
+                        user_can_perform_this_action = true;
+                    }
+                    break;
+                case "jti":
+                    var job_title_id=Convert.ToInt32(position.Value);
+                    if (job_title_id== employee.admin_hrm_emp_job_record.job_title_id)
+                    {
+                        user_can_perform_this_action = true;
+                    }
+                    break;
+                case "dir":
+                    //get the subunit of the requestor
+                    var directorate = _employeeService.GetDirectorate(workflow.created_by);
+                    if (directorate != null &&  directorate.head == employee.admin_hrm_emp_job_record.job_title_id)
+                    {
+                        user_can_perform_this_action = true;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            if (!user_can_perform_this_action)
+            {
+                return RedirectToAction("Step", new { id = id });
+            }
+
+
+            var step_type = step.Definition.Element("type").Value;
+            var definition = bLWorkflow.GetDefinition();
+            var definition_step = definition.Element("steps").Elements("step").FirstOrDefault(e => e.Element("code").Value == step.Definition.Element("code").Value);
+
+            if (step_type == "input")
+            {
+               
+                var workflow_forms = definition.Element("forms").Elements("form");
+                var rforms = step.Definition.Element("form_values").Elements("form");
+
+                foreach (var rform in rforms)
+                {
+                    var form = workflow_forms.FirstOrDefault(e => e.Attribute("id").Value == rform.Attribute("id").Value);
+
+                    var items = rform.Elements("item");
+                    if (items.Any())
+                    {
+                        foreach (var item in items)
+                        {
+                            var item_id = item.Attribute("id").Value.ToString();
+                            var num_entries = collection["itm-" + item.Elements().FirstOrDefault().Name.ToString()].ToString().Split(',');
+                            //if the items entry is multiple, increase the item element in the definition
+                            if (num_entries.Count() > 1 && form.Elements("item").Where(e => e.Attribute("id").Value == item_id).Count() != num_entries.Count())
+                            {
+                                for (var i = 1; i < num_entries.Count(); i++)
+                                {
+                                    var form_item = form.Elements("item").FirstOrDefault(e => e.Attribute("id").Value == item_id);
+                                    form.Add(form_item);
+                                }
+                            }
+                            //all the formitems that started with itm_ are supposed to be able to allow multiple entries
+                            var itm_keys = collection.AllKeys.Where(e => e.StartsWith("itm-"));
+                            var form_items = form.Elements("item");
+                            //for (var i = 0; i < num_entries.Count(); i++)
+                            //{
+                            var index = 0;
+                                foreach (var itm in form_items)
+                                {
+                                    foreach (var key in itm_keys)
+                                    {
+                                        var value = collection[key].Split(',');
+                                        itm.Element(key.Split('-')[1]).SetValue(value[index]);
+
+                                    }
+                                index++;
+                                }
+                           // }
+
+
+                        }
+                    }
+
+                    var other_items = rform.Elements().Where(e => e.Name != "signatures" && e.Name != "item");
+                    if (other_items.Any())
+                    {
+                        foreach (var item in other_items)
+                        {
+                            form.Element(item.Name).SetValue(collection[item.Name.ToString()]);
+                        }
+                    }
+                    if (collection["vendor"] != null && collection["vendor"].ToString() != "")
+                    {
+                        form.Element("vendor").SetValue(collection["vendor"]);
+                    }
+                    //add the signature of the current user to the document
+                    var signature_element = new XElement("signature");
+                    signature_element.Add(new XElement("signature_id", 1));
+                    signature_element.Add(new XElement("emp_number", employee.emp_number));
+                    signature_element.Add(new XElement("created_at", DateTime.Now));
+                    form.Element("signatures").Add(signature_element);
+
+
+
+                }
+
+
+                //check for attachments
+               
+                var files = Request.Files;
+                if (files.Count > 0)
+                {
+                    //var file_path = Server.MapPath(Path.Combine("~/Documents/Procurement/Quotations", workflow.title + "_" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ".pdf"));
+                    var file_path = "~/Documents/Workflow_attachments" + "/" + id;
+                    var filenames = collection["filename"].ToString().Split(',');
+                    for(var i = 0; i < files.Count; i++)
+                    {
+                        if (!Directory.Exists(Server.MapPath(file_path)))
+                        {
+                            Directory.CreateDirectory(Server.MapPath(file_path));
+                        }
+                        files[i].SaveAs(Server.MapPath(Path.Combine(file_path, files[i].FileName)));
+                        var attachment = new XElement("attachment");
+                        attachment.Add(new XElement("filename", filenames[i]));
+                        attachment.Add(new XElement("file", files[i].FileName));
+
+                        definition_step.Element("attachments").Add(attachment);
+                    }
+                }
+               
+                definition_step.Element("status").SetValue(1);
+                if (collection["comment"] != null)
+                {
+                    //add comment to the particular step
+                    definition_step.Element("comments").SetValue(collection["comment"].ToString());
+
+                    //add comment to the whole request document
+                    var comment = new XElement("comment");
+                    comment.Add(new XElement("employee_id", employee.emp_number));
+                    comment.Add(new XElement("info", collection["comment"].ToString()));
+                    comment.Add(new XElement("employee_name", string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)));
+                    comment.Add(new XElement("created_at",DateTime.Now));
+
+                    definition.Element("comments").Add(comment);
+                }
+                   
+                definition.Element("next_step").SetValue(step.Definition.Element("next_step").Value);
+
+                definition_step.Element("created_at").SetValue(DateTime.Now);
+                definition_step.Element("created_by").SetValue(employee.emp_number);
+                definition_step.Element("created_by_name").SetValue(string.Format("{0} {1}",employee.emp_lastname,employee.emp_firstname));
+
+            }
+            else if (step_type == "approval")
+            {
+                var result = collection["approval"].ToString();
+                if (result == step.Definition.Element("approve_value").Value )
+                {
+                    //var definition_step = definition.Element("steps").Elements("step").FirstOrDefault(e => e.Element("code").Value == step.Definition.Element("code").Value);
+                    definition_step.Element("status").SetValue(1);
+                    if (collection["comment"] != null)
+                        definition_step.Element("comments").SetValue(collection["comment"].ToString());
+                    definition.Element("next_step").SetValue(step.Definition.Element("next_step").Value);
+
+                    definition_step.Element("created_at").SetValue(DateTime.Now);
+                    definition_step.Element("created_by").SetValue(employee.emp_number);
+                    definition_step.Element("created_by_name").SetValue(string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname));
+
+                    foreach (var form in definition_step.Element("form_values").Elements("form"))
+                    {
+                        var form_id = form.Attribute("id").Value;
+
+                        var signature_element = new XElement("signature");
+                        signature_element.Add(new XElement("signature_id", 1));
+                        signature_element.Add(new XElement("emp_number", employee.emp_number));
+                        signature_element.Add(new XElement("created_at", DateTime.Now));
+
+                        definition.Element("forms").Elements("form").FirstOrDefault(e => e.Attribute("id").Value == form_id).Element("signatures").Add(signature_element);
+
+                    }
+                }
+                else
+                {
+
+                    if (collection["comment"] != null)
+                    {
+                        //add comment to the particular step
+                        definition_step.Element("comments").SetValue(collection["comment"].ToString());
+
+                        //add comment to the whole request document
+                        var comment = new XElement("comment");
+                        comment.Add(new XElement("employee_id", employee.emp_number));
+                        comment.Add(new XElement("info", collection["comment"].ToString()));
+                        comment.Add(new XElement("employee_name", string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)));
+                        comment.Add(new XElement("created_at", DateTime.Now));
+
+                        definition.Element("comments").Add(comment);
+                    }
+                    definition.Element("next_step").SetValue(step.Definition.Element("fallback_step").Value);
+
+                    definition_step.Element("created_at").SetValue(DateTime.Now);
+                    definition_step.Element("created_by").SetValue(employee.emp_number);
+                    definition_step.Element("created_by_name").SetValue(string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname));
+                }
+            }
+            else if (step_type == "email")
+            {
+                var email_info = collection["email_info"].ToString();
+
+                //string body = string.Empty;
+                ////using streamreader for reading my htmltemplate   
+
+                //using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/Templates/rfq_email_template.html")))
+                //{
+                //    body = reader.ReadToEnd();
+                //}
+
+
+                //get the details of the vendors
+                var vendors = collection["vendors"].ToString().Split(',');
+                if (vendors.Count() > 0){
+                    foreach (var vendor_id in vendors)
+                    {
+                        var vendor = _vendorService.GetVendor(Convert.ToInt32(vendor_id));
+                        var vendor_address = "<strong>" + vendor.company_name + "</strong><br/>";
+                        vendor_address += vendor.address + "<br/><br/>";
+                        //body = body.Replace("{email_info}", email_info);
+                        //var filename = workflow.title + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf";
+                        //var path = Path.Combine("~/Documents/Procurement/Quotations", workflow.title + "_" + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf");
+                        var file_path = Server.MapPath(Path.Combine("~/Documents/Procurement/Quotations", workflow.title + "_" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ".pdf"));
+                        PdfBuilder.HtmlToPdf(vendor_address + email_info, file_path);
+                        //PdfBuilder.CreatePDFFromHTMLFile(body, file_path);
+
+                        var email = new Email
+                        {
+
+                            body = "",
+                            subject = "RFQ"
+                        };
+                        email.attachment = file_path;
+                        email.to = new List<string> { employee.emp_work_email,vendor.email };
+                        email.IsHtml = true;
+                        NotificationUtil.SendEmail(email);
+                    }
+                }
+
+
+                definition_step.Element("status").SetValue(1);
+                if (collection["comment"] != null)
+                {
+                    //add comment to the particular step
+                    definition_step.Element("comments").SetValue(collection["comment"].ToString());
+
+                    //add comment to the whole request document
+                    var comment = new XElement("comment");
+                    comment.Add(new XElement("employee_id", employee.emp_number));
+                    comment.Add(new XElement("info", collection["comment"].ToString()));
+                    comment.Add(new XElement("employee_name", string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)));
+                    comment.Add(new XElement("created_at", DateTime.Now));
+
+                    definition.Element("comments").Add(comment);
+                }
+                definition.Element("next_step").SetValue(step.Definition.Element("next_step").Value);
+
+                definition_step.Element("created_at").SetValue(DateTime.Now);
+                definition_step.Element("created_by").SetValue(employee.emp_number);
+                definition_step.Element("created_by_name").SetValue(string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname));
+
+
+            }
+           
+
+            
+           
+
+            workflow.workflow = definition.ToString();
+            _workflowService.Update(workflow);
+
+            var next_position = step.Definition.Element("next_step_position_id");
+
+            switch (next_position.Attribute("pos_type").Value)
+            {
+                case "sup":
+                    //get the supervisor of the person that applied for the request
+                    var requestor = _employeeService.GetEmployee(workflow.created_by);
+                    var supervisors = requestor.admin_hrm_emp_reportto1.Select(e => e.erep_sup_emp_number).ToArray();
+                    NotificationUtil.SendNotifications(supervisors, "Workflow - Action needed");
+                    foreach(var sup in supervisors)
+                    {
+                        _workflowService.AddUserToWorkflow(new bpm_workflow_employee { emp_number = sup,workflow_id=id,pending=1,created_at=DateTime.Now});
+                    }
+                    
+                    break;
+                case "jti":
+                    var job_title_id = Convert.ToInt32(next_position.Value);
+
+                    var employees = _employeeService.GetEmployees().Where(e => e.admin_hrm_emp_job_record.job_title_id == job_title_id);
+                    var ids = employees.Select(e => e.emp_number).ToArray();
+                    NotificationUtil.SendNotifications(ids, "Workflow - Action needed");
+
+                    foreach (var emp in employees)
+                    {
+                        _workflowService.AddUserToWorkflow(new bpm_workflow_employee { emp_number = emp.emp_number, workflow_id = id, pending = 1, created_at = DateTime.Now });
+                    }
+
+
+                    break;
+                case "dir":
+                    //get the subunit of the requestor
+                    var directorate = _employeeService.GetDirectorate(workflow.created_by);
+
+                    var emps = _employeeService.GetEmployees().Where(e => e.admin_hrm_emp_job_record.job_title_id == directorate.head);
+                    var emps_ids = emps.Select(e => e.emp_number).ToArray();
+                    NotificationUtil.SendNotifications(emps_ids, "Workflow - Action needed");
+
+                    foreach (var emp in emps)
+                    {
+                        _workflowService.AddUserToWorkflow(new bpm_workflow_employee { emp_number = emp.emp_number, workflow_id = id, pending = 1, created_at = DateTime.Now });
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+
+            //if (step.Definition.Element("next_step_position_id") != null)
+            //{
+            //    //get the responsible people for the next step
+            //    var level_id = Convert.ToInt32(step.Definition.Element("next_step_position_id").Value);
+            //    //if the level id=0, notify the employees supervior
+            //    if (level_id == 0)
+            //    {
+            //        var supervisors = employee.admin_hrm_emp_reportto1.Select(e => e.erep_sup_emp_number).ToArray();
+            //        NotificationUtil.SendNotifications(supervisors, "Action needed");
+            //    }
+            //    else
+            //    {
+            //        //get the job title with the level_id
+            //        var job_title = OptionUtil.GetJobTitles().FirstOrDefault(e => e.id == level_id);
+            //        //get all the users belonging to that level
+            //        var employees = job_title.admin_hrm_emp_job_record.Select(e => e.employee_number).ToArray();
+
+            //        NotificationUtil.SendNotifications(employees, "Action needed");
+            //    }
+            //}
+
+            return RedirectToAction("Step",new { id = id });
+        }

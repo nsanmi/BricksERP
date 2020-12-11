@@ -1,0 +1,322 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Add Employee</h2>
+        <ol class="breadcrumb">
+
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">NoticeBoard</a>
+
+            </li>
+            <li>
+                <a href="@Url.Action("Index","Employee")">Employees</a>
+            </li>
+            <li class="active">
+                <strong>Add Employee</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Employee Information</h5>
+
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                            <div class="form-group col-lg-6"><label>First name</label> <input type="text" required value="" name="emp_firstname" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Last name</label> <input type="text" value="" name="emp_lastname" required class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Middle name</label> <input type="text" value="" name="emp_middle_name" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Nick name</label> <input type="text" value="" name="emp_nick_name" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Employee ID</label> <input type="text" value="" name="employee_id" required class="form-control"></div>
+                            <input type="hidden" value="" name="emp_about" id="emp_about" />
+
+                            <div class="form-group col-lg-6" id="data_1">
+                                <label>Date of Birth</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                    <input type="text" readonly value="" name="emp_birthday" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Marital status</label>
+                                @Html.DropDownList("emp_marital_status", new SelectList(OptionUtil.GetLookupOptions("marital_status"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Gender</label>
+
+                                @Html.DropDownList("emp_gender", new SelectList(OptionUtil.GetLookupOptions("gender"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Nationality</label>
+                                @Html.DropDownList("nation_code", new SelectList(OptionUtil.GetLookupOptions("country"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Job Information</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group col-lg-6" id="data_1">
+                                <label>Joined Date</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                    <input type="text" readonly value="" name="joined_date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6" id="data_1">
+                                <label>Probation end date</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                    <input type="text" readonly value="" name="probation_end_date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6" id="data_1">
+                                <label>Date of permanency</label>
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                    <input type="text" readonly value="" name="date_of_permanency" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Job Title</label>
+                                @Html.DropDownList("job_title_id", new SelectList(OptionUtil.GetJobTitles(), "id", "job_title", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Employee status</label>
+                                @Html.DropDownList("employment_status_id", new SelectList(OptionUtil.GetEmploymentStatus(), "id", "name", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Sub unit</label>
+                                @Html.DropDownList("subunit_id", new SelectList(OptionUtil.GetSubunits(), "id", "name", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Location</label>
+                                @Html.DropDownList("location_id", new SelectList(OptionUtil.GetLocations(), "id", "name", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Supervisor</label>
+                                <select id="e6" name="supervisor" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Contact Information</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group col-lg-6"><label>Address Street1</label> <input type="text" value="" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Address Street2</label> <input type="text" value="" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Country</label> <input type="text" value="" name="coun_code" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>State</label> <input type="text" value="" name="provin_code" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Zip/Postal code</label> <input type="text" value="" name="emp_zipcode" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Home Telephone</label> <input type="text" value="" name="emp_hm_telephone" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Mobile</label> <input type="text" value="" name="emp_mobile" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Work Telephone</label> <input type="text" value="" name="emp_work_telephone" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Work Email</label> <input type="email" value="" required name="emp_work_email" class="form-control"></div>
+                            <div class="form-group col-lg-6"><label>Other Email</label> <input type="text" value="" name="emp_oth_email" class="form-control"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Contract</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label>Contract details</label>
+                                <select class="form-control" name="role">
+                                    <option value="sub">BRICKSPOINT</option>
+                                    <option value="non-umb">Non BRICKSPOINT</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+
+        })
+    </script>
+
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#frm_img").submit(function () {
+
+                var formData = new FormData($(this)[0]);
+
+
+                $.ajax({
+                    url: '/api/employeeapi/UploadImg',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (data) {
+                        window.location.reload(true);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+                return false;
+            });
+
+
+
+            $('#e6').select2({
+                placeholder: 'Search for a user',
+
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+
+
+            $('#t_about').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#emp_about').val($('#t_about').val());
+                    $('#btn_submit').click();
+                }
+            });
+
+            $('#t_about').keyup(function () {
+                var max = 140;
+                var len = $(this).val().length;
+                if (len >= max) {
+                    $(this).val($(this).val().substr(0, max));
+
+                }
+            });
+
+
+            $('#img').change(function () {
+                $('#frm_img').submit();
+            });
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+
+
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+
+}

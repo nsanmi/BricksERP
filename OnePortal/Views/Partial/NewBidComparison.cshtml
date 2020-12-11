@@ -1,0 +1,141 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using System.Linq
+
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+    var vendors = definition.Element("vendors").Elements("vendor");
+    var vendor_ids = new List<int>();
+    foreach (var vendor in vendors)
+    {
+        vendor_ids.Add(Convert.ToInt32(vendor.Element("id").Value));
+    }
+    var v_total = new double[vendors.Count()];
+}
+<div class="form-group">
+    <div class="table-responsive">
+
+        <table class="table table-bordered" id="tb_items">
+            <thead>
+                <tr>
+
+                    <th style="background-color:transparent">Unit</th>
+                    <th style="background-color:transparent">Quantity</th>
+                    @*<th style="background-color:transparent">Item</th>*@
+                    <th style="background-color:transparent">Description</th>
+                    @if (definition.Element("vendors").Elements("vendor").Any())
+                    {
+                        foreach (var vendor in definition.Element("vendors").Elements("vendor"))
+                        {
+                            <th style="background-color:transparent">
+                                @vendor.Element("name").Value
+                            </th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (form.Element("items").Elements("item").Any())
+                {
+                    foreach (var item in form.Element("items").Elements("item"))
+                    {
+                        var count = 0;
+                        <tr>
+                            <td>@item.Element("unit").Value</td>
+                            <td>@item.Element("quantity").Value</td>
+                            @*<td>@item.Element("itemname").Value</td>*@
+                            <td>@item.Element("description").Value</td>
+
+
+                            @if (definition.Element("vendors").Elements("vendor").Any())
+                            {
+                                foreach (var vendor in definition.Element("vendors").Elements("vendor"))
+                                {
+                                    double qty = 0;
+                                    double price = 0;
+
+                                    <!--Get the item-->
+                                    var itm = vendor.Element("items").Elements("itm").FirstOrDefault(e => e.Element("id").Value == item.Attribute("id").Value);
+                                    double.TryParse(item.Element("quantity").Value, out qty);
+                                    /*
+                                     * Modified by Johnbosco
+                                     * was throwing error when itm is null.
+                                     */
+                                    //this is for each vendors quote
+                                    if (itm != null && itm.Element("unit_price") != null)
+                                    {
+                                        double.TryParse(itm.Element("unit_price").Value, out price);
+                                    }
+                                    //this is for the inital unit price specified
+                                    else if (item.Element("unit_price") != null)
+                                    {
+                                        double.TryParse(item.Element("unit_price").Value, out price);
+                                    }
+
+                                    <td>
+                                        @(itm?.Element("unit_price").Value)
+                                    </td>
+
+                                    v_total[count] = v_total[count] + (qty * price);
+                                    count = count + 1;
+                                }
+                            }
+
+                        </tr>
+                    }
+
+                    <tr>
+                        <td colspan="3" style="text-align:right">Total</td>
+                        @foreach (var total in v_total)
+                        {
+                            <td>@string.Format("{0:N}", total)</td>
+                        }
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <label>Bid Comparison</label>
+    <input class="form-control" type="file" name="bid_comparison" />
+
+</div>
+
+<div class="form-group">
+    <label>Send to HQ</label>
+    <select class="form-control" name="hq">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+    </select>
+
+</div>
+
+<div class="form-group">
+    <label>Selct Vendor</label>
+    @Html.DropDownList("vendor", new SelectList(Util.GetVendors().Where(e => vendor_ids.Contains(e.id)), "id", "name", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+</div>
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,347 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@{
+    ViewBag.Title = "Edit Project";
+    var project = (pm_project)ViewBag.project;
+    var funders = OptionUtil.GetFunders();
+
+    var bg = "lazur-bg";
+    if (project.sub_parent != null)
+    {
+        bg = "blue-bg";
+    }
+}
+<div class="row wrapper border-bottom white-bg page-heading @bg">
+    <div class="col-lg-12">
+        <h2>@project.code</h2>
+        <ol class="breadcrumb @bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            @if (project.sub_parent != null)
+            {
+                <li>
+                    <a href="@Url.Action("Home","Project",new { id = project.sub_parent })">@project.pm_project2.code</a>
+                </li>
+            }
+
+            <li class="active">
+                <strong>@project.code</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Edit Projects</h5>
+                  
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+
+@using (Html.BeginForm("Edit", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Name</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" value="@project.name" class="form-control" name="name" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Code</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" value="@project.code" class="form-control" name="code" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Number</label>
+
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="num" id="num" value="@project.num" />
+                                </div>
+                            </div>
+                            <input type="hidden" name="project_id" value="@project.id" />
+
+                            if (project.sub_parent != null)
+                            {
+                                <input type="hidden" name="sub_parent" value="@project.sub_parent" />
+                            }
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Description</label>
+
+                                <div class="col-lg-9" style="border: solid 1px #ccc">
+                                    <textarea rows="4" class="form-control summernote"  name="description" >@project.description</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Status</label>
+
+                                <div class="col-lg-9">
+                                    @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", project.status), "- Please Select -", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+                                <label class="col-lg-3 control-label"></label>
+                                <div class="col-lg-9">
+                                    <label> <input type="checkbox" name="timesheet_only" class="i-checks" /> Timesheet Only </label>
+                                </div>
+                            </div>*@
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">Project Admin</label>
+
+                                <div class="col-lg-9">
+                                    <select id="e6" name="employee" multiple>
+                                    </select>
+                                    <span class="help-block m-b-none">Select person</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label"></label>
+                                <div class="col-lg-9">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Project Admins</th>
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            @if (project.pm_project_admin.Any())
+                                            {
+                                                foreach(var admin in project.pm_project_admin)
+                                                {
+                                                    <tr>
+                                                        <td>@string.Format("{0} {1} {2}",admin.admin_hrm_employee.emp_lastname,admin.admin_hrm_employee.emp_firstname,admin.admin_hrm_employee.emp_middle_name)</td>
+                                                        <td>
+                                                            <a href="@Url.Action("RemoveAdmin","Project",new { emp_number = admin.emp_number,project_id=admin.project_id })" class="btn btn-danger btn-circle" >
+                                                                <i class="fa fa-trash-o"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label"></label>
+
+                                <div class="col-lg-9">
+                                   <button class="btn btn-success" type="submit">Update</button>
+                                </div>
+                            </div>
+
+}
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="table-responsive">
+                                <button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#myModal2">Add Funding Period</button>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" style="text-align:center">Funding Periods</th>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th>Funder</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Description</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (project.pm_project_funding_period.Any())
+                                        {
+                                            foreach (var period in project.pm_project_funding_period)
+                                            {
+                                                <tr>
+                                                    <td>@period.pm_funder.name</td>
+                                                    <td>@period.start_date.Value.ToString("yyyy-MM-dd")</td>
+                                                    <td>@period.end_date.Value.ToString("yyyy-MM-dd")</td>
+                                                    <td>@period.description</td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button> &nbsp; <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button></td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("FundingPeriod", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Funding Period</h4>
+
+                </div>
+                <div class="modal-body">
+
+
+                    <input type="hidden" name="project_id" value="@project.id" />
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Funder</label>
+
+                        <div class="col-lg-9">
+                            @Html.DropDownList("funder", new SelectList(funders, "id", "name"), "- Please Select -", new { @class = "form-control " ,required="required"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="description" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" required name="start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">End Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" required name="end_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+                   
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section scripts{
+<script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+
+            });
+        });
+    </script>
+
+
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           $('#e6').select2({
+              
+               placeholder: 'Search...',
+               ajax: {
+                   url: function (params) {
+                       return baseUrl() + "employeeapi/getsearch/"+ params.term;
+                   },
+                   dataType: 'json',
+                   quietMillis: 100,
+
+                   processResults: function (data) {
+                       return {
+                           results: $.map(data, function (obj) {
+                               return { id: obj.id, text: obj.name };
+                           })
+                       };
+                   }
+
+               }
+           });
+
+           
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+
+<link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+<link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}
+
+
+

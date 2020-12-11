@@ -1,0 +1,77 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+}
+<div class="form-group">
+
+    
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Item</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                @*<th style="background-color:transparent">Total Cost</th>*@
+                <th style="background-color:transparent"><button type="button" class="btn btn-sm btn-primary" onclick="add_row('tb_items')">Add Row</button></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var cost = "";
+                    if (item.Element("unit_price") != null)
+                    {
+                        cost = item.Element("unit_price").Value;
+                    }
+            <tr>
+                <td><input class="form-control number" type="number" required onpaste="return false" name="unit" value="@item.Element("unit").Value" /></td>
+                <td><input class="form-control number" type="number" required onpaste="return false" name="quantity" id="qty_@item.Attribute("id").Value" value="@item.Element("quantity").Value" /> </td>
+                <td><input type="text" required name="itemname" class="form-control" value="@item.Element("itemname").Value" /></td>
+                <td><input type="text" required name="description" class="form-control" value="@item.Element("description").Value" /></td>
+                <td><input name="unit_price" onpaste="return false" required onkeyup="multiply('@item.Element("quantity").Value','@item.Element("unit").Value',this,'est_total_price_@item.Attribute("id").Value')" onchange="multiply('@item.Element("quantity").Value','@item.Element("unit").Value',this,'est_total_price_@item.Attribute("id").Value')" type="text" class="form-control number" value="@cost" /></td>
+                @*<td><input type="text" name="est_total_price_@item.Attribute("id").Value" id="est_total_price_@item.Attribute("id").Value" readonly class="form-control" /></td>*@
+                <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tb_items')"><i class="fa fa-trash"></i></button></td>
+            </tr>
+                }
+            }
+          
+           
+        </tbody>
+    </table>
+</div>
+
+<div class="form-group">
+    <label>Conversion Rate</label>
+    @if (form.Element("conversion_rate") != null)
+    {
+        <input type="number" required class="form-control" name="conversion_rate" value="@form.Element("conversion_rate").Value" />
+    }
+    else
+    {
+        <input type="number" required class="form-control" name="conversion_rate" />
+    }
+</div>
+
+
+<div class="form-group">
+    <label>Justification</label>
+    <textarea class="form-control" name="justification"> @form.Element("justification").Value</textarea>
+</div>
+          
+
+                
+
+
+
+
+
+

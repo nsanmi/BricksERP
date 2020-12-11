@@ -1,0 +1,510 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@using OnePortal.Helper
+@using PagedList;
+
+@using PagedList.Mvc;
+@model IPagedList<ws_complain>
+@{
+    ViewBag.Title = "Employee";
+    
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Complain Dashboard</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li class="active">
+                <a>Complain</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    
+                    <div>
+                        <ul class="nav nav-tabs" id="pills-tab" role="tablist">
+                            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#unresolved" id="pills-unresolved-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="false">Unresolved complain</a>
+                            </li>
+
+
+                            <li class="nav-item" id="resolved-tab" data-toggle="tab" role="tab">
+                                <a class="nav-link" href="#resolved" id="pills-resolved-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="false">Resolved complains</a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#all" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">All complains</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane active" id="unresolved" role="tabpanel" aria-labelledby="pills-unresolved-tab">
+                                <div id="" class="ibox-content">
+                                        <div class="row m-b-sm m-t-sm">
+                                            <div class="col-md-1">
+                                                <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                                            </div>
+                                            <form action="@Url.Action("AdminIndex","Complain")" method="get">
+                                                <div class="col-md-11">
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="Search by Type and Priority" name="search" value="@ViewBag.search" class="input-sm form-control">
+                                                        <span class="input-group-btn">
+                                                            <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="project-list">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type</th>
+                                                            <th>Comment</th>
+                                                            <th>Priority</th>
+                                                            <th>Date Created</th>
+                                                            <th>Resolution Date</th>
+                                                            <th>Complain by</th>
+                                                            <th>Resolved by</th>
+                                                            <th>Resolved</th>
+                                                            <th>Files</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var complain in Model.Where(m => m.Resolved != "Yes"))
+                                                        {
+                                                            <tr>
+                                                                <td>@Html.ActionLink(complain.Type, "Update", new { complainId = complain.Id }, new { title = "Click to view complain details" })</td>
+                                                                <td><a data-toggle="modal" data-target="#modal" class="identifyingClass" data-id="@complain.Comment">@complain.Comment</a></td>
+                                                                <td class=@(complain.Priority == "High" ? "bg-danger" : complain.Priority == "Medium" ? "bg-warning" : "bg-info")>@complain.Priority</td>
+                                                                <td>@complain.CreateDate.ToString("d")</td>
+                                                                <td>@complain.ResolutionDate</td>
+                                                                <td>@(UserHelper.GetEmployeeNameById(complain.UserId))</td>
+                                                                <td>@UserHelper.GetEmployeeNameById(complain.ResolvedBy)</td>
+                                                                <td><input type="checkbox" onclick="markComplainAsResolved(@complain.Id)" @(complain.Resolved == "Yes" ? "checked" : "") /> </td>
+                                                                <td>
+                                                                    @if (complain.ws_complain_files.Any())
+                                                                    {
+                                                                        <a onclick="$('#dv_@complain.Id').toggle()">@complain.ws_complain_files.Count()</a>
+                                                                        <div id="dv_@complain.Id" style="display: none">
+                                                                            @foreach (var document in complain.ws_complain_files)
+                                                                            {
+                                                                                <a href="#snap_modal" class="btn btn-xs btn-default openImageDialog" data-toggle="modal" data-id="@document.Filename">
+                                                                                    <i class="fa fa-file"></i> @document.Id
+                                                                                </a>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="#">@complain.ws_complain_files.Count()</a>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id='Paging' style="text-align:center">
+                                                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                                of @Model.PageCount
+                                                @Html.PagedListPager(Model, page => Url.Action("index", new { page }))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="resolved" role="tabpanel" aria-labelledby="pills-resolved-tab">
+                                    <div id="" class="ibox-content">
+                                        <div class="row m-b-sm m-t-sm">
+                                            <div class="col-md-1">
+                                                <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                                            </div>
+                                            <form action="@Url.Action("AdminIndex","Complain")" method="get">
+                                                <div class="col-md-11">
+                                                    <div class="input-group">
+                                                        <input type="text" placeholder="Search by Type and Priority" name="search" value="@ViewBag.search" class="input-sm form-control">
+                                                        <span class="input-group-btn">
+                                                            <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="project-list">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Type</th>
+                                                            <th>Comment</th>
+                                                            <th>Priority</th>
+                                                            <th>Date Created</th>
+                                                            <th>Resolution Date</th>
+                                                            <th>Complain by</th>
+                                                            <th>Resolved by</th>
+                                                            <th>Resolved</th>
+                                                            <th>Files</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var complain in Model.Where(m => m.Resolved == "Yes"))
+                                                        {
+                                                            <tr>
+                                                                <td>@Html.ActionLink(complain.Type, "Update", new { complainId = complain.Id }, new { title = "Click to view complain details" })</td>
+                                                                <td><a data-toggle="modal" data-target="#modal" class="identifyingClass" data-id="@complain.Comment">@complain.Comment</a></td>
+                                                                <td class=@(complain.Priority == "High" ? "bg-danger" : complain.Priority == "Medium" ? "bg-warning" : "bg-info")>@complain.Priority</td>
+                                                                <td>@complain.CreateDate.ToString("d")</td>
+                                                                <td>@complain.ResolutionDate</td>
+                                                                <td>@(UserHelper.GetEmployeeNameById(complain.UserId))</td>
+                                                                <td>@UserHelper.GetEmployeeNameById(complain.ResolvedBy)</td>
+                                                                <td><input type="checkbox" onclick="ResolvedComplain(@complain.Id)" @(complain.Resolved == "Yes" ? "checked" : "") /> </td>
+                                                                <td>
+                                                                    @if (complain.ws_complain_files.Any())
+                                                                    {
+                                                                        <a onclick="$('#dv_@complain.Id').toggle()">@complain.ws_complain_files.Count()</a>
+                                                                        <div id="dv_@complain.Id" style="display: none">
+                                                                            @foreach (var document in complain.ws_complain_files)
+                                                                            {
+                                                                                <a href="#snap_modal" class="btn btn-xs btn-default openImageDialog" data-toggle="modal" data-id="@document.Filename">
+                                                                                    <i class="fa fa-file"></i> @document.Id
+                                                                                </a>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="#">@complain.ws_complain_files.Count()</a>
+                                                                    }
+                                                                     </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id='Paging' style="text-align:center">
+                                                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                                of @Model.PageCount
+                                                @Html.PagedListPager(Model, page => Url.Action("index", new { page }))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="pills-all-tab">
+                                        <div id="" class="ibox-content">
+                                            <div class="row m-b-sm m-t-sm">
+                                                <div class="col-md-1">
+                                                    <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                                                </div>
+                                                <form action="@Url.Action("AdminIndex","Complain")" method="get">
+                                                    <div class="col-md-11">
+                                                        <div class="input-group">
+                                                            <input type="text" placeholder="Search by Type and Priority" name="search" value="@ViewBag.search" class="input-sm form-control">
+                                                            <span class="input-group-btn">
+                                                                <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="project-list">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered ">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type</th>
+                                                                <th>Comment</th>
+                                                                <th>Priority</th>
+                                                                <th>Date Created</th>
+                                                                <th>Resolution Date</th>
+                                                                <th>Complain by</th>
+                                                                <th>Resolved by</th>
+                                                                <th>Resolved</th>
+                                                                <th>Files</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var complain in Model)
+                                                            {
+                                                                <tr>
+                                                                    <td>@Html.ActionLink(complain.Type, "Update", new { complainId = complain.Id }, new { title = "Click to view complain details" })</td>
+                                                                    <td><a data-toggle="modal" data-target="#modal" class="identifyingClass" data-id="@complain.Comment">@complain.Comment</a></td>
+                                                                    <td class=@(complain.Priority == "High" ? "bg-danger" : complain.Priority == "Medium" ? "bg-warning" : "bg-info")>@complain.Priority</td>
+                                                                    <td>@complain.CreateDate.ToString("d")</td>
+                                                                    <td>@complain.ResolutionDate</td>
+                                                                    <td>@(UserHelper.GetEmployeeNameById(complain.UserId))</td>
+                                                                    <td>@UserHelper.GetEmployeeNameById(complain.ResolvedBy)</td>
+                                                                    <td><input type="checkbox" onclick="ResolvedComplain(@complain.Id)" @(complain.Resolved == "Yes" ? "checked" : "") /> </td>
+                                                                    <td>
+                                                                        @if (complain.ws_complain_files.Any())
+                                                                        {
+                                                                            <a onclick="$('#dv_@complain.Id').toggle()">@complain.ws_complain_files.Count()</a>
+                                                                            <div id="dv_@complain.Id" style="display: none">
+                                                                                @foreach (var document in complain.ws_complain_files)
+                                                                                {
+                                                                                    <a href="#snap_modal" class="btn btn-xs btn-default openImageDialog" data-toggle="modal" data-id="@document.Filename">
+                                                                                        <i class="fa fa-file"></i> @document.Id
+                                                                                    </a>
+                                                                                }
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a href="#">@complain.ws_complain_files.Count()</a>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id='Paging' style="text-align:center">
+                                                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                                                    of @Model.PageCount
+                                                    @Html.PagedListPager(Model, page => Url.Action("index", new { page }))
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal " id="modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content animated flipInY">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Complain body</label>
+                            <textarea name="Comment_Container" id="Comment_Container" rows="6" class="form-control" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="snap_modal" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:80%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img id="file_photo" alt="Copy of the Attached Photo" style="width:100%" />
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+                <a class="btn btn-default btn-default pull-left" onclick="this.href = $('#file_photo').attr('src');"
+                   download><span class="glyphicon glyphicon-export"></span>Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="complainModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("Make", "Complain", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Make a Complain</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Priority</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownList("Priority", new SelectList(DProcess.GetLookup("priority"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Complain Type</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownList("Type", new SelectList(DProcess.GetLookup("complain"), "lookup_name", "lookup_name"), "- Please Select -", new { @class = "form-control", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+                        <div class="col-lg-9">
+                            <textarea name="Comment" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Screenshot if Any</label>
+                        <div class="col-lg-9">
+                            <input type="file" name="screenshot" multiple />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+<style>
+    .table td.text {
+        max-width: 177px;
+    }
+
+        .table td.text span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+    .table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    th {
+        font-weight: bold;
+        font-size: 1em;
+    }
+
+    table {
+        border: 1px;
+        table-layout: fixed;
+    }
+
+    .table > tbody > tr > td, .table > thead > tr > th {
+        padding: 6px 10px;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+    }
+
+    .table-row {
+        cursor: pointer;
+    }
+</style>
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                daysOfWeekDisabled: [0, 6]
+            });
+
+        });
+
+        function markComplainAsResolved(id) {
+            alert(id);
+        }
+
+
+
+        $(document).on("click", ".openImageDialog", function () {
+            $(".modal-body #file_photo").attr("src", "");
+            var myImageId = $(this).data('id');
+            $(".modal-body #file_photo").attr("src", myImageId);
+        });
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+        function setPhoto(url) {
+            $("#result_photo").attr("src", url);
+        }
+
+        function ResolvedComplain(id) {
+            if (confirm("Are you sure that this complain is resolved?")) {
+                $.ajax({
+                    url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Complain/Resolve/?Id=" + id,
+                    context: document.body
+                }).done(function (returnVal) {
+
+
+                    alert(returnVal);
+                    location.reload();
+                });
+            }
+        }
+
+        //$(document).on("click", "#modal", function () {
+        //    var comment = $(this).data("id");
+
+
+        //    $('#my_element_id').val(comment);
+        //    alert(comment);
+        //});
+
+
+        $(function () {
+            $(".identifyingClass").click(function () {
+                var coment = $(this).data('id');
+                $(".form-group #Comment_Container").val(coment);
+
+            })
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+

@@ -1,0 +1,303 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using OnePortal.Models;
+@using OnePortal.Helper;
+@model HtmlInput
+@{
+    ViewBag.Title = "Step";
+
+    var step = (Step)ViewBag.step;
+    //var workflow = (bpm_workflow)ViewBag.workflow;
+    //var definition = XElement.Parse(workflow.workflow);
+
+    var workflows = (IQueryable<bpm_workflow>)ViewBag.workflows;
+}
+@{
+
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2></h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">
+                <strong>Manage Requests</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Tracker</h5>
+
+                </div>
+                <div class="ibox-content">
+                    <input type="hidden" name="workflow_id" value="" />
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Req. No</th>
+                                    <th>Item name</th>
+                                    <th>Quantity</th>
+                                    <th>Activity</th>
+                                    <th>Date needed</th>
+                                    <th>Manufacturer</th>
+                                    <th>Reqstn</th>
+                                    <th>RFP?</th>
+                                    <th>Bids</th>
+                                    <th>Vendor Slctn</th>
+                                    <th>PO</th>
+                                    <th>Vendor name</th>
+                                    <th>Amount</th>
+                                    <th>Invoice Received date</th>
+                                    <th>GRSN</th>
+                                    <th>Payment approved</th>
+                                    <th>Payment made date</th>
+                                    <th>Payment Received</th>
+
+                                    <th>Remark</th>
+                                    <th>Responsible person</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var w_flow in workflows)
+                                {
+                                    var index = 0;
+                                    if (w_flow.process_id == Guid.Parse("2D008467-EA12-4821-A2F2-7568B76039F1"))
+                                    {
+                                        index = 1;
+                                    }
+                                    var defn = XElement.Parse(w_flow.workflow);
+                                    var req_no = defn.Element("process_number").Value;
+                                    var rfq = Util.GetStepPerformDate(defn, 8 + index);
+                                    var bids = Util.GetStepPerformDate(defn, 9 + index);
+
+                                    var po = Util.GetStepPerformDate(defn, 15 + index);
+                                    var vendor = Util.GetSelectedVendor(defn);
+
+                                    var v_selection = "";
+                                    if (defn.Element("vendors").Elements("vendor").Count() > 1)
+                                    {
+                                        v_selection = "Vendor Slctn";
+                                    }
+                                    else if (defn.Element("vendors").Elements("vendor").Count() == 1)
+                                    {
+                                        v_selection = "Sole source";
+                                    }
+
+
+                                    @*<tr>
+                                        <td>@req_no</td>
+                                        <td>@item.Element("itemname").Value</td>
+                                        <td>@item.Element("quantity").Value</td>
+                                        <td>@w_flow.pm_project.name</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>@w_flow.created_at.ToString("MM/dd/yyyy")</td>
+                                        <td>@rfq</td>
+                                        <td>@bids</td>
+                                        <td>@v_selection</td>
+                                        <td>@po</td>
+                                        @if (vendor != null)
+                                        {
+                                            <td>@vendor.company_name</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        @if (item.Element("quantity") != null && item.Element("price") != null)
+                                        {
+                                            var value = (Convert.ToInt32(item.Element("quantity").Value) * Convert.ToInt32(item.Element("unit_price").Value)) / Convert.ToInt32(item.Element("conversion_rate").Value);
+                                            <td>
+
+                                                @value
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>@w_flow.ws_lookup.lookup_name</td>
+                                        @if (w_flow.status == 22)
+                                        {
+                                            <td>@TransactionHelper.GetResponsiblePerson(defn, w_flow)</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+
+                                    </tr>*@
+
+
+
+
+                                    if (defn.Element("form").Element("items").Elements("item").Any())
+                                    {
+                                        foreach (var item in defn.Element("form").Element("items").Elements("item"))
+                                        {
+                                            <tr>
+                                                <td>@req_no</td>
+                                                <td>@item.Element("itemname").Value</td>
+                                                <td>@item.Element("quantity").Value</td>
+                                                <td>@w_flow.pm_project.name</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@w_flow.created_at.ToString("MM/dd/yyyy")</td>
+                                                <td>@rfq</td>
+                                                <td>@bids</td>
+                                                <td>@v_selection</td>
+                                                <td>@po</td>
+                                                @if (vendor != null)
+                                                {
+                                                    <td>@vendor.company_name</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (item.Element("quantity") != null && item.Element("price") != null)
+                                                {
+                                                    var value = (Convert.ToInt32(item.Element("quantity").Value) * Convert.ToInt32(item.Element("unit_price").Value)) / Convert.ToInt32(item.Element("conversion_rate").Value);
+                                                    <td>
+
+                                                        @value
+
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@w_flow.ws_lookup.lookup_name</td>
+                                                @if (w_flow.status == 22)
+                                                {
+                                                    <td>@TransactionHelper.GetResponsiblePerson(defn, w_flow)</td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="project-list">
+
+
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    @*<button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>*@
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/workflow.js"></script>
+
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+        });
+
+        $('table').DataTable({
+            dom: '<"html5buttons"B>lTfgitp',
+            "pageLength": 50,
+            columnDefs: [{
+                orderable: true,
+                width: '100px'
+            }],
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'employee_list' },
+                { extend: 'pdf', title: 'employee_list' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+        $('#data_1 .input-group.date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+
+    </script>
+
+
+}
+
+
+@section styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <style>
+
+        th {
+            background-color: white;
+        }
+    </style>
+
+}
+

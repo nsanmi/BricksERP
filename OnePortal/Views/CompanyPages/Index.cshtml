@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_OtherLayout.cshtml";
+}
+
+<div id='calendar'></div>
+
+@section scripts{
+
+    <script src="~/Content/aaa/js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="~/Content/aaa/js/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/aaa/js/popper.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.1/main.min.js"></script>*@
+    <script src="~/Content/aaa/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Content/aaa/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Content/aaa/js/main.js"></script>
+
+
+    <!-- Custom and plugin javascript -->
+    <script src="~/Content/aaa/js/inspinia.js"></script>
+    <script src="~/Content/aaa/js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI  -->
+    <script src="~/Content/aaa/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="~/Content/aaa/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Full Calendar -->
+    <script src="~/Content/aaa/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+    <script>
+        
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                //var calendar = new Calendar(calendarEl, {
+                //    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives'
+                //});
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                    timeZone: 'UTC',
+                initialView: 'resourceTimelineDay',
+                aspectRatio: 1.5,
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
+                },
+                editable: true,
+                resourceAreaHeaderContent: 'Rooms', 
+                resources: '~/Data/file.json', 
+                resources: 'https://fullcalendar.io/demo-resources.json?with-nesting&with-colors', 
+                events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
+            });
+
+            calendar.render();
+        });
+    </script>
+}
+
+
+@section styles{
+    @*<link href="~/Content/aaa/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/Content/aaa/font-awesome.css" rel="stylesheet">*@
+
+    @*<link href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.1/main.min.css" rel="stylesheet">*@
+
+    <link href="~/Content/aaa/css/main.css" rel="stylesheet" />
+
+
+    <link href="~/Content/aaa/css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="~/Content/aaa/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+    <link href="~/Content/aaa/css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
+
+    <link href="~/Content/aaa/css/animate.css" rel="stylesheet">
+    <link href="~/Content/aaa/css/style.css" rel="stylesheet">
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+    </style>
+
+}

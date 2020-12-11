@@ -1,0 +1,108 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@using HRM.DAL.Util;
+@{
+
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var doc = XElement.Parse(definition);
+}
+
+<div class="form-group">
+    <label>Pay To</label>
+    <input class="form-control" value="@form.Element("pay_to").Value" readonly>
+</div>
+
+<div class="form-group">
+    <label>Pay From</label>
+    <div>
+        @Html.DropDownList("pay_from", new SelectList(OptionUtil.GetLookupOptions("pay_from"), "id", "lookup_name", form.Element("pay_from").Value), null, new { @class = "form-control", @required = "required", @readonly = "readonly" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label>Pay By</label>
+    @Html.DropDownList("pay_by", new SelectList(OptionUtil.GetLookupOptions("pay_by"), "id", "lookup_name", form.Element("pay_by").Value), "", new { @class = "form-control", @readonly = "readonly" })
+</div>
+
+<div class="form-group">
+    <label>Purpose</label>
+    <textarea class="form-control" name="purpose">@form.Element("purpose").Value</textarea>
+</div>
+<div class="form-group" id="bank_account_div">
+    <label>Bank name</label>
+    <div>
+        <input class="form-control" value="@form.Element("bank_name").Value" readonly>
+    </div>
+</div>
+
+<div class="form-group" id="bank_account_div">
+    <label>Account name</label>
+    <div>
+        <input class="form-control" value="@form.Element("account_name").Value" readonly>
+    </div>
+</div>
+<div class="form-group">
+    <label>Bank Account</label>
+    <input class="form-control" value="@form.Element("bank_account").Value" name="bank_account" readonly>
+</div>
+
+
+<div class="form-group">
+    <label>Cheque number</label>
+    <input class="form-control" value="" name="check_number" readonly>
+</div>
+
+<div class="form-group">
+    <label>Conversion Rate</label>
+    <input class="form-control" name="conversion_rate" value="@form.Element("conversion_rate").Value" readonly>
+</div>
+
+<div class="form-group">
+    <label>Amount in  Naira</label>
+    <input class="form-control" name="amount_ngn" value="@form.Element("amount_ngn").Value" readonly>
+</div>
+
+<div class="form-group">
+    <label>Amount in USD</label>
+    <input class="form-control" name="amount_usd" value="@form.Element("amount_usd").Value" readonly>
+</div>
+
+
+<div class="form-group">
+    <label>Withholding Tax</label>
+    <div>
+        @Html.DropDownList("withholding_tax", new SelectList(OptionUtil.GetLookupOptions("withholding_tax"), "id", "lookup_name", form.Element("withholding_tax").Value), null, new { @class = "form-control", @required = "required", @readonly = "readonly" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label>Net Amount</label>
+    <div>
+        <input class="form-control" readonly name="net_amount" value="@form.Element("net_amount").Value">
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>

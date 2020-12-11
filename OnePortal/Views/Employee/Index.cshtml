@@ -1,0 +1,245 @@
+@using HRM.DAL.Models;
+@using System.Linq;
+@{
+    ViewData["Title"] = "Employees";
+    var employees = (IQueryable<admin_hrm_employee>)ViewBag.employees;
+}
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                   
+                    <h2>Employees</h2>
+                    
+                 
+                    <div class="full-height-scroll">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-bordered" id="tb_employees" data-page-length='15'>
+                                <thead>
+                                    <tr>
+                                       
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Job Title</th>
+                                        <th>Emp. Status</th>
+                                        <th>SubUnit</th>
+                                        <th>Location</th>
+                                        <th>Supervisor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    @foreach (var employee in employees)
+                                    {
+
+                                        string profilePic = "/Content/images/profile_images/" + employee.user_id + ".jpg";
+                                        if (!File.Exists(Server.MapPath(profilePic)))
+                                        { profilePic = "/Content/images/a4.jpg"; }
+
+                                        <tr>
+
+                                            <td class="client-avatar"><img alt="image" src="@profilePic"> </td>
+                                            <td>@employee.employee_id</td>
+                                            <td><a data-toggle="tab" href="#" onclick="get_employee(@employee.emp_number)" class="client-link">@string.Format("{0} {1}",employee.emp_lastname,employee.emp_firstname)</a></td>
+                                            <td> 
+                                                @if (employee.admin_hrm_emp_job_record.admin_hrm_lkup_job_title != null)
+                                                {
+                                                    <span>@employee.admin_hrm_emp_job_record.admin_hrm_lkup_job_title.job_title</span>
+                                                }
+                                                
+                                            </td>
+                                            <td>
+                                            @if (employee.admin_hrm_lkup_employment_status != null)
+                                            {
+                                                <span>@employee.admin_hrm_lkup_employment_status.name</span>
+                                            }
+                                            </td>
+                                            <td>
+                                                @if(employee.admin_hrm_emp_job_record.admin_hrm_lkup_subunit != null)
+                                                {
+                                                    <span>@employee.admin_hrm_emp_job_record.admin_hrm_lkup_subunit.name</span>
+                                                }
+                                            
+                                            
+                                            </td>
+                                            <td>
+                                            @if (employee.admin_hrm_emp_locations.LastOrDefault() != null)
+                                            {
+                                                @employee.admin_hrm_emp_locations.LastOrDefault().admin_hrm_location.name
+                                            }
+                                            
+                                        </td>
+                                            <td>@if (employee.admin_hrm_emp_reportto1.LastOrDefault() != null)
+                                            {
+                                                <span>
+                                                    @string.Format("{0} {1}", employee.admin_hrm_emp_reportto1.LastOrDefault().admin_hrm_employee.emp_lastname, employee.admin_hrm_emp_reportto1.LastOrDefault().admin_hrm_employee.emp_firstname)
+                                                </span>
+                                            }
+                                           
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox ">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" style="display:none;min-height:500px">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-4 text-center">
+                                    <h2 ></h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" src="~/Content/images/a4.jpg"
+                                             style="width: 80px">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <h2 id="emp_name">
+                                        
+                                    </h2>
+
+                                    <p id="emp_about">
+                                        
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <button type="button" class="btn btn-primary btn-sm btn-block">
+                                                <i class="fa fa-envelope"></i> Send Message
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form method="get" action="@Url.Action("Emp","Employee")">
+                                                <input type="hidden" value="0" id="contact_id" name="id" />
+                                                <button type="submit" class="btn btn-warning btn-sm btn-block">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </button>
+                                            </form>
+                                           
+                                        </div>
+                                    </div>
+                                   
+                                   
+                                </div>
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Employee Details</strong>
+
+                                    <ul class="list-group clear-list">
+                                        <li class="list-group-item fist-item">
+                                            <span class="pull-right" id="emp_job_title"></span>
+                                            Job Title
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_id"></span>
+                                            Employee ID
+                                        </li>
+                                        
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_birthday"></span>
+                                            Birthday
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_location"> </span>
+                                            Location
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_address1"></span>
+                                            Address
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_work_email"></span>
+                                            Work Email
+                                        </li>
+                                        
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_status"></span>
+                                            Employment Status
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_hm_telephone"></span>
+                                            Home Telephone
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="joined_date"></span>
+                                            Date Joined
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right" id="emp_supervisors"></span>
+                                            Supervisors
+                                        </li>
+                                    </ul>
+                                    <strong>Address</strong>
+                                    <p id="emp_address">
+                                       
+                                    </p>
+                                    <hr />
+                                    <strong >Supervisees<span id="subs_count"></span></strong>
+                                    <table class="table table-bordered table-striped table-hover" style="display:none" id="tb_subs">
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_employee.js"></script>
+    <script>
+     
+        $(document).ready(function () {
+            $('#tb_employees').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'employee_list' },
+                    { extend: 'pdf', title: 'employee_list' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                               .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+    </script>
+}
+
+@section Styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}

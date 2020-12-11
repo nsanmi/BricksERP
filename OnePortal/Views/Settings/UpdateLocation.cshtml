@@ -1,0 +1,107 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+
+
+@{
+
+    var location = (admin_hrm_location)ViewBag.location;
+
+    ViewBag.Title = "Edit location";
+}
+
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update location</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>location</a>
+            </li>
+            <li class="active">
+                <strong>location</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>location Details </h5>
+                </div>
+
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-lg-12 ">
+
+                            <div class="panel-body">
+                                <form method="post" action="@Url.Action("UpdateLocation","Settings")" data-parsley-validate class="form-horizontal form-label-left">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label for="note">Name</label>
+                                            <input type="text" id="name" name="name" class="form-control col-md-7 col-xs-12" value="@location.name" />
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:10px;">
+                                            <label for="phone">Phone</label>
+
+                                            <input type="text" id="phone" name="phone" class="form-control col-md-7 col-xs-12" value="@location.phone">
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                            <label for="note">provice</label>
+                                            <input type="text" id="provice" name="province" class="form-control col-md-7 col-xs-12" value="@location.province" />
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-bottom:10px;">
+                                            <label for="jobtitle">Time zone</label>
+
+                                            <input type="text" id="timezone" name="timezone" class="form-control col-md-7 col-xs-12" value="@location.time_zone">
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-bottom:10px;">
+                                            <label for="jobtitle">Zip code</label>
+
+                                            <input type="text" id="zip_code" name="zip_code" class="form-control col-md-7 col-xs-12" value="@location.zip_code">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                            <label>Note</label>
+                                            <textarea name="note" rows="3" id="note" class="form-control col-md-10 col-xs-10" value="@location.notes">@location.notes </textarea>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary">Update Location</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+

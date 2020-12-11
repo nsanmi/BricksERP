@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@using HRM.DAL.Models;
+@using OnePortal.Models.ViewModels;
+@{
+    ViewBag.Title = "Noticeboard";
+    var policies = (List<Policy>)ViewBag.Policies;
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="row">
+            <div class="ibox">
+                <div class="ibox-title">MGIC Policies</div>
+                <div class="ibox-content" style="overflow: scroll;">
+                    @foreach (var policy in policies)
+                    {
+                        <div class="file-box" style="height: 300px;">
+                            <div class="file">
+                                <a href="@Href("~/Admin/Organisation/?href=" + policy.FilePath + "")">
+                                    <span class="corner"></span>
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        @policy.DisplayName
+                                        <br>
+                                        <small>Added: @policy.CreateDate</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+        });
+    </script>
+}
+@section styles{
+ 
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+    <link href="~/Scripts/getorgchart.css" rel="stylesheet" />
+}

@@ -1,0 +1,241 @@
+﻿@using HRM.DAL.Models;
+@model PagedList.IPagedList<admin_hrm_timesheet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "ViewTimesheet";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Employee Timesheets</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Timesheet</a>
+            </li>
+            <li class="active">
+                <strong>Employee Timesheets</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Submitted Timesheets</h5>
+                   
+                </div>
+                <div class="ibox-content">
+                   
+                    <div class="table-responsive">
+                      <a href="@Url.Action("ViewTimesheet","Timesheet",new {page=1,search="ALL"})" class="btn btn-sm btn-outline btn-warning">All</a>  
+                      <a href="@Url.Action("ViewTimesheet","Timesheet",new {page=1,search="APPROVED"})" class="btn btn-sm btn-outline btn-primary">Approved</a>
+                      <a href="@Url.Action("ViewTimesheet","Timesheet",new {page=1,search="SUBMITTED"})" class="btn btn-sm btn-outline btn-success">Submitted</a>
+                      <a href="@Url.Action("ViewTimesheet","Timesheet",new {page=1,search="NOT SUBMITTED"})" class="btn btn-sm btn-outline btn-info">Not Submitted</a>
+                      
+
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Timesheet</th>
+                                    <th>
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td><a href="#" onclick="preview_timesheet_on_calendar('@item.timesheet_id');$('#emp_name').text($(this).text() + ' | ' +'@item.start_date.ToString("MMMM - yyyy")');$('#id').val(@item.timesheet_id);show_buttons('@item.state')">@string.Format("{0} {1}",item.admin_hrm_employee.emp_lastname,item.admin_hrm_employee.emp_firstname)</a></td>
+                                        <td>@item.start_date.ToString("MMMM - yyyy")</td>
+                                        <td>@item.state</td>
+                                    </tr>
+                                }
+
+
+                             
+                            </tbody>
+                        </table>
+
+                        <div id='Paging' style="text-align:center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+
+                            @Html.PagedListPager(Model, page => Url.Action("viewtimesheet", new { page }))
+                        </div>  
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="col-lg-9">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 id="emp_name"> </h5>
+                    <div class="ibox-tools" id="loader" style="display:none">
+                        <img src="~/Content/images/loader3.gif" />
+                    </div>
+                </div>
+                <div class="ibox-content">
+                   
+                    
+                    <div id="calendar"></div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span><strong>H</strong> - Holiday</span>
+                            <span><strong>L</strong> - Leave</span>
+                            <span><strong>W</strong> - Weekend</span>
+                            <span><strong>F</strong> - Full day-off</span>
+                            <span><strong>P</strong> - Partial day-off</span>
+                        </div>
+                        <div class="col-lg-12 ">
+                            <div class="pull-right">
+
+
+                                <form action="@Url.Action("Edit","Timesheet")" id="frm_edit">
+                                    <input type="hidden" value="0" name="id" id="id" />
+                                </form>
+
+
+                                <form action="@Url.Action("Approve","Timesheet")" id="frm_approve"></form>
+
+                                <form action="@Url.Action("Cancel","Timesheet")" id="frm_cancel"></form>
+
+
+
+                                <a id="btn_edit" href="javascript:document.getElementById('frm_edit').submit()" class="btn btn-primary">Edit</a>
+                                <button id="btn_approve" class="btn btn-success" onclick="approve_form()" type="button">Approve</button>
+                                <button onclick="cancel_form()" class="btn btn-warning">Cancel</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Timesheet History</h5>
+
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>Performed by</th>
+                                        <th>
+                                            Date
+                                        </th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles{
+    <link href="~/Content/libs/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/libs/fullcalendar/fullcalendar.print.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <style>
+        .fc-time{
+            display:none
+        }
+        .fc-day-grid-event > .fc-content {
+            white-space:normal;
+        }
+    </style>
+    }
+
+@section scripts{
+    <script src="~/Content/libs/fullcalendar/moment.min.js"></script>
+    <script src="~/Content/libs/fullcalendar/fullcalendar.min.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_time_sheet.js"></script>
+
+   <script>
+
+       $(document).ready(function () {
+
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+           
+           
+             preview_timesheet_on_calendar('@ViewBag.id');
+             $('#emp_name').text('@ViewBag.name');
+             show_buttons('@ViewBag.status')
+
+       });
+
+       function approve_form() {
+
+           var id = $('#id').val();
+           $('#frm_approve').submit(function () {
+               $(this).append('<input type="hidden" name="id" value="' + id + '" /> ');
+               return true;
+           });
+
+           $('#frm_approve').submit();
+       }
+
+       function cancel_form() {
+
+           var id = $('#id').val();
+           $('#frm_cancel').submit(function () {
+               $(this).append('<input type="hidden" name="id" value="' + id + '" /> ');
+               return true;
+           });
+
+           $('#frm_cancel').submit();
+       }
+
+
+       function show_buttons(status) {
+           if (status == "SUBMITTED") {
+               $("#btn_edit").show();
+               $("#btn_approve").show();
+           } else {
+               $("#btn_edit").hide();
+               $("#btn_approve").hide();
+           }
+       }
+
+</script>
+    }

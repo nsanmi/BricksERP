@@ -1,0 +1,111 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+    var doc = XElement.Parse(workflow.workflow);
+}
+
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" placeholder="approval token" class="input form-control" name="approval_token">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn btn-primary" onclick="generate_approval_token()"> <i class="fa fa-refresh"></i> Refresh</button>
+        </span>
+    </div>
+</div>
+
+<div class="form-group">
+
+    
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr >
+              
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Item</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Est. Unit Cost</th>
+                <th style="background-color:transparent">Est. Total Cost</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                double total = 0;
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    double unit_cost = 0;
+                    if (item.Element("est_unit_cost") != null)
+                    {
+                        unit_cost = Convert.ToDouble(item.Element("est_unit_cost").Value);
+                    }
+                    else if (item.Element("unit_cost") != null)
+                    {
+                        unit_cost = Convert.ToDouble(item.Element("unit_cost").Value);
+                    }
+
+                    double unit, qty;
+                    double.TryParse(item.Element("unit").Value, out unit);
+                    double.TryParse(item.Element("quantity").Value, out qty);
+                    //var tc = unit * qty * unit_cost;
+                    var tc = Convert.ToDouble(item.Element("unit").Value) * Convert.ToDouble(item.Element("quantity").Value) * unit_cost;
+                    total += tc;
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        <td>@item.Element("itemname").Value</td>
+                        <td>@item.Element("description").Value</td>
+                        <td>@unit_cost</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="5">Total</td>
+                    <td>
+                        @string.Format("{0:N}", total)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>Justification</td>
+                <td colspan="5">
+                    @form.Element("justification").Value
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+          
+
+                
+
+
+
+
+
+

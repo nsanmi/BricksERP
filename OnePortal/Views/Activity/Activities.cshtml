@@ -1,0 +1,325 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_strategic_objective
+@{
+    ViewBag.Title = "Activities";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>@Model.objectve</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="">Home</a>
+            </li>
+            <li>
+                <a>Projects</a>
+            </li>
+            <li>
+                <a>Objective</a>
+            </li>
+            <li class="active">
+                <strong>Activities</strong>
+            </li>
+        </ol>
+    </div>
+    
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @if (Model.pm_project_objective_activity.Any())
+        {
+            foreach (var activity in Model.pm_project_objective_activity)
+            {
+                <div class="col-lg-4">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            
+                            <h5><a href="@Url.Action("Tasks","Task",new { id = activity.id })">@activity.activity</a>  </h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="team-members">
+                                @if (activity.pm_activity_admin.Any())
+                                {
+                                    foreach (var admin in activity.pm_activity_admin)
+                                    {
+
+                                        string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                        if (!File.Exists(Server.MapPath(pic)))
+                                        { pic = "/Content/images/a4.jpg"; }
+
+                                        <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                    }
+                                }
+
+                              
+                            </div>
+                            <h4>From @activity.start_date.Value.ToString("MMMM dd, yyyy") to @activity.end_date.Value.ToString("MMMM dd, yyyy")</h4>
+                            <p>
+                               @activity.description
+                            </p>
+                            <div>
+                                <span>Status of current project:</span>
+                                <div class="stat-percent">@activity.completion%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: @activity.completion%;" class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <div class="row  m-t-sm">
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><a href="@Url.Action("Tasks","Task",new { id = activity.id })">TASKS</a></div>
+                                    @activity.pm_project_task.Count() <i class="fa fa-tasks text-navy"></i>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="font-bold"><div class="font-bold"><a href="@Url.Action("Comments","Activity",new { id = activity.id })">COMMENTS</a></div></div>
+                                   0 <i class="fa fa-comments-o text-navy"></i>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <div class="font-bold">BUDGET</div>
+                                    $0 <i class="fa fa-level-up text-navy"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+
+      
+    </div>
+
+
+</div>
+
+<div id="small-chat">
+
+    
+    <a class="open-small-chat" data-toggle="modal" data-target="#myModal2">
+        <i class="fa fa-plus"></i>
+
+    </a>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddActivity", "Activity", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Activity</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="objective_id" value="@Model.id" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Activity</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="activity" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Number</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="num" />
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Description</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Requirements</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="requirements" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Outputs</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="output" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Performance indicator</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="performance_indicator" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Target</label>
+
+                        <div class="col-lg-9">
+                            <textarea class="form-control" name="target" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Completion</label>
+
+                        <div class="col-lg-9">
+                            <input type="number" class="form-control" name="completion" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Activity Admin</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="employee" multiple></select>
+                            <span class="help-block m-b-none">Select person</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Status</label>
+
+                        <div class="col-lg-9">
+                            @*<select class="form-control" name="status"></select>*@
+                            @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">End Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Ex. Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Due Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="due_date" name="due_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           $('#e6').select2({
+               placeholder: 'Search...',
+               dropdownParent: $("#myModal2"),
+               ajax: {
+                   url: function (params) {
+                       return baseUrl() + "employeeapi/getsearch/"+ params.term;
+                   },
+                   dataType: 'json',
+                   quietMillis: 100,
+
+                   processResults: function (data) {
+                       return {
+                           results: $.map(data, function (obj) {
+                               return { id: obj.id, text: obj.name };
+                           })
+                       };
+                   }
+
+               }
+           });
+
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

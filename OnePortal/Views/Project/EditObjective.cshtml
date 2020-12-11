@@ -1,0 +1,255 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_strategic_objective
+@{
+    ViewBag.Title = "Edit Objective";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2></h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            @if (Model.pm_project.pm_project2 != null)
+            {
+                <li>
+                    <a href="@Url.Action("Home","Project",new { id = Model.pm_project.sub_parent })">@Model.pm_project.pm_project2.code</a>
+                </li>
+            }
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.project_id })">@Model.pm_project.code</a>
+            </li>
+            <li class="active">
+                <strong>@Model.code</strong>
+            </li>
+        </ol>
+    </div>
+   
+</div>
+
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Edit Objective</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="col-lg-12">
+
+                                <input type="hidden" name="objective_id" value="@Model.id" id="objective_id" />
+
+                                <input type="hidden" name="project_id" value="@Model.project_id" id="project_id" />
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Objective</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" name="objective" value="@Model.objectve" id="objective" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Number</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" name="num" id="num"  value="@Model.num"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Code</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" class="form-control" name="code" value="@Model.code" id="objective_code" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Description</label>
+
+                                    <div class="col-lg-9" style="border:1px solid #ccc;">
+                                        <div class="summernote" id="description">
+                                            @MvcHtmlString.Create(WebUtility.HtmlDecode(Model.description))
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label"></label>
+                                    <div class="col-lg-9">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Objective Admins</th>
+                                                    <th></th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.pm_objective_admin.Any())
+                                    {
+                                        foreach (var admin in Model.pm_objective_admin)
+                                        {
+                                                        <tr>
+                                                            <td>@string.Format("{0} {1} {2}", admin.admin_hrm_employee.emp_lastname, admin.admin_hrm_employee.emp_firstname, admin.admin_hrm_employee.emp_middle_name)</td>
+                                                            <td>
+                                                                <a href="@Url.Action("RemoveOAdmin","Project",new { emp_number = admin.emp_number,objective_id=admin.objective_id })" class="btn btn-danger btn-circle">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                        }
+                                    }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Admin</label>
+
+                                    <div class="col-lg-9">
+                                        <select id="e6" name="employee" multiple></select>
+                                        <span class="help-block m-b-none">Select person</span>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label"></label>
+
+                                    <div class="col-lg-9">
+                                        <button type="button" onclick="update_objective()" id="btn_submit" class="btn btn-primary">Submit</button>
+
+                                        <a href="@Url.Action("DeleteObjective","Project",new { id = Model.id ,project_id=Model.project_id})" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+
+
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('.summernote').summernote({
+
+            });
+
+            $('#e6').select2({
+                placeholder: 'Search...',
+                dropdownParent: $("#myModal2"),
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+
+        });
+
+
+    </script>
+    <script>
+  
+
+
+        function update_objective() {
+            var aHTML = $('#description').code();
+
+            $.ajax({
+                url: baseUrl() + 'pmapi/putobjective',
+                method: "PUT",
+                data: JSON.stringify({id:$("#objective_id").val(), description: aHTML, objective: $("#objective").val(), code: $("#objective_code").val(), employee: $("#ie6").val(), project_id: $("#project_id").val(), employee: $("#e6").val(),num:$("#num").val()}),
+                success: function () {
+                    window.location.reload(true);
+
+                }
+            })
+
+        }
+
+    </script>
+
+}
+
+
+
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

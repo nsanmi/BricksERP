@@ -1,0 +1,133 @@
+﻿@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "Product";
+    var product = (product)ViewBag.product;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update Product</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Product</a>
+            </li>
+            <li class="active">
+                <strong>Product status</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="@Url.Action("Update","Inventory")" method="post" data-parsley-validate>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Product Details </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+                        <input type="hidden" name="product_id" required value="@product.product_id" class="form-control" readonly>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" name="product_name" required value="@product.product_name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Product Type</label>
+                                <input type="text" name="product_type" required value="@product.product_type" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group" id="">
+                                <label class="font-noraml">Date created</label>
+                                <input id="Createdate" name="purchased_date" value="@product.purchased_date" required type="date" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="font-noraml">Quantity</label>
+                                <input type="text" name="product_quality" required value="@product.product_quality" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="font-noraml">Purchase price</label>
+                                <input type="text" name="purchase_price" required value="@product.purchase_price" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="font-noraml">Product status</label>
+                                <input type="text" name="product_status" required value="@product.product_status" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="product_description" rows="3" class="form-control">@product.product_description</textarea>
+            </div>
+        </div>
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Update Product</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                daysOfWeekDisabled: [0, 6]
+            });
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+

@@ -1,0 +1,15 @@
+﻿@using WorkFlow.DAL.Data;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    }
+
+<div class="form-group">
+    <a href="@Url.Action("Reverse","Workflow",new { step_id = 18, id = workflow.id })" onclick="$(this).hide()" class="btn btn-primary">Add another Vendor Payment Request</a>
+</div>
+
+<div class="form-group">
+    <h1>Transaction Completed</h1>
+    <p>Click submit to close the process</p>
+</div>
+
+

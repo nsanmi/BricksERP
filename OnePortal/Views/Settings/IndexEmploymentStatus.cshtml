@@ -1,0 +1,345 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@using System.Data
+@using Microsoft.AspNet.Identity;
+
+@using PagedList;
+
+
+@using PagedList.Mvc;
+@model IPagedList<admin_hrm_lkup_employment_status>
+@{
+    ViewBag.Title = "Employment status";
+    var message = ViewBag.message;
+    var receivedData = (IQueryable<admin_hrm_lkup_employment_status>)ViewBag.requestData;
+}
+
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Employment status</h2>
+       @*<ul style="list-style: none;">
+            <li>
+                <h2>Employment status</h2>
+
+            </li>
+            <li>
+                <button style="float: right;" type="button" data-toggle="modal" data-target="#MModal" class="btn btn-primary btn-sm ">Create Lookup</button>
+            </li>
+        </ul>*@
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index","Settings")">Settings</a>
+            </li>
+            <li class="active">
+                <a>Employment status</a>
+
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Employment status</h5>
+                    <div class="ibox-tools">
+                        <button type="button" data-toggle="modal" data-target="#MModal" class="btn btn-primary btn-sm">Create Employment status</button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.message
+                            </div>
+                        }
+                    </div>
+
+                    <div class="project-list">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-bordered" id="tb_empstatus" data-page-length="15">
+                                <thead>
+                                    <tr>
+                                        <th align="center">Status type</th>
+                                        
+                                        <th align="center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var empstatus in receivedData)
+                                    {
+                                    <tr>
+                                        <td>@empstatus.name</td>
+                                       
+                                        @*<td><button type="button" data-toggle="modal" data-target="#Updatemodal_@empstatus.id" class="btn btn-primary btn-sm">Edit Employment status</button></td>*@
+                                        @*<td> @Html.ActionLink("Edit", "UpdateEmploymentStatus", new { employmentStatusId = empstatus.id }, new { title = "Click to edit " })</td>*@
+
+
+                                        <td align="center">
+                                            <a data-toggle="modal" data-target="#UModal" class="btn btn-primary btn-sm" style="margin-right:20px" onclick="populateData(@empstatus.id)">Edit <i class="fa fa-edit"></i></a>
+                                            <button class="btn btn-sm btn-danger" onclick="DeleteEmpStatus(@empstatus.id)" type="button"><i class="fa fa-trash"></i></button>
+                                        </td>
+
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @*<div id='Paging' style="text-align: center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+                            @Html.PagedListPager(Model, page => Url.Action("indexEmploymentStatus", new { page }))
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="MModal" aria-hidden="true">
+    <div class="modal-dialog" @*style="width:1250px; height:1000px;"*@>
+        <div class="modal-content animated flipInY" @*style="width:1250px; height:600px;"*@>
+            <div class="modal-header">
+                Add Employment status
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <form method="post" action="@Url.Action("CreateEmploymentStatus", "Settings")" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="modal-body" @*style="width:1248px; height:450px;"*@>
+
+                    <div class="form-group">
+                        <label for="title" class="col-lg-3">Name</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="job_title" id="title" placeholder="Title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes" class="col-lg-3">Note</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="note" id="notes" placeholder="Note">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job_description" class="col-lg-3">Job description</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="job_description" id="job_description" placeholder="Job description">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+            <div class="modal-body" @*style="width:1248px; height:450px;"*@>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Name">
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Employment status</button>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div id="comment_box"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal inmodal" id="UModal" aria-hidden="true">
+    <div class="modal-dialog" @*style="width:1250px; height:1000px;"*@>
+        <div class="modal-content animated flipInY" @*style="width:1250px; height:600px;"*@>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Edit Employment status</h4>
+            </div>
+            <div class="modal-body" @*style="width:1248px; height:450px;"*@>
+                <form method="post" action="@Url.Action("UpdateEmploymentStatus","Settings")" class="form-horizontal">
+                    <input type="hidden" name="id" id="id" />
+                    <div class="form-group">
+
+                        <label for="uname" class="col-lg-3">Title</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="uname" name="name" placeholder="Title">
+                        </div>
+                    </div>
+                   
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btn_submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+        function DeleteEmpStatus(id) {
+            if (confirm("Are you sure you want to remove this employment status type?")) {
+                $.ajax({
+                    url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Settings/DeleteEmploymentStatus/?Id=" + id,
+                    context: document.body
+                }).done(function (returnVal) {
+                    alert(returnVal);
+                    location.reload();
+                });
+            }
+        }
+
+
+
+
+     $(document).ready(function () {
+            $('#tb_empstatus').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'subunit_list' },
+                    { extend: 'pdf', title: 'subunit_list' },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+            });
+        });
+
+
+
+          function populateData(id) {
+            $.ajax({
+                url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Settings/UpdateEmploymentStatus/?employmentStatusId=" + id,
+                context: document.body
+            }).done(function (returnVal) {
+                var data = JSON.parse(returnVal);
+                if (returnVal === "not found")
+                    alert("Data was not found");
+                $("#uname").val(data.title);
+                
+                $("#id").val(data.id);
+            });
+        }
+
+       
+    </script>
+}
+
+@section Styles{
+    <style>
+        .table td.text {
+            max-width: 177px;
+        }
+
+            .table td.text span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+        .table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        table {
+            border: 1px;
+            table-layout: fixed;
+        }
+
+        .table > tbody > tr > td, .table > thead > tr > th {
+            padding: 6px 10px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+    </style>
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@{
+    ViewBag.Title = "IndexJobTitle";
+}
+
+<h2>IndexJobTitle</h2>
+

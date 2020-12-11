@@ -1,0 +1,330 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@model pm_project_task
+@{
+    ViewBag.Title = "Edit Task";
+   
+    //var funders = OptionUtil.GetFunders();
+}
+<div class="row wrapper border-bottom white-bg page-heading red-bg" style="border-color:#ed5565">
+    <div class="col-lg-10">
+        <h2>@Model.task</h2>
+        <ol class="breadcrumb red-bg">
+            <li>
+                <a href="@Url.Action("ProjectSpace","Project")">ProjectSpace</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Home","Project",new { id = Model.pm_project_objective_activity.pm_project_strategic_objective.project_id })">@Model.pm_project_objective_activity.pm_project_strategic_objective.pm_project.code</a>
+            </li>
+
+
+            <li>
+                <a href="@Url.Action("Objective","Project",new { id = Model.pm_project_objective_activity.pm_project_strategic_objective.id })">@Model.pm_project_objective_activity.pm_project_strategic_objective.code</a>
+            </li>
+
+            <li>
+                <a href="@Url.Action("Tasks","Task",new { id = Model.objective_activity_id })">@Model.pm_project_objective_activity.activity</a>
+            </li>
+
+            <li class="active">
+                <strong>@Model.task</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Edit Projects</h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+
+                            @using (Html.BeginForm("Edit", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Name</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="text" value="@Model.task" class="form-control" name="task" />
+                                    </div>
+                                </div>
+
+                               
+                                <input type="hidden" name="id" value="@Model.id" />
+                                <input type="hidden" name="activity_id" value="@Model.objective_activity_id" />
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Description</label>
+
+                                    <div class="col-lg-9">
+                                        <textarea rows="4" class="form-control" name="description">@Model.description</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Status</label>
+
+                                    <div class="col-lg-9">
+                                        @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("task_status"), "id", "lookup_name",Model.status), "- Please Select -", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group" id="data_1">
+                                    <label class="col-lg-3 control-label">Start Date</label>
+                                    <div class="input-group date col-lg-9">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" name="start_date" type="text" value="@Model.start_date" readonly class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="data_1">
+                                    <label class="col-lg-3 control-label">End Date</label>
+                                    <div class="input-group date col-lg-9">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" name="end_date" type="text" value="@Model.end_date" readonly class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="data_1">
+                                    <label class="col-lg-3 control-label">Ex. Start Date</label>
+                                    <div class="input-group date col-lg-9">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="expected_start_date" value="@Model.expected_start_date" name="expected_start_date" type="text" readonly class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="data_1">
+                                    <label class="col-lg-3 control-label">Due Date</label>
+                                    <div class="input-group date col-lg-9">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="due_date" name="due_date" type="text" value="@Model.due_date" readonly class="form-control">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Task Admin</label>
+
+                                    <div class="col-lg-9">
+                                        <select id="e6" name="employee" multiple></select>
+                                        <span class="help-block m-b-none">Select person</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label"></label>
+                                    <div class="col-lg-9">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Project Admins</th>
+                                                    <th></th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.pm_task_admin.Any())
+                                                {
+                                                    foreach (var admin in Model.pm_task_admin)
+                                                    {
+                                                        <tr>
+                                                            <td>@string.Format("{0} {1} {2}", admin.admin_hrm_employee.emp_lastname, admin.admin_hrm_employee.emp_firstname, admin.admin_hrm_employee.emp_middle_name)</td>
+                                                            <td>
+                                                                <a href="@Url.Action("RemoveAdmin","Task",new { emp_number = admin.emp_number,project_id=admin.task_id })" class="btn btn-danger btn-circle">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label"></label>
+
+                                    <div class="col-lg-9">
+                                        <button class="btn btn-success" type="submit">Update</button>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="table-responsive">
+                                <button class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#myModal2">Add Deliverable</button>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5" style="text-align:center">Deliverables</th>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Type</th>
+                                           
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.pm_task_deliverables.Any())
+                                        {
+                                            foreach (var deliverable in Model.pm_task_deliverables)
+                                            {
+                                                <tr>
+                                                    <td>@deliverable.name</td>
+                                                    <td>@deliverable.ws_lookup.lookup_name</td>
+                                                    <td>@deliverable.ws_lookup1.lookup_name</td>
+                                                    <td><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Delete</button></td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="myModal2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddDeliverable", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Deliverable</h4>
+
+                </div>
+                <div class="modal-body">
+
+
+                    <input type="hidden" name="task_id" value="@Model.id" />
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Status</label>
+
+                        <div class="col-lg-9">
+                           @Html.DropDownList("status", new SelectList(OptionUtil.GetLookupOptions("deliverable_status"), "id", "lookup_name"), new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" name="name" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Deliverable Type</label>
+
+                        <div class="col-lg-9">
+                            @Html.DropDownList("deliverable_type", new SelectList(OptionUtil.GetLookupOptions("deliverable_type"), "id", "lookup_name"), new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+           $('#data_1 .input-group.date').datepicker({
+               format: 'yyyy-mm-dd',
+               todayBtn: "linked",
+               keyboardNavigation: false,
+               forceParse: false,
+               calendarWeeks: true,
+               autoclose: true
+           });
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           $('#e6').select2({
+
+               placeholder: 'Search...',
+               ajax: {
+                   url: function (params) {
+                       return baseUrl() + "employeeapi/getsearch/"+ params.term;
+                   },
+                   dataType: 'json',
+                   quietMillis: 100,
+
+                   processResults: function (data) {
+                       return {
+                           results: $.map(data, function (obj) {
+                               return { id: obj.id, text: obj.name };
+                           })
+                       };
+                   }
+
+               }
+           });
+
+
+       });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+
+    <style>
+        .select2-close-mask {
+            z-index: 2099;
+        }
+
+        .select2-dropdown {
+            z-index: 3051;
+        }
+
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+}

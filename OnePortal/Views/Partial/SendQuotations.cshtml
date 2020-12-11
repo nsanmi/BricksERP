@@ -1,0 +1,130 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+   
+}
+<div class="form-group" style="border:solid #ccc 1px">
+
+    <table>
+        <tbody>
+            <tr>
+                <td>Dear Sir,</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><strong>REQUEST FOR QUOTATION</strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    The Maryland Global Initiative Corporation of Nigeria a Non –profit, Non- Governmental Organization funded by the US Government through the Center for Disease Control  (CDC). University of Maryland (UMB) Program in Nigeria operationalized through Maryland Global Initiatives Corporation (MGIC) Nigeria, which promotes best practices in health care delivery and research using local and internationally-adapted models to strengthen health systems.
+                </td>
+            </tr>
+            <tr>
+                <td>We request the quotation for:</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table class="table table-bordered" id="tb_items">
+                        <thead>
+                            <tr>
+
+                                <th style="background-color:transparent">Unit</th>
+                                <th style="background-color:transparent">Quantity</th>
+                                @*<th style="background-color:transparent">Item</th>*@
+                                <th style="background-color:transparent">Description</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (form.Element("items").Elements("item").Any())
+                            {
+                                foreach (var item in form.Element("items").Elements("item"))
+                                {
+                                    <tr>
+                                        <td>@item.Element("unit").Value</td>
+                                        <td>@item.Element("quantity").Value</td>
+                                        @*<td>@item.Element("itemname")?.Value</td>*@
+                                        <td>@item.Element("description").Value</td>
+
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    Should your organization be successful in the bid selection process, note that (as a statutory requirement) our organization shall withhold & remit to the tax authority the appropriate tax rate under which your professional service falls and a Performance Bond (PB) will be requested from you if your transaction falls within that threshold. We are VAT exempt as an organization (NGO).
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="3">
+                   <textarea class="form-control" name="email_info" rows="3" placeholder="add any additional information"></textarea>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="3">
+
+                    All quotes must be submitted on or before the close of business on 2nd March 2018 in hard copies and sealed envelope to the Procurement Officer MGIC, Plot 784, by Gilmor Engineering, Off Life Camp, Gwarinpa—Expressway, Jahi District, Abuja or through our email: procurement@mgic-nigeria.org
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Select Date</td>
+                <td colspan="2">
+                    <div class="col-lg-12" id="data_1">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="t_start_date" required type="text" readonly class="form-control">
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="3">Employee Name,</td>
+
+            </tr>
+            <tr>
+                <td colspan="3">Job Title</td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+
+ 
+
+
+
+</div>
+
+
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Vendors</label>
+    @Html.DropDownList("vendors", new SelectList(Util.GetVendors().OrderBy(e=>e.name).Select(e=>new { id=e.id,name=string.Format("{0} - {1}",e.name,e.email)}), "id", "name",null), null, new { @class = "form-control",multiple="multiple",required="required",id="vendors" })
+</div>

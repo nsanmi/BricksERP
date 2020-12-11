@@ -1,0 +1,1079 @@
+﻿@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@using Microsoft.AspNet.Identity;
+@model HRM.DAL.Models.admin_hrm_employee
+@{
+    ViewBag.Title = "Employee";
+    var employee = (admin_hrm_employee)ViewBag.employee;
+}
+
+@{
+    string profilePic = "../Content/images/profile_images/" + employee.user_id + ".jpg";
+    if (!File.Exists(Server.MapPath(profilePic)))
+    { profilePic = "../Content/images/a4.jpg"; }
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Employee</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Employee</a>
+            </li>
+            <li class="active">
+                <strong>Employee Info</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" style="min-height:568px">
+
+        <div class="ibox-content gray-bg">
+
+            <div class="row m-b-lg m-t-lg" style="margin:0">
+                <div class="col-md-6">
+
+                    <div class="profile-image">
+                        <img src="@profilePic" class="img-circle circle-border m-b-md" onclick="$('#img').click();" alt="profile">
+                        <form method="post" id="frm_img" enctype="multipart/form-data">
+                            <input type="file" id="img" name="img" style="display:none" />
+                        </form>
+
+                    </div>
+                    <div class="profile-info">
+                        <div class="">
+                            <div>
+                                <h2 class="no-margins">
+                                    @string.Format("{0} {1}", employee.emp_lastname, employee.emp_firstname)
+                                </h2>
+                                <h4>
+                                    @employee.admin_hrm_emp_job_record.admin_hrm_lkup_job_title.job_title
+
+                                    @if (employee.admin_hrm_emp_locations.Any())
+                                    {
+                                        <span> - @employee.admin_hrm_emp_locations.LastOrDefault().admin_hrm_location.name</span>
+                                    }
+                                </h4>
+
+                                <small id="sm_about" ondblclick="$('#t_about').show(); $(this).hide();">
+                                    @employee.emp_about
+                                </small>
+                                <textarea id="t_about" style="display:none" class="form-control"> @employee.emp_about</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <table class="table small m-b-xs" style="display:none">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>0</strong> Projects
+                                </td>
+                                <td>
+                                    <strong>0</strong> Activities
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>0</strong> Tasks
+                                </td>
+                                <td>
+                                    <strong>0</strong> Meetings
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>0</strong> Trainings
+                                </td>
+                                <td>
+                                    <strong>0</strong> Deadlines
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    @*<small>Sales in last 24h</small>
+                        <h2 class="no-margins">206 480</h2>
+                        <div id="sparkline1"></div>*@
+                </div>
+
+
+            </div>
+            <div class="row">
+
+                <div class="col-lg-9">
+                    <div class="tabs-container">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+
+
+                            <div class="tabs-left">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#tab-6">Personal</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-7">Employment </a></li>
+                                    @*<li class=""><a data-toggle="tab" href="#tab-8">Salary</a></li>*@
+                                    <li class=""><a data-toggle="tab" href="#tab-9">Contact</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-10">Emergency contact</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-11">Dependents</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-12">Report To</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-13">Qualifications</a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab-14">Membership</a></li>
+                                </ul>
+                                <div class="tab-content ">
+                                    <div id="tab-6" class="tab-pane active">
+                                        <div class="panel-body">
+
+                                            <input type="hidden" name="emp_number" value="@employee.emp_number" />
+                                            <input type="hidden" name="user_id" value="@employee.user_id" />
+                                            <div class="form-group col-lg-6"><label>First name</label> <input type="text" required value="@employee.emp_firstname" name="emp_firstname" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Last name</label> <input type="text" value="@employee.emp_lastname" name="emp_lastname" required class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Middle name</label> <input type="text" value="@employee.emp_middle_name" name="emp_middle_name" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Nick name</label> <input type="text" value="@employee.emp_nick_name" name="emp_nick_name" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Employee ID</label> <input type="text" value="@employee.employee_id" readonly name="employee_id" class="form-control"></div>
+                                            <input type="hidden" value="@employee.emp_about" name="emp_about" id="emp_about" />
+                                            @if (employee.emp_birthday != null)
+                                            {
+                                                <div class="form-group col-lg-6" id="data_1">
+                                                    <label>Date of Birth</label>
+                                                    <div class="input-group date">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                                        <input type="text" readonly value="@employee.emp_birthday.Value.ToString("yyyy-MM-dd")" name="emp_birthday" class="form-control">
+                                                    </div>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group col-lg-6" id="data_1">
+                                                    <label>Date of Birth</label>
+                                                    @*<input type="text" value="" name="emp_birthday" class="form-control">*@
+                                                    <div class="input-group date">
+                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        @*<input id="expected_start_date" name="expected_start_date" type="text" readonly class="form-control">*@
+                                                        <input type="text" readonly name="emp_birthday" class="form-control">
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="form-group col-lg-6">
+                                                <label>Marital status</label>
+
+                                                @Html.DropDownList("emp_marital_status", new SelectList(OptionUtil.GetLookupOptions("marital_status"), "id", "lookup_name", employee.emp_marital_status), "- Please Select -", new { @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Gender</label>
+
+                                                @Html.DropDownList("emp_gender", new SelectList(OptionUtil.GetLookupOptions("gender"), "id", "lookup_name", employee.emp_gender), "- Please Select -", new { @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Nationality</label>
+                                                @Html.DropDownList("nation_code", new SelectList(OptionUtil.GetLookupOptions("country"), "id", "lookup_name", employee.nation_code), "- Please Select -", new { @class = "form-control" })
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Save</strong></button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-7" class="tab-pane">
+                                        <div class="panel-body">
+
+
+                                            @if (employee.joined_date.HasValue)
+                                            {
+                                                <div class="form-group col-lg-6"><label>Joined Date</label> <input type="text" value="@employee.joined_date.Value.ToString("yyyy-MM-dd")" name="joined_date" class="form-control"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group col-lg-6"><label>Joined Date</label> <input type="text" value="" name="joined_date" class="form-control"></div>
+                                            }
+                                            <div class="form-group col-lg-6"><label>Probation end date</label> <input type="text" value="@employee.admin_hrm_emp_job_record.probation_end_date" name="admin_hrm_emp_job_record.probation_end_date" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Date of permanency</label> <input type="text" value="@employee.admin_hrm_emp_job_record.date_of_permanency" name="date_of_permanency" class="form-control"></div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Job Title</label>
+
+
+                                                @Html.DropDownList("job_title_code", new SelectList(OptionUtil.GetJobTitles(), "id", "job_title", employee.job_title_code), "- Please Select -", new { @class = "form-control", @disabled = "disabled" })
+
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Employee status</label>
+
+
+                                                @Html.DropDownList("emp_status", new SelectList(OptionUtil.GetEmploymentStatus(), "id", "name", employee.emp_status), "- Please Select -", new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+
+                                            <div class="form-group col-lg-6">
+                                                <label>Sub unit</label>
+
+                                                @Html.DropDownList("emp_subunit", new SelectList(OptionUtil.GetSubunits(), "id", "name", employee.admin_hrm_emp_job_record.subunit_id), "- Please Select -", new { @class = "form-control", @disabled = "disabled" })
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="btn_submit" type="submit"><strong>Save</strong></button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-8" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-6">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Earning</th>
+                                                            <th>Amount</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (employee.admin_hrm_emp_basicsalary.Any())
+                                                        {
+
+                                                            <tr>
+                                                                <td>Basic Salary</td>
+                                                                <td>@employee.admin_hrm_emp_basicsalary.LastOrDefault().ebsal_basic_salary</td>
+                                                                <td></td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Deduction</th>
+                                                            <th>Amount</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-9" class="tab-pane">
+                                        <div class="panel-body">
+
+                                            <div class="form-group col-lg-6"><label>Address Street1</label> <input type="text" value="@employee.emp_street1" name="emp_street1" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Address Street2</label> <input type="text" value="@employee.emp_street2" name="emp_street2" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Country</label> <input type="text" value="@employee.coun_code" name="coun_code" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>State</label> <input type="text" value="@employee.provin_code" name="provin_code" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Zip/Postal code</label> <input type="text" value="@employee.emp_zipcode" name="emp_zipcode" class="form-control"></div>
+
+                                            <div class="form-group col-lg-6"><label>Home Telephone</label> <input type="text" value="@employee.emp_hm_telephone" name="emp_hm_telephone" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Mobile</label> <input type="text" value="@employee.emp_mobile" name="emp_mobile" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Work Telephone</label> <input type="text" value="@employee.emp_work_telephone" name="emp_work_telephone" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Work Email</label> <input type="text" value="@employee.emp_work_email" name="emp_work_email" class="form-control"></div>
+                                            <div class="form-group col-lg-6"><label>Other Email</label> <input type="text" value="@employee.emp_oth_email" name="emp_oth_email" class="form-control"></div>
+
+                                            <div class="col-lg-12">
+                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Save</strong></button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-10" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-12">
+                                                <h3><strong></strong><button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_eec"><i class="fa fa-plus"></i></button></h3>
+                                            </div>
+                                            @if (employee.admin_hrm_emp_emergency_contacts.Any())
+                                            {
+                                                <table class="table table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Name</th>
+                                                            <th>Relationship</th>
+                                                            <th>Home Telephone</th>
+                                                            <th>Mobile</th>
+                                                            <th>Work Telephone</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var emergency in employee.admin_hrm_emp_emergency_contacts)
+                                                        {
+                                                            <tr>
+                                                                <td>@emergency.eec_seqno</td>
+                                                                <td>@emergency.eec_name</td>
+                                                                <td>@emergency.eec_relationship</td>
+                                                                <td>@emergency.eec_home_no</td>
+                                                                <td>@emergency.eec_mobile_no</td>
+                                                                <td>@emergency.eec_office_no</td>
+                                                                <td>
+                                                                    <a href="@Url.Action("DeleteContact","Employee",new { id = emergency.eec_seqno })" class="btn btn-xs btn-danger">Delete <i class="fa fa-trash"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                    <div id="tab-11" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-12"><h3><strong></strong><button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_ed"><i class="fa fa-plus"></i></button></h3></div>
+                                            @if (employee.admin_hrm_emp_dependents.Any())
+                                            {
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Name</th>
+                                                            <th>Relationship</th>
+                                                            <th>Date of birth</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var dependent in employee.admin_hrm_emp_dependents)
+                                                        {
+                                                            <tr>
+                                                                <td>@dependent.ed_seqno</td>
+                                                                <td>@dependent.ed_name</td>
+                                                                <td>@dependent.ed_relationship</td>
+                                                                @if (dependent.ed_date_of_birth.HasValue)
+                                                                {
+                                                                    <td>@dependent.ed_date_of_birth.Value.ToString("yyyy-MM-dd")</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                                <td><a href="@Url.Action("DeleteDependent","Employee",new { id = dependent.ed_seqno })" class="btn btn-xs btn-danger">Delete <i class="fa fa-trash"></i></a></td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-12" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-12">
+                                                <h3>
+                                                    <strong>Supervisors</strong>
+                                                    @if (User.IsInRole("hr"))
+                                                    {
+                                                        <button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_reportto"><i class="fa fa-plus"></i></button>
+                                                    }
+
+
+                                                </h3>
+
+                                            </div>
+                                            @if (employee.admin_hrm_emp_reportto1.Any())
+                                            {
+
+                                                <div class="col-lg-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-striped table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Reporting Method</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var sup in employee.admin_hrm_emp_reportto1)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@string.Format("{0} {1}", sup.admin_hrm_employee.emp_lastname, sup.admin_hrm_employee.emp_firstname)</td>
+                                                                        <td>@sup.erep_reporting_mode</td>
+                                                                        <td><button class="btn btn-sm btn-warning">Edit <i class="fa fa-edit"></i></button></td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="col-lg-12">
+                                                <h3>
+                                                    <strong>Supervisees</strong>
+                                                    @if (User.IsInRole("hr"))
+                                                    {
+                                                        <button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_reportto"><i class="fa fa-plus"></i></button>
+                                                    }
+                                                </h3>
+                                            </div>
+
+                                            @if (employee.admin_hrm_emp_reportto.Any())
+                                            {
+
+                                                <div class="col-lg-12">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-striped table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Reporting Method</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var sup in employee.admin_hrm_emp_reportto)
+                                                                {
+                                                                    <tr>
+                                                                        @*<td>@string.Format("{0} {1}", sup.admin_hrm_employee1.emp_lastname, sup.admin_hrm_employee1.emp_firstname)</td>
+                                                                        <td>@sup.erep_reporting_mode</td>*@
+                                                                        <td><button class="btn btn-sm btn-default"><i class="fa fa-edit"></i></button></td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-13" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-12"><h3><strong></strong><button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_education"><i class="fa fa-plus"></i></button></h3></div>
+                                            @if (employee.admin_hrm_emp_education.Any())
+                                            {
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Education</th>
+                                                            <th>Institute</th>
+                                                            <th>Major</th>
+                                                            <th>Year</th>
+                                                            <th>Score</th>
+                                                            <th>Start date</th>
+                                                            <th>End date</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var education in employee.admin_hrm_emp_education)
+                                                        {
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>@education.admin_hrm_education.name</td>
+                                                                <td>@education.institute</td>
+                                                                <td>@education.major</td>
+                                                                <td>@education.year</td>
+                                                                <td>@education.score</td>
+                                                                @if (education.start_date.HasValue)
+                                                                {
+                                                                    <td>@education.start_date.Value.ToString("yyyy-MM-dd")</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                                @if (education.end_date.HasValue)
+                                                                {
+                                                                    <td>@education.end_date.Value.ToString("yyyy-MM-dd")</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                                <td>
+
+                                                                    <a href="@Url.Action("DeleteEducation","Employee",new { id = education.id })" class="btn btn-xs btn-danger">Delete <i class="fa fa-trash"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+
+                                        </div>
+                                    </div>
+
+                                    <div id="tab-14" class="tab-pane">
+                                        <div class="panel-body">
+                                            <div class="col-lg-12"><h3><strong></strong><button class="btn btn-sm btn-circle btn-primary pull-right" type="button" data-toggle="modal" data-target="#modal_membership"><i class="fa fa-plus"></i></button></h3></div>
+                                            @if (employee.admin_hrm_emp_member_detail.Any())
+                                            {
+                                                <table class="table table-bordered table-striped table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Membership</th>
+                                                            <th>Subscription paid by</th>
+                                                            <th>Subscription Amount</th>
+                                                            <th>Currency</th>
+                                                            <th>Subscription commence date</th>
+                                                            <th>Subscription Renewal Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var membership in employee.admin_hrm_emp_member_detail)
+                                                        {
+                                                            <tr>
+                                                                <td>@membership.membship_code</td>
+                                                                <td>@membership.ememb_subscript_ownership</td>
+                                                                <td>@membership.ememb_subscript_amount</td>
+                                                                <td>@membership.ememb_subs_currency</td>
+                                                                <td>@membership.ememb_commence_date</td>
+                                                                <td>@membership.ememb_renewal_date</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+                    </div>
+                </div>
+
+                <div class="col-lg-3 m-b-lg">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="file-manager">
+                                <h5>Show:</h5>
+                                <a href="#" class="file-control active">All</a>
+
+
+
+                                <div class="hr-line-dashed"></div>
+                                <form method="post" enctype="multipart/form-data" id="frmFile">
+                                    <input type="file" style="display:none" name="file" id="file" />
+                                    <input type="hidden" value="hrm" name="module" />
+                                    <div class="form-group col-lg-9">
+                                        <label>File Type</label>
+                                        @Html.DropDownList("file_type", new SelectList(OptionUtil.GetLookupOptions("hr_file_type"), "lookup_name", "lookup_name"), new { @class = "form-control", @required = "required" })
+
+                                    </div>
+
+                                    <input type="hidden" value="@employee.emp_number" name="emp_number" />
+                                </form>
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <button type="button" onclick="$('#file').click()" class="btn btn-primary btn-block">
+                                            Upload Files
+                                        </button>
+                                    </div>
+
+                                    <div class="col-lg-3">
+
+                                        <label id="progress" style="margin-top:5px;display:none">
+                                            <img src="~/Content/images/loading-spinner-blue.gif" alt="" />
+
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="hr-line-dashed"></div>
+                                <h5>Files</h5>
+                                <ul class="folder-list" style="padding: 0">
+                                    @if (employee.admin_hrm_emp_file.Any())
+                                    {
+                                        foreach (var file in employee.admin_hrm_emp_file)
+                                        {
+                                            <li><a href="/api/fileapi/getfile/@file.file_id"><i class="fa fa-file"></i> <span>@file.admin_hrm_uploaded_document.file_name</span></a></li>
+                                        }
+                                    }
+
+
+                                </ul>
+                                <form method="post" enctype="multipart/form-data" id="frmFile">
+                                    <input type="file" style="display:none" name="file" id="file" />
+                                    <input type="hidden" value="hrm" name="module" />
+                                    <input type="hidden" value="@employee.emp_number" name="emp_number" />
+                                </form>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal inmodal" id="modal_eec" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddEmergencyContact", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Emergency Contact</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="emp_number" value="@employee.emp_number" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="eec_name" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Relationship</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="eec_relationship" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Home No</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="eec_home_no" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Mobile No</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="eec_mobile_no" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Office No</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="eec_office_no" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div class="modal inmodal" id="modal_ed" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddDependent", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Dependent</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="emp_number" value="@employee.emp_number" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Name</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="ed_name" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Relationship</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="ed_relationship" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Nationality</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownList("ed_nation_code", new SelectList(OptionUtil.GetLookupOptions("country"), "id", "lookup_name"), "- Please Select -", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Date of birth</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="ed_date_of_birth" name="ed_date_of_birth" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="modal_education" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddEducation", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Education</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="emp_number" value="@employee.emp_number" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Institute</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="institute" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Education</label>
+                        <div class="col-lg-9">
+                            @Html.DropDownList("education_id", new SelectList(OptionUtil.GetEducation(), "id", "name"), "- Please Select -", new { @class = "form-control", required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Major</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="major" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Year</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="year" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Score</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="score" />
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Start Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="start_date" required name="start_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">End Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="end_date" required name="end_date" type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div class="modal inmodal" id="modal_membership" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("AddMembership", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add Membership</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="emp_number" value="@employee.emp_number" />
+
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Membership code</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="membership_code" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Subscription Ownership</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="ememb_subscript_ownership" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Amount</label>
+
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" required name="ememb_subscript_amount" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Currency</label>
+
+                        <div class="col-lg-9">
+                            @* <input type="text" class="form-control" name="ememb_subs_currency" />*@
+                            @Html.DropDownList("ememb_subs_currency", new SelectList(OptionUtil.GetLookupOptions("currency"), "id", "lookup_name"), null, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Commence Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="ememb_commence_date" name="ememb_commence_date" required type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="data_1">
+                        <label class="col-lg-3 control-label">Renewal Date</label>
+                        <div class="input-group date col-lg-9">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="ememb_renewal_date" name="ememb_renewal_date" required type="text" readonly class="form-control">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div class="modal inmodal" id="modal_reportto" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("ReportTo", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="modal-content animated flipInY">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Reporting</h4>
+
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" name="emp_number" value="@employee.emp_number" />
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Employee</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="employee"></select>
+                            <span class="help-block m-b-none">Select the employee</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">Type</label>
+
+                        <div class="col-lg-9">
+                            <select id="e6" name="reporting_type">
+                                <option>Supervisee</option>
+                                <option>Supervisor</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn_submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+
+        })
+    </script>
+
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('#e6').select2({
+                placeholder: 'Search for a user',
+                dropdownParent: $("#modal_reportto"),
+                ajax: {
+                    url: function (params) {
+                        return baseUrl() + "employeeapi/getsearch/" + params.term;
+                    },
+                    dataType: 'json',
+                    quietMillis: 100,
+
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return { id: obj.id, text: obj.name };
+                            })
+                        };
+                    }
+
+                }
+            });
+
+
+
+            $("#frm_img").submit(function () {
+
+                var formData = new FormData($(this)[0]);
+
+
+                $.ajax({
+                    url: '/api/employeeapi/UploadImg',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (data) {
+                        window.location.reload(true);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+                return false;
+            });
+
+            $('#t_about').keypress(function (e) {
+                if (e.which == 13) {
+                    $('#emp_about').val($('#t_about').val());
+                    $('#btn_submit').click();
+                }
+            });
+
+            $('#t_about').keyup(function () {
+                var max = 140;
+                var len = $(this).val().length;
+                if (len >= max) {
+                    $(this).val($(this).val().substr(0, max));
+
+                }
+            });
+
+
+            $('#img').change(function () {
+                $('#frm_img').submit();
+            });
+
+            $('#data_1 .input-group.date').datepicker({
+                format: 'yyyy-mm-dd',
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+
+
+        });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
+
+}

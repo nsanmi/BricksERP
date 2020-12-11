@@ -1,0 +1,1505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="oneportalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admin_hrm_employee">
+          <Key>
+            <PropertyRef Name="emp_number" />
+          </Key>
+          <Property Name="emp_number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee_id" Type="varchar" MaxLength="50" />
+          <Property Name="emp_lastname" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="emp_firstname" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="emp_middle_name" Type="varchar" MaxLength="100" />
+          <Property Name="emp_nick_name" Type="varchar" MaxLength="100" />
+          <Property Name="ethnic_race_code" Type="varchar" MaxLength="13" />
+          <Property Name="emp_birthday" Type="date" />
+          <Property Name="nation_code" Type="int" />
+          <Property Name="emp_gender" Type="tinyint" />
+          <Property Name="emp_marital_status" Type="varchar" MaxLength="20" />
+          <Property Name="emp_ssn_num" Type="varchar" MaxLength="100" />
+          <Property Name="emp_sin_num" Type="varchar" MaxLength="100" />
+          <Property Name="emp_other_id" Type="varchar" MaxLength="100" />
+          <Property Name="emp_dri_lice_num" Type="varchar" MaxLength="100" />
+          <Property Name="emp_dri_lice_exp_date" Type="date" />
+          <Property Name="emp_military_service" Type="varchar" MaxLength="100" />
+          <Property Name="emp_status" Type="int" />
+          <Property Name="job_title_code" Type="int" />
+          <Property Name="eeo_cat_code" Type="int" />
+          <Property Name="work_station" Type="int" />
+          <Property Name="emp_street1" Type="varchar" MaxLength="100" />
+          <Property Name="emp_street2" Type="varchar" MaxLength="100" />
+          <Property Name="city_code" Type="varchar" MaxLength="100" />
+          <Property Name="coun_code" Type="varchar" MaxLength="100" />
+          <Property Name="provin_code" Type="varchar" MaxLength="100" />
+          <Property Name="emp_zipcode" Type="varchar" MaxLength="20" />
+          <Property Name="emp_hm_telephone" Type="varchar" MaxLength="50" />
+          <Property Name="emp_mobile" Type="varchar" MaxLength="50" />
+          <Property Name="emp_work_telephone" Type="varchar" MaxLength="50" />
+          <Property Name="emp_work_email" Type="varchar" MaxLength="50" />
+          <Property Name="sal_grd_code" Type="varchar" MaxLength="13" />
+          <Property Name="joined_date" Type="date" />
+          <Property Name="emp_oth_email" Type="varchar" MaxLength="50" />
+          <Property Name="termination_id" Type="int" />
+          <Property Name="deleted_at" Type="datetime" />
+          <Property Name="added_date" Type="date" />
+          <Property Name="emp_about" Type="nvarchar" MaxLength="140" />
+          <Property Name="user_id" Type="nvarchar" MaxLength="128" />
+          <Property Name="active" Type="int" />
+          <Property Name="deleted" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_approval_token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="token" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="consumed" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_form_design">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="form_html" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_link_travel_expense">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="travel_type_id" Type="int" Nullable="false" />
+          <Property Name="expense_id" Type="int" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" />
+          <Property Name="amount" Type="money" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_lnk_vendor_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_payments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="workflow_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="pv_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_process">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="process_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="definition" Type="xml" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="version" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="updated_at" Type="datetime" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="process_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_transaction_token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="t_code" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="transaction_id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_travel_expenses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_travel_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="company_name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="State" Type="int" />
+          <Property Name="Lga" Type="int" />
+          <Property Name="email" Type="varchar" MaxLength="150" />
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="updated_at" Type="datetime" />
+          <Property Name="deleted" Type="int" Nullable="false" />
+          <Property Name="tin" Type="varchar" MaxLength="50" />
+          <Property Name="account_number" Type="varchar" MaxLength="10" />
+          <Property Name="bank_name" Type="varchar" MaxLength="50" />
+          <Property Name="account_name" Type="varchar" MaxLength="50" />
+          <Property Name="rc_number" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="bpm_vendor_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_vendor_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="description" Type="int" Nullable="false" />
+          <Property Name="file_path" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="workflow" Type="xml" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="process_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="project_id" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="deleted" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="location" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="workflow_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow_employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="workflow_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="emp_number" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+          <Property Name="pending" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow_program_approval">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="project_id" Type="int" Nullable="false" />
+          <Property Name="emp_number" Type="int" Nullable="false" />
+          <Property Name="job_title" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pm_project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="500" />
+          <Property Name="description" Type="varchar(max)" />
+          <Property Name="code" Type="varchar" MaxLength="50" />
+          <Property Name="sub_parent" Type="int" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="updated_at" Type="datetime" />
+          <Property Name="status" Type="int" />
+          <Property Name="timesheet_only" Type="int" />
+          <Property Name="num" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ws_lookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="lookup_name" Type="nvarchar" MaxLength="200" />
+          <Property Name="orderd" Type="int" />
+          <Property Name="category" Type="nvarchar" MaxLength="200" />
+          <Property Name="deleted" Type="int" />
+        </EntityType>
+        <Association Name="FK_bpm_link_travel_expense_bpm_travel_expenses">
+          <End Role="bpm_travel_expenses" Type="Self.bpm_travel_expenses" Multiplicity="1" />
+          <End Role="bpm_link_travel_expense" Type="Self.bpm_link_travel_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_travel_expenses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_link_travel_expense">
+              <PropertyRef Name="expense_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_link_travel_expense_bpm_travel_type">
+          <End Role="bpm_travel_type" Type="Self.bpm_travel_type" Multiplicity="1" />
+          <End Role="bpm_link_travel_expense" Type="Self.bpm_link_travel_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_travel_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_link_travel_expense">
+              <PropertyRef Name="travel_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_lnk_vendor_category_bpm_vendor">
+          <End Role="bpm_vendor" Type="Self.bpm_vendor" Multiplicity="1" />
+          <End Role="bpm_lnk_vendor_category" Type="Self.bpm_lnk_vendor_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_lnk_vendor_category">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_lnk_vendor_category_bpm_vendor_category">
+          <End Role="bpm_vendor_category" Type="Self.bpm_vendor_category" Multiplicity="1" />
+          <End Role="bpm_lnk_vendor_category" Type="Self.bpm_lnk_vendor_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_lnk_vendor_category">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_payments_bpm_workflow">
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="1" />
+          <End Role="bpm_payments" Type="Self.bpm_payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_payments">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_payments_bpm_workflow1">
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="1" />
+          <End Role="bpm_payments" Type="Self.bpm_payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_payments">
+              <PropertyRef Name="pv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_process_admin_hrm_employee">
+          <End Role="admin_hrm_employee" Type="Self.admin_hrm_employee" Multiplicity="1" />
+          <End Role="bpm_process" Type="Self.bpm_process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_process">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_process_admin_hrm_employee1">
+          <End Role="admin_hrm_employee" Type="Self.admin_hrm_employee" Multiplicity="0..1" />
+          <End Role="bpm_process" Type="Self.bpm_process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_process">
+              <PropertyRef Name="updated_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_transaction_token_bpm_workflow">
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="1" />
+          <End Role="bpm_transaction_token" Type="Self.bpm_transaction_token" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_transaction_token">
+              <PropertyRef Name="transaction_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_vendor_document_admin_hrm_employee">
+          <End Role="admin_hrm_employee" Type="Self.admin_hrm_employee" Multiplicity="1" />
+          <End Role="bpm_vendor_document" Type="Self.bpm_vendor_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_vendor_document">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_vendor_document_bpm_vendor">
+          <End Role="bpm_vendor" Type="Self.bpm_vendor" Multiplicity="1" />
+          <End Role="bpm_vendor_document" Type="Self.bpm_vendor_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_vendor_document">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_admin_hrm_employee">
+          <End Role="admin_hrm_employee" Type="Self.admin_hrm_employee" Multiplicity="1" />
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_bpm_process">
+          <End Role="bpm_process" Type="Self.bpm_process" Multiplicity="1" />
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_process">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="process_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_document_bpm_workflow">
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="1" />
+          <End Role="bpm_workflow_document" Type="Self.bpm_workflow_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow_document">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_employee_admin_hrm_employee">
+          <End Role="admin_hrm_employee" Type="Self.admin_hrm_employee" Multiplicity="1" />
+          <End Role="bpm_workflow_employee" Type="Self.bpm_workflow_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_workflow_employee">
+              <PropertyRef Name="emp_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_employee_bpm_workflow_employee">
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="1" />
+          <End Role="bpm_workflow_employee" Type="Self.bpm_workflow_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow_employee">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_pm_project">
+          <End Role="pm_project" Type="Self.pm_project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pm_project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_ws_lookup">
+          <End Role="ws_lookup" Type="Self.ws_lookup" Multiplicity="1" />
+          <End Role="bpm_workflow" Type="Self.bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ws_lookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pm_project_pm_project">
+          <End Role="pm_project" Type="Self.pm_project" Multiplicity="0..1" />
+          <End Role="pm_project1" Type="Self.pm_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pm_project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pm_project1">
+              <PropertyRef Name="sub_parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="oneportalModelStoreContainer">
+          <EntitySet Name="admin_hrm_employee" EntityType="Self.admin_hrm_employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_approval_token" EntityType="Self.bpm_approval_token" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_form_design" EntityType="Self.bpm_form_design" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_item" EntityType="Self.bpm_item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_link_travel_expense" EntityType="Self.bpm_link_travel_expense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_lnk_vendor_category" EntityType="Self.bpm_lnk_vendor_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_payments" EntityType="Self.bpm_payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_process" EntityType="Self.bpm_process" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_transaction_token" EntityType="Self.bpm_transaction_token" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_travel_expenses" EntityType="Self.bpm_travel_expenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_travel_type" EntityType="Self.bpm_travel_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_vendor" EntityType="Self.bpm_vendor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_vendor_category" EntityType="Self.bpm_vendor_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_vendor_document" EntityType="Self.bpm_vendor_document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_workflow" EntityType="Self.bpm_workflow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_workflow_document" EntityType="Self.bpm_workflow_document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_workflow_employee" EntityType="Self.bpm_workflow_employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bpm_workflow_program_approval" EntityType="Self.bpm_workflow_program_approval" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pm_project" EntityType="Self.pm_project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ws_lookup" EntityType="Self.ws_lookup" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_bpm_link_travel_expense_bpm_travel_expenses" Association="Self.FK_bpm_link_travel_expense_bpm_travel_expenses">
+            <End Role="bpm_travel_expenses" EntitySet="bpm_travel_expenses" />
+            <End Role="bpm_link_travel_expense" EntitySet="bpm_link_travel_expense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_link_travel_expense_bpm_travel_type" Association="Self.FK_bpm_link_travel_expense_bpm_travel_type">
+            <End Role="bpm_travel_type" EntitySet="bpm_travel_type" />
+            <End Role="bpm_link_travel_expense" EntitySet="bpm_link_travel_expense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_lnk_vendor_category_bpm_vendor" Association="Self.FK_bpm_lnk_vendor_category_bpm_vendor">
+            <End Role="bpm_vendor" EntitySet="bpm_vendor" />
+            <End Role="bpm_lnk_vendor_category" EntitySet="bpm_lnk_vendor_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_lnk_vendor_category_bpm_vendor_category" Association="Self.FK_bpm_lnk_vendor_category_bpm_vendor_category">
+            <End Role="bpm_vendor_category" EntitySet="bpm_vendor_category" />
+            <End Role="bpm_lnk_vendor_category" EntitySet="bpm_lnk_vendor_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_payments_bpm_workflow" Association="Self.FK_bpm_payments_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_payments" EntitySet="bpm_payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_payments_bpm_workflow1" Association="Self.FK_bpm_payments_bpm_workflow1">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_payments" EntitySet="bpm_payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_process_admin_hrm_employee" Association="Self.FK_bpm_process_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_process" EntitySet="bpm_process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_process_admin_hrm_employee1" Association="Self.FK_bpm_process_admin_hrm_employee1">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_process" EntitySet="bpm_process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_transaction_token_bpm_workflow" Association="Self.FK_bpm_transaction_token_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_transaction_token" EntitySet="bpm_transaction_token" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_vendor_document_admin_hrm_employee" Association="Self.FK_bpm_vendor_document_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_vendor_document" EntitySet="bpm_vendor_document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_vendor_document_bpm_vendor" Association="Self.FK_bpm_vendor_document_bpm_vendor">
+            <End Role="bpm_vendor" EntitySet="bpm_vendor" />
+            <End Role="bpm_vendor_document" EntitySet="bpm_vendor_document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_admin_hrm_employee" Association="Self.FK_bpm_workflow_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_bpm_process" Association="Self.FK_bpm_workflow_bpm_process">
+            <End Role="bpm_process" EntitySet="bpm_process" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_document_bpm_workflow" Association="Self.FK_bpm_workflow_document_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_workflow_document" EntitySet="bpm_workflow_document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_employee_admin_hrm_employee" Association="Self.FK_bpm_workflow_employee_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_workflow_employee" EntitySet="bpm_workflow_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_employee_bpm_workflow_employee" Association="Self.FK_bpm_workflow_employee_bpm_workflow_employee">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_workflow_employee" EntitySet="bpm_workflow_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_pm_project" Association="Self.FK_bpm_workflow_pm_project">
+            <End Role="pm_project" EntitySet="pm_project" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_ws_lookup" Association="Self.FK_bpm_workflow_ws_lookup">
+            <End Role="ws_lookup" EntitySet="ws_lookup" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pm_project_pm_project" Association="Self.FK_pm_project_pm_project">
+            <End Role="pm_project" EntitySet="pm_project" />
+            <End Role="pm_project1" EntitySet="pm_project" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="oneportalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admin_hrm_employee">
+          <Key>
+            <PropertyRef Name="emp_number" />
+          </Key>
+          <Property Name="emp_number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_lastname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="emp_firstname" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="emp_middle_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_nick_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ethnic_race_code" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="emp_birthday" Type="DateTime" Precision="0" />
+          <Property Name="nation_code" Type="Int32" />
+          <Property Name="emp_gender" Type="Byte" />
+          <Property Name="emp_marital_status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="emp_ssn_num" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_sin_num" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_other_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_dri_lice_num" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_dri_lice_exp_date" Type="DateTime" Precision="0" />
+          <Property Name="emp_military_service" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_status" Type="Int32" />
+          <Property Name="job_title_code" Type="Int32" />
+          <Property Name="eeo_cat_code" Type="Int32" />
+          <Property Name="work_station" Type="Int32" />
+          <Property Name="emp_street1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_street2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="city_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="coun_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="provin_code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="emp_zipcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="emp_hm_telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_work_telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_work_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sal_grd_code" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="joined_date" Type="DateTime" Precision="0" />
+          <Property Name="emp_oth_email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="termination_id" Type="Int32" />
+          <Property Name="deleted_at" Type="DateTime" Precision="3" />
+          <Property Name="added_date" Type="DateTime" Precision="0" />
+          <Property Name="emp_about" Type="String" MaxLength="140" FixedLength="false" Unicode="true" />
+          <Property Name="user_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="bpm_workflow_employee" Relationship="oneportalModel.FK_bpm_workflow_employee_admin_hrm_employee" FromRole="admin_hrm_employee" ToRole="bpm_workflow_employee" />
+          <NavigationProperty Name="bpm_vendor_document" Relationship="oneportalModel.FK_bpm_vendor_document_admin_hrm_employee" FromRole="admin_hrm_employee" ToRole="bpm_vendor_document" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_admin_hrm_employee" FromRole="admin_hrm_employee" ToRole="bpm_workflow" />
+          <Property Name="active" Type="Int32" />
+          <NavigationProperty Name="bpm_process" Relationship="oneportalModel.FK_bpm_process_admin_hrm_employee" FromRole="admin_hrm_employee" ToRole="bpm_process" />
+          <NavigationProperty Name="bpm_process1" Relationship="oneportalModel.FK_bpm_process_admin_hrm_employee1" FromRole="admin_hrm_employee" ToRole="bpm_process" />
+          <Property Name="deleted" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_form_design">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="form_html" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pm_project">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sub_parent" Type="Int32" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="updated_at" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="timesheet_only" Type="Int32" />
+          <NavigationProperty Name="pm_project1" Relationship="Self.FK_pm_project_pm_project" FromRole="pm_project" ToRole="pm_project1" />
+          <NavigationProperty Name="pm_project2" Relationship="Self.FK_pm_project_pm_project" FromRole="pm_project1" ToRole="pm_project" />
+          <Property Name="num" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_pm_project" FromRole="pm_project" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_pm_project_pm_project">
+          <End Role="pm_project" Type="Self.pm_project" Multiplicity="0..1" />
+          <End Role="pm_project1" Type="Self.pm_project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pm_project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="pm_project1">
+              <PropertyRef Name="sub_parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="workFlowEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admin_hrm_employee" EntityType="Self.admin_hrm_employee" />
+          <EntitySet Name="bpm_form_design" EntityType="Self.bpm_form_design" />
+          <EntitySet Name="pm_project" EntityType="Self.pm_project" />
+          <AssociationSet Name="FK_pm_project_pm_project" Association="Self.FK_pm_project_pm_project">
+            <End Role="pm_project" EntitySet="pm_project" />
+            <End Role="pm_project1" EntitySet="pm_project" />
+          </AssociationSet>
+          <EntitySet Name="bpm_workflow_employee" EntityType="oneportalModel.bpm_workflow_employee" />
+          <AssociationSet Name="FK_bpm_workflow_employee_admin_hrm_employee" Association="oneportalModel.FK_bpm_workflow_employee_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_workflow_employee" EntitySet="bpm_workflow_employee" />
+          </AssociationSet>
+          <EntitySet Name="bpm_vendor_document" EntityType="oneportalModel.bpm_vendor_document" />
+          <AssociationSet Name="FK_bpm_vendor_document_admin_hrm_employee" Association="oneportalModel.FK_bpm_vendor_document_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_vendor_document" EntitySet="bpm_vendor_document" />
+          </AssociationSet>
+          <EntitySet Name="ws_lookup" EntityType="oneportalModel.ws_lookup" />
+          <AssociationSet Name="FK_bpm_vendor_document_ws_lookup" Association="oneportalModel.FK_bpm_vendor_document_ws_lookup">
+            <End Role="ws_lookup" EntitySet="ws_lookup" />
+            <End Role="bpm_vendor_document" EntitySet="bpm_vendor_document" />
+          </AssociationSet>
+          <EntitySet Name="bpm_link_travel_expense" EntityType="oneportalModel.bpm_link_travel_expense" />
+          <EntitySet Name="bpm_travel_expenses" EntityType="oneportalModel.bpm_travel_expenses" />
+          <EntitySet Name="bpm_travel_type" EntityType="oneportalModel.bpm_travel_type" />
+          <AssociationSet Name="FK_bpm_link_travel_expense_bpm_travel_expenses" Association="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_expenses">
+            <End Role="bpm_travel_expenses" EntitySet="bpm_travel_expenses" />
+            <End Role="bpm_link_travel_expense" EntitySet="bpm_link_travel_expense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_link_travel_expense_bpm_travel_type" Association="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_type">
+            <End Role="bpm_travel_type" EntitySet="bpm_travel_type" />
+            <End Role="bpm_link_travel_expense" EntitySet="bpm_link_travel_expense" />
+          </AssociationSet>
+          <EntitySet Name="bpm_lnk_vendor_category" EntityType="oneportalModel.bpm_lnk_vendor_category" />
+          <EntitySet Name="bpm_transaction_token" EntityType="oneportalModel.bpm_transaction_token" />
+          <EntitySet Name="bpm_vendor_category" EntityType="oneportalModel.bpm_vendor_category" />
+          <AssociationSet Name="FK_bpm_lnk_vendor_category_bpm_vendor_category" Association="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor_category">
+            <End Role="bpm_vendor_category" EntitySet="bpm_vendor_category" />
+            <End Role="bpm_lnk_vendor_category" EntitySet="bpm_lnk_vendor_category" />
+          </AssociationSet>
+          <EntitySet Name="bpm_vendor" EntityType="oneportalModel.bpm_vendor" />
+          <AssociationSet Name="FK_bpm_lnk_vendor_category_bpm_vendor" Association="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor">
+            <End Role="bpm_vendor" EntitySet="bpm_vendor" />
+            <End Role="bpm_lnk_vendor_category" EntitySet="bpm_lnk_vendor_category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_vendor_document_bpm_vendor" Association="oneportalModel.FK_bpm_vendor_document_bpm_vendor">
+            <End Role="bpm_vendor" EntitySet="bpm_vendor" />
+            <End Role="bpm_vendor_document" EntitySet="bpm_vendor_document" />
+          </AssociationSet>
+          <EntitySet Name="bpm_approval_token" EntityType="oneportalModel.bpm_approval_token" />
+          <EntitySet Name="bpm_workflow" EntityType="oneportalModel.bpm_workflow" />
+          <AssociationSet Name="FK_bpm_workflow_admin_hrm_employee" Association="oneportalModel.FK_bpm_workflow_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_transaction_token_bpm_workflow" Association="oneportalModel.FK_bpm_transaction_token_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_transaction_token" EntitySet="bpm_transaction_token" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_employee_bpm_workflow_employee" Association="oneportalModel.FK_bpm_workflow_employee_bpm_workflow_employee">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_workflow_employee" EntitySet="bpm_workflow_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_pm_project" Association="oneportalModel.FK_bpm_workflow_pm_project">
+            <End Role="pm_project" EntitySet="pm_project" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_ws_lookup" Association="oneportalModel.FK_bpm_workflow_ws_lookup">
+            <End Role="ws_lookup" EntitySet="ws_lookup" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <EntitySet Name="bpm_item" EntityType="oneportalModel.bpm_item" />
+          <EntitySet Name="bpm_process" EntityType="oneportalModel.bpm_process" />
+          <AssociationSet Name="FK_bpm_process_admin_hrm_employee" Association="oneportalModel.FK_bpm_process_admin_hrm_employee">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_process" EntitySet="bpm_process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_process_admin_hrm_employee1" Association="oneportalModel.FK_bpm_process_admin_hrm_employee1">
+            <End Role="admin_hrm_employee" EntitySet="admin_hrm_employee" />
+            <End Role="bpm_process" EntitySet="bpm_process" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_workflow_bpm_process" Association="oneportalModel.FK_bpm_workflow_bpm_process">
+            <End Role="bpm_process" EntitySet="bpm_process" />
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+          </AssociationSet>
+          <EntitySet Name="bpm_payments" EntityType="oneportalModel.bpm_payments" />
+          <AssociationSet Name="FK_bpm_payments_bpm_workflow" Association="oneportalModel.FK_bpm_payments_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_payments" EntitySet="bpm_payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bpm_payments_bpm_workflow1" Association="oneportalModel.FK_bpm_payments_bpm_workflow1">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_payments" EntitySet="bpm_payments" />
+          </AssociationSet>
+          <EntitySet Name="bpm_workflow_program_approval" EntityType="oneportalModel.bpm_workflow_program_approval" />
+          <EntitySet Name="bpm_workflow_document" EntityType="oneportalModel.bpm_workflow_document" />
+          <AssociationSet Name="FK_bpm_workflow_document_bpm_workflow" Association="oneportalModel.FK_bpm_workflow_document_bpm_workflow">
+            <End Role="bpm_workflow" EntitySet="bpm_workflow" />
+            <End Role="bpm_workflow_document" EntitySet="bpm_workflow_document" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="bpm_workflow_employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="workflow_id" Type="Guid" Nullable="false" />
+          <Property Name="emp_number" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="pending" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="admin_hrm_employee" Relationship="oneportalModel.FK_bpm_workflow_employee_admin_hrm_employee" FromRole="bpm_workflow_employee" ToRole="admin_hrm_employee" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_employee_bpm_workflow_employee" FromRole="bpm_workflow_employee" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_bpm_workflow_employee_admin_hrm_employee">
+          <End Type="oneportalModel.admin_hrm_employee" Role="admin_hrm_employee" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow_employee" Role="bpm_workflow_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_workflow_employee">
+              <PropertyRef Name="emp_number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_vendor_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="Int32" Nullable="false" />
+          <Property Name="file_path" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="admin_hrm_employee" Relationship="oneportalModel.FK_bpm_vendor_document_admin_hrm_employee" FromRole="bpm_vendor_document" ToRole="admin_hrm_employee" />
+          <NavigationProperty Name="ws_lookup" Relationship="oneportalModel.FK_bpm_vendor_document_ws_lookup" FromRole="bpm_vendor_document" ToRole="ws_lookup" />
+          <NavigationProperty Name="bpm_vendor" Relationship="oneportalModel.FK_bpm_vendor_document_bpm_vendor" FromRole="bpm_vendor_document" ToRole="bpm_vendor" />
+        </EntityType>
+        <Association Name="FK_bpm_vendor_document_admin_hrm_employee">
+          <End Type="oneportalModel.admin_hrm_employee" Role="admin_hrm_employee" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_vendor_document" Role="bpm_vendor_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_vendor_document">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ws_lookup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="lookup_name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="orderd" Type="Int32" />
+          <Property Name="category" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="deleted" Type="Int32" />
+          <NavigationProperty Name="bpm_vendor_document" Relationship="oneportalModel.FK_bpm_vendor_document_ws_lookup" FromRole="ws_lookup" ToRole="bpm_vendor_document" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_ws_lookup" FromRole="ws_lookup" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_bpm_vendor_document_ws_lookup">
+          <End Type="oneportalModel.ws_lookup" Role="ws_lookup" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_vendor_document" Role="bpm_vendor_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ws_lookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_vendor_document">
+              <PropertyRef Name="description" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_link_travel_expense">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="travel_type_id" Type="Int32" Nullable="false" />
+          <Property Name="expense_id" Type="Int32" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Precision="3" />
+          <Property Name="amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bpm_travel_expenses" Relationship="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_expenses" FromRole="bpm_link_travel_expense" ToRole="bpm_travel_expenses" />
+          <NavigationProperty Name="bpm_travel_type" Relationship="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_type" FromRole="bpm_link_travel_expense" ToRole="bpm_travel_type" />
+        </EntityType>
+        <EntityType Name="bpm_travel_expenses">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bpm_link_travel_expense" Relationship="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_expenses" FromRole="bpm_travel_expenses" ToRole="bpm_link_travel_expense" />
+        </EntityType>
+        <EntityType Name="bpm_travel_type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bpm_link_travel_expense" Relationship="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_type" FromRole="bpm_travel_type" ToRole="bpm_link_travel_expense" />
+        </EntityType>
+        <Association Name="FK_bpm_link_travel_expense_bpm_travel_expenses">
+          <End Type="oneportalModel.bpm_travel_expenses" Role="bpm_travel_expenses" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_link_travel_expense" Role="bpm_link_travel_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_travel_expenses">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_link_travel_expense">
+              <PropertyRef Name="expense_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_link_travel_expense_bpm_travel_type">
+          <End Type="oneportalModel.bpm_travel_type" Role="bpm_travel_type" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_link_travel_expense" Role="bpm_link_travel_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_travel_type">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_link_travel_expense">
+              <PropertyRef Name="travel_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_lnk_vendor_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bpm_vendor_category" Relationship="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor_category" FromRole="bpm_lnk_vendor_category" ToRole="bpm_vendor_category" />
+          <NavigationProperty Name="bpm_vendor" Relationship="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor" FromRole="bpm_lnk_vendor_category" ToRole="bpm_vendor" />
+        </EntityType>
+        <EntityType Name="bpm_transaction_token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="t_code" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="transaction_id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_transaction_token_bpm_workflow" FromRole="bpm_transaction_token" ToRole="bpm_workflow" />
+        </EntityType>
+        <EntityType Name="bpm_vendor_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bpm_lnk_vendor_category" Relationship="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor_category" FromRole="bpm_vendor_category" ToRole="bpm_lnk_vendor_category" />
+        </EntityType>
+        <Association Name="FK_bpm_lnk_vendor_category_bpm_vendor_category">
+          <End Type="oneportalModel.bpm_vendor_category" Role="bpm_vendor_category" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_lnk_vendor_category" Role="bpm_lnk_vendor_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_lnk_vendor_category">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="company_name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int32" />
+          <Property Name="Lga" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="updated_at" Type="DateTime" Precision="3" />
+          <Property Name="deleted" Type="Int32" Nullable="false" />
+          <Property Name="tin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="account_number" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="bank_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="account_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rc_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bpm_lnk_vendor_category" Relationship="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor" FromRole="bpm_vendor" ToRole="bpm_lnk_vendor_category" />
+          <NavigationProperty Name="bpm_vendor_document" Relationship="oneportalModel.FK_bpm_vendor_document_bpm_vendor" FromRole="bpm_vendor" ToRole="bpm_vendor_document" />
+        </EntityType>
+        <Association Name="FK_bpm_lnk_vendor_category_bpm_vendor">
+          <End Type="oneportalModel.bpm_vendor" Role="bpm_vendor" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_lnk_vendor_category" Role="bpm_lnk_vendor_category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_lnk_vendor_category">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_vendor_document_bpm_vendor">
+          <End Type="oneportalModel.bpm_vendor" Role="bpm_vendor" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_vendor_document" Role="bpm_vendor_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_vendor_document">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_approval_token">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="consumed" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="workflow" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="process_id" Type="Guid" Nullable="false" />
+          <Property Name="project_id" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="deleted" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="admin_hrm_employee" Relationship="oneportalModel.FK_bpm_workflow_admin_hrm_employee" FromRole="bpm_workflow" ToRole="admin_hrm_employee" />
+          <NavigationProperty Name="bpm_transaction_token" Relationship="oneportalModel.FK_bpm_transaction_token_bpm_workflow" FromRole="bpm_workflow" ToRole="bpm_transaction_token" />
+          <NavigationProperty Name="bpm_workflow_employee" Relationship="oneportalModel.FK_bpm_workflow_employee_bpm_workflow_employee" FromRole="bpm_workflow" ToRole="bpm_workflow_employee" />
+          <NavigationProperty Name="pm_project" Relationship="oneportalModel.FK_bpm_workflow_pm_project" FromRole="bpm_workflow" ToRole="pm_project" />
+          <NavigationProperty Name="ws_lookup" Relationship="oneportalModel.FK_bpm_workflow_ws_lookup" FromRole="bpm_workflow" ToRole="ws_lookup" />
+          <NavigationProperty Name="bpm_process" Relationship="oneportalModel.FK_bpm_workflow_bpm_process" FromRole="bpm_workflow" ToRole="bpm_process" />
+          <NavigationProperty Name="bpm_payments" Relationship="oneportalModel.FK_bpm_payments_bpm_workflow" FromRole="bpm_workflow" ToRole="bpm_payments" />
+          <NavigationProperty Name="bpm_payments1" Relationship="oneportalModel.FK_bpm_payments_bpm_workflow1" FromRole="bpm_workflow" ToRole="bpm_payments" />
+          <NavigationProperty Name="bpm_workflow_document" Relationship="oneportalModel.FK_bpm_workflow_document_bpm_workflow" FromRole="bpm_workflow" ToRole="bpm_workflow_document" />
+        </EntityType>
+        <Association Name="FK_bpm_workflow_admin_hrm_employee">
+          <End Type="oneportalModel.admin_hrm_employee" Role="admin_hrm_employee" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_transaction_token_bpm_workflow">
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_transaction_token" Role="bpm_transaction_token" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_transaction_token">
+              <PropertyRef Name="transaction_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_employee_bpm_workflow_employee">
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow_employee" Role="bpm_workflow_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow_employee">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_pm_project">
+          <End Type="oneportalModel.pm_project" Role="pm_project" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pm_project">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_ws_lookup">
+          <End Type="oneportalModel.ws_lookup" Role="ws_lookup" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ws_lookup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bpm_process">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="process_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="definition" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="version" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="updated_at" Type="DateTime" Precision="3" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="process_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="admin_hrm_employee" Relationship="oneportalModel.FK_bpm_process_admin_hrm_employee" FromRole="bpm_process" ToRole="admin_hrm_employee" />
+          <NavigationProperty Name="admin_hrm_employee1" Relationship="oneportalModel.FK_bpm_process_admin_hrm_employee1" FromRole="bpm_process" ToRole="admin_hrm_employee" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_bpm_process" FromRole="bpm_process" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_bpm_process_admin_hrm_employee">
+          <End Type="oneportalModel.admin_hrm_employee" Role="admin_hrm_employee" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_process" Role="bpm_process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_process">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_process_admin_hrm_employee1">
+          <End Type="oneportalModel.admin_hrm_employee" Role="admin_hrm_employee" Multiplicity="0..1" />
+          <End Type="oneportalModel.bpm_process" Role="bpm_process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="admin_hrm_employee">
+              <PropertyRef Name="emp_number" />
+            </Principal>
+            <Dependent Role="bpm_process">
+              <PropertyRef Name="updated_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_workflow_bpm_process">
+          <End Type="oneportalModel.bpm_process" Role="bpm_process" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_process">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow">
+              <PropertyRef Name="process_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_payments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="workflow_id" Type="Guid" Nullable="false" />
+          <Property Name="pv_id" Type="Guid" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_payments_bpm_workflow" FromRole="bpm_payments" ToRole="bpm_workflow" />
+          <NavigationProperty Name="bpm_workflow1" Relationship="oneportalModel.FK_bpm_payments_bpm_workflow1" FromRole="bpm_payments" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_bpm_payments_bpm_workflow">
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_payments" Role="bpm_payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_payments">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bpm_payments_bpm_workflow1">
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_payments" Role="bpm_payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_payments">
+              <PropertyRef Name="pv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bpm_workflow_program_approval">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="project_id" Type="Int32" Nullable="false" />
+          <Property Name="emp_number" Type="Int32" Nullable="false" />
+          <Property Name="job_title" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bpm_workflow_document">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="location" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="workflow_id" Type="Guid" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="bpm_workflow" Relationship="oneportalModel.FK_bpm_workflow_document_bpm_workflow" FromRole="bpm_workflow_document" ToRole="bpm_workflow" />
+        </EntityType>
+        <Association Name="FK_bpm_workflow_document_bpm_workflow">
+          <End Type="oneportalModel.bpm_workflow" Role="bpm_workflow" Multiplicity="1" />
+          <End Type="oneportalModel.bpm_workflow_document" Role="bpm_workflow_document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bpm_workflow">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bpm_workflow_document">
+              <PropertyRef Name="workflow_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="oneportalModelStoreContainer" CdmEntityContainer="workFlowEntities">
+          <EntitySetMapping Name="admin_hrm_employee">
+            <EntityTypeMapping TypeName="oneportalModel.admin_hrm_employee">
+              <MappingFragment StoreEntitySet="admin_hrm_employee">
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="emp_number" ColumnName="emp_number" />
+                <ScalarProperty Name="employee_id" ColumnName="employee_id" />
+                <ScalarProperty Name="emp_lastname" ColumnName="emp_lastname" />
+                <ScalarProperty Name="emp_firstname" ColumnName="emp_firstname" />
+                <ScalarProperty Name="emp_middle_name" ColumnName="emp_middle_name" />
+                <ScalarProperty Name="emp_nick_name" ColumnName="emp_nick_name" />
+                <ScalarProperty Name="ethnic_race_code" ColumnName="ethnic_race_code" />
+                <ScalarProperty Name="emp_birthday" ColumnName="emp_birthday" />
+                <ScalarProperty Name="nation_code" ColumnName="nation_code" />
+                <ScalarProperty Name="emp_gender" ColumnName="emp_gender" />
+                <ScalarProperty Name="emp_marital_status" ColumnName="emp_marital_status" />
+                <ScalarProperty Name="emp_ssn_num" ColumnName="emp_ssn_num" />
+                <ScalarProperty Name="emp_sin_num" ColumnName="emp_sin_num" />
+                <ScalarProperty Name="emp_other_id" ColumnName="emp_other_id" />
+                <ScalarProperty Name="emp_dri_lice_num" ColumnName="emp_dri_lice_num" />
+                <ScalarProperty Name="emp_dri_lice_exp_date" ColumnName="emp_dri_lice_exp_date" />
+                <ScalarProperty Name="emp_military_service" ColumnName="emp_military_service" />
+                <ScalarProperty Name="emp_status" ColumnName="emp_status" />
+                <ScalarProperty Name="job_title_code" ColumnName="job_title_code" />
+                <ScalarProperty Name="eeo_cat_code" ColumnName="eeo_cat_code" />
+                <ScalarProperty Name="work_station" ColumnName="work_station" />
+                <ScalarProperty Name="emp_street1" ColumnName="emp_street1" />
+                <ScalarProperty Name="emp_street2" ColumnName="emp_street2" />
+                <ScalarProperty Name="city_code" ColumnName="city_code" />
+                <ScalarProperty Name="coun_code" ColumnName="coun_code" />
+                <ScalarProperty Name="provin_code" ColumnName="provin_code" />
+                <ScalarProperty Name="emp_zipcode" ColumnName="emp_zipcode" />
+                <ScalarProperty Name="emp_hm_telephone" ColumnName="emp_hm_telephone" />
+                <ScalarProperty Name="emp_mobile" ColumnName="emp_mobile" />
+                <ScalarProperty Name="emp_work_telephone" ColumnName="emp_work_telephone" />
+                <ScalarProperty Name="emp_work_email" ColumnName="emp_work_email" />
+                <ScalarProperty Name="sal_grd_code" ColumnName="sal_grd_code" />
+                <ScalarProperty Name="joined_date" ColumnName="joined_date" />
+                <ScalarProperty Name="emp_oth_email" ColumnName="emp_oth_email" />
+                <ScalarProperty Name="termination_id" ColumnName="termination_id" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="added_date" ColumnName="added_date" />
+                <ScalarProperty Name="emp_about" ColumnName="emp_about" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_form_design">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_form_design">
+              <MappingFragment StoreEntitySet="bpm_form_design">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="form_html" ColumnName="form_html" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pm_project">
+            <EntityTypeMapping TypeName="oneportalModel.pm_project">
+              <MappingFragment StoreEntitySet="pm_project">
+                <ScalarProperty Name="num" ColumnName="num" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="sub_parent" ColumnName="sub_parent" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="timesheet_only" ColumnName="timesheet_only" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_workflow_employee">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_workflow_employee">
+              <MappingFragment StoreEntitySet="bpm_workflow_employee">
+                <ScalarProperty Name="pending" ColumnName="pending" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="emp_number" ColumnName="emp_number" />
+                <ScalarProperty Name="workflow_id" ColumnName="workflow_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_vendor_document">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_vendor_document">
+              <MappingFragment StoreEntitySet="bpm_vendor_document">
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ws_lookup">
+            <EntityTypeMapping TypeName="oneportalModel.ws_lookup">
+              <MappingFragment StoreEntitySet="ws_lookup">
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="orderd" ColumnName="orderd" />
+                <ScalarProperty Name="lookup_name" ColumnName="lookup_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_link_travel_expense">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_link_travel_expense">
+              <MappingFragment StoreEntitySet="bpm_link_travel_expense">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="expense_id" ColumnName="expense_id" />
+                <ScalarProperty Name="travel_type_id" ColumnName="travel_type_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_travel_expenses">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_travel_expenses">
+              <MappingFragment StoreEntitySet="bpm_travel_expenses">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_travel_type">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_travel_type">
+              <MappingFragment StoreEntitySet="bpm_travel_type">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_lnk_vendor_category">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_lnk_vendor_category">
+              <MappingFragment StoreEntitySet="bpm_lnk_vendor_category">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_transaction_token">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_transaction_token">
+              <MappingFragment StoreEntitySet="bpm_transaction_token">
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="t_code" ColumnName="t_code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_vendor_category">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_vendor_category">
+              <MappingFragment StoreEntitySet="bpm_vendor_category">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_vendor">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_vendor">
+              <MappingFragment StoreEntitySet="bpm_vendor">
+                <ScalarProperty Name="rc_number" ColumnName="rc_number" />
+                <ScalarProperty Name="account_name" ColumnName="account_name" />
+                <ScalarProperty Name="bank_name" ColumnName="bank_name" />
+                <ScalarProperty Name="account_number" ColumnName="account_number" />
+                <ScalarProperty Name="tin" ColumnName="tin" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Lga" ColumnName="Lga" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="company_name" ColumnName="company_name" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_approval_token">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_approval_token">
+              <MappingFragment StoreEntitySet="bpm_approval_token">
+                <ScalarProperty Name="consumed" ColumnName="consumed" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_workflow">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_workflow">
+              <MappingFragment StoreEntitySet="bpm_workflow">
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="workflow" ColumnName="workflow" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_item">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_item">
+              <MappingFragment StoreEntitySet="bpm_item">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_process">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_process">
+              <MappingFragment StoreEntitySet="bpm_process">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="process_code" ColumnName="process_code" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="process_name" ColumnName="process_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_payments">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_payments">
+              <MappingFragment StoreEntitySet="bpm_payments">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="pv_id" ColumnName="pv_id" />
+                <ScalarProperty Name="workflow_id" ColumnName="workflow_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_workflow_program_approval">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_workflow_program_approval">
+              <MappingFragment StoreEntitySet="bpm_workflow_program_approval">
+                <ScalarProperty Name="job_title" ColumnName="job_title" />
+                <ScalarProperty Name="emp_number" ColumnName="emp_number" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bpm_workflow_document">
+            <EntityTypeMapping TypeName="oneportalModel.bpm_workflow_document">
+              <MappingFragment StoreEntitySet="bpm_workflow_document">
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="workflow_id" ColumnName="workflow_id" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

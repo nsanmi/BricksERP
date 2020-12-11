@@ -1,0 +1,84 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+
+
+@{
+    var unit = (admin_hrm_lkup_subunit)ViewBag.subunit;
+    ViewBag.unit = "Edit Sub-unit";
+}
+
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update Sub-unit</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Sub-unit</a>
+            </li>
+            <li class="active">
+                <strong>Sub-unit</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Job Title Details </h5>
+                </div>
+
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-lg-12 ">
+
+                            <div class="panel-body">
+                                <form method="post" action="@Url.Action("UpdateSubunit","Settings")" data-parsley-validate class="form-horizontal form-label-left">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label for="note">title</label>
+                                            <input type="text" id="Id" name="Id" class="form-control col-md-7 col-xs-12" value="@unit.name" />
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:10px;">
+                                            <label for="jobtitle">Job description</label>
+
+                                            <input type="text" id="note" name="note" class="form-control col-md-7 col-xs-12" value="@unit.level">
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                            <label>Note</label>
+                                            <textarea name="note" rows="3" id="note" class="form-control col-md-10 col-xs-10" value="@unit.lft">@unit.rgt </textarea>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary">Update job title</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+

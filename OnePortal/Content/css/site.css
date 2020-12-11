@@ -1,0 +1,43 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.simple-nav {
+    background-color: #2F4050;
+}
+
+    .simple-nav > .nav > li.active {
+        border-left: none;
+        border-bottom: 4px solid #19aa8d;
+    }
+
+        .simple-nav > .nav > li.active > a {
+            margin-bottom: 0;
+            padding-bottom: 10px;
+            border-radius: 0;
+            background-color: #657584;
+        }
+
+    .simple-nav > .nav > li > a {
+        color: #F8FBF8;
+        border-radius: 0;
+    }
+
+.green-tab {
+    background-color: #748A1D;
+    
+}
+
+.purple-tab {
+    background-color: #4E4ED6;
+}
+
+.orange-tab {
+    background-color: #DC9F56;
+}
+
+.red-tab {
+    background-color: palevioletred;
+}

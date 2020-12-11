@@ -1,0 +1,277 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@using System.Data
+@using Microsoft.AspNet.Identity;
+@using HRM.DAL.Util;
+@using OnePortal.Helper
+@using OnePortal.Models.ViewModels
+@using WorkFlow.DAL;
+@using PagedList;
+
+
+@using PagedList.Mvc;
+@model IPagedList<admin_hrm_suggestion>
+@{
+    ViewBag.Title = "Employee";
+    var employee = (admin_hrm_employee)ViewBag.employee;
+
+}
+
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Suggestion list</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li class="active">
+                <a>Suggestion</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Suggestion List</h5>
+                    <div class="ibox-tools">
+                       
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.message
+                            </div>
+                        }
+                    </div>
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <form action="@Url.Action("Index","Suggestion")" method="get">
+                            <div class="col-md-11">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search by Type and Priority" name="search" value="@ViewBag.search" class="input-sm form-control">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="project-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th align="center">Title</th>
+                                        <th align="center">Comment</th>
+                                        <th align="center">Received Date</th>
+                                        <th align="center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var suggest in Model)
+                                    {
+                                        <tr>
+                                            @*<td>@Html.ActionLink(suggest.title, "Update", new { suggestionId = suggest.suggestion_id}, new { title = "Click to view suggestion details" })</td>*@
+                                            <td>@suggest.title</td>
+                                            <td> <a data-toggle="modal" href="#comment_modal" data-id="@suggest.comment" class="openCommentDialog">@suggest.comment</a> </td>
+                                            
+                                            <td>@suggest.date</td>
+                                            
+                                            @*<td>
+                                                @if (suggest.admin_hrm_suggestion_files.Any())
+                                                {
+                                                    <a onclick="$('#dv_@suggest.suggestion_id').toggle()">@suggest.admin_hrm_suggestion_files.Count()</a>
+                                                    <div id="dv_@suggest.suggestion_id" style="display: none">
+                                                        @foreach (var document in suggest.admin_hrm_suggestion_files)
+                                                        {
+
+                                                            <a href="#" class="btn btn-xs btn-default " data-toggle="modal" data-target="#@document.Id">
+                                                                <i class="fa fa-file"></i> @suggest.admin_hrm_suggestion_files.Count()
+                                                            </a>
+
+                                                            <!-- Modal -->
+                                                            <div id="@document.Id" class="modal fade" role="dialog">
+                                                                <div class="modal-dialog">
+
+                                                                    <!-- Modal content-->
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                            <img id="file_photo" src="~/Documents/Complain/@document.filename" alt="Image Here" class="img-responsive" />
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+                                                                            <a class="btn btn-default btn-default pull-left" onclick="this.href = $('#file_photo').attr('src');"
+                                                                               download><span class="glyphicon glyphicon-export"></span>Download</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#">@suggest.admin_hrm_suggestion_files.Count()</a>
+                                                }
+                                            </td>*@
+                                            <td align="center">
+
+                                                @*@Html.ActionLink("Delete", "Delete", "Complain", new { delete = complain.Deleted}, new { @class = "btn btn-sm btn-danger fa fa-trash" })*@
+                                                <button class="btn btn-sm btn-danger" onclick="DeleteComplain(@suggest.suggestion_id)" type="button"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id='Paging' style="text-align: center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+                            @Html.PagedListPager(Model, page => Url.Action("index", new { page }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal"  id="comment_modal" aria-hidden="true">
+    <div class="modal-dialog" style="width:1250px; height:1000px;">
+        <div class="modal-content animated flipInY" style="width:1250px; height:600px;">
+            <div class="modal-header">
+                Comment
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body" style="width:1248px; height:450px;">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div id="comment_box"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+        function DeleteComplain(id) {
+            if (confirm("Are you sure you want to remove this complain?")) {
+                $.ajax({
+                    url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Suggestion/Delete/?Id=" + id,
+                    context: document.body
+                }).done(function (returnVal) {
+                    alert(returnVal);
+                    location.reload();
+                });
+            }
+        }
+
+</script>
+    }
+
+@section Styles{
+    <style>
+        .table td.text {
+            max-width: 177px;
+        }
+
+            .table td.text span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+        .table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        table {
+            border: 1px;
+            table-layout: fixed;
+        }
+
+        .table > tbody > tr > td, .table > thead > tr > th {
+            padding: 6px 10px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+    </style>
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+
+
+
+
+
+
+
+
+
+
+

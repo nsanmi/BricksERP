@@ -1,0 +1,191 @@
+﻿@model Hotel.Dal.Models.Hotel_guest
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Create Guest</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Hotel</a>
+            </li>
+            <li class="active">
+                <strong>AddGuest</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> Guest </h5>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizonta row">
+                                <h4>Hotel_guest</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.First_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                  
+                                        @Html.EditorFor(model => model.First_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.First_name, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Last_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Last_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Last_name, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Other_names, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    
+                                        @Html.EditorFor(model => model.Other_names, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Other_names, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Nextofkin_fullname, htmlAttributes: new { @class = "control-label col-md-2" })
+                                 
+                                        @Html.EditorFor(model => model.Nextofkin_fullname, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Nextofkin_fullname, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                  
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Nextofkin_fulladdress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Nextofkin_fulladdress, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Nextofkin_fulladdress, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Nextofkin_phonenumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.Nextofkin_phonenumber, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Nextofkin_phonenumber, "", new { @class = "text-danger" })
+                                  
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    
+                                        @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                @*<div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.deleted, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.deleted, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.deleted, "", new { @class = "text-danger" })
+                                
+                                </div>*@
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div>
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                @*<div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Update Complain</button>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

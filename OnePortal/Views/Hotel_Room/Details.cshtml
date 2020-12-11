@@ -1,0 +1,272 @@
+﻿@model Hotel.Dal.Models.Hotel_Room
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Room Detail</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Hotel</a>
+            </li>
+            <li class="active">
+                <strong>Room Details</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> Details </h5>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+
+
+
+                        <div>
+                            <h4>Hotel_Room</h4>
+                            <hr />
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Room_number)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Room_number)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Hotel_id)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Hotel_id)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Location_id)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Location_id)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.room_type)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.room_type)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.room_category)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.room_category)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.status)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.status)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.rate)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.rate)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.created_date)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.created_date)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.updated_date)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.updated_date)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Capacity)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Capacity)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.RoomImage1)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.RoomImage1)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.RoomImage2)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.RoomImage2)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.RoomImage3)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.RoomImage3)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.RoomImage4)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.RoomImage4)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.RoomImage5)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.RoomImage5)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Room_Description)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Room_Description)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.max_children)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.max_children)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.max_adults)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.max_adults)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.max_people)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.max_people)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.min_people)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.min_people)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.start_lock)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.start_lock)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.end_lock)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.end_lock)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Hotel_promo.Promo_type)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Hotel_promo.Promo_type)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Hotel_Room_Type.RoomType)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Hotel_Room_Type.RoomType)
+                                </dd>
+
+                            </dl>
+                        </div>
+                        <p>
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                            @Html.ActionLink("Back to List", "Index")
+                        </p>
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                @*<div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Update Complain</button>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        </div>
+    </div>
+</div>

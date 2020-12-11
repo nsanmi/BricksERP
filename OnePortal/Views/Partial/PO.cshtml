@@ -1,0 +1,128 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = XElement.Parse(workflow.workflow);
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    double total = 0;
+
+    var v = definition.Element("vendors");
+    var vendors = v.Elements("vendor");
+
+    var vendor_element = new XElement("root");//vendors.FirstOrDefault(e => e.Attribute("selected").Value == "1");
+    foreach (var element in vendors)
+    {
+        if (element.Attribute("selected") != null && element.Attribute("selected").Value == "1")
+        {
+            vendor_element = element;
+        }
+    }
+
+    //  var v_element = definition.Element("vendors").Elements("vendor").Where(e => e.Attribute("selected").Value == "1");
+
+
+
+    var account_name = "";
+    var account_no = "";
+    var bank_name = "";
+
+    if (vendor_element != null && vendor_element.Elements().Count() > 1)
+    {
+        var vendor = Util.GetVendor(Convert.ToInt32(vendor_element.Element("id").Value));
+        if (vendor != null)
+        {
+            bank_name = vendor.bank_name;
+            account_no = vendor.account_number;
+            account_name = vendor.account_name;
+        }
+    }
+
+
+}
+
+
+
+<div class="form-group">
+
+
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Item</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                <th style="background-color:transparent">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var tc = Convert.ToDouble(item.Element("vendors_unit_price") != null ? item.Element("vendors_unit_price").Value : item.Element("unit_price").Value) * Convert.ToDouble(item.Element("unit").Value) * Convert.ToDouble(item.Element("quantity").Value);
+                    total += tc;
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        <td>@item.Element("itemname").Value</td>
+                        <td>@item.Element("description").Value</td>
+                        <td>@string.Format("{0:N}", item.Element("vendors_unit_price") != null ? item.Element("vendors_unit_price").Value : item.Element("unit_price").Value)</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="5" style="text-align:right">
+                    <strong>Total</strong>
+                </td>
+                <td>
+                    @string.Format("{0:N}", total)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="form-group">
+    <label>Account Name</label>
+    <input class="form-control" name="account_name" type="text" value="@account_name" required/>
+</div>
+
+<div class="form-group">
+    <label>Account Number</label>
+    <input class="form-control" name="account_number" type="text" value="@account_no" required/>
+</div>
+
+<div class="form-group">
+    <label>Bank Name</label>
+    <input class="form-control" name="bank_name" type="text" value="@bank_name" required/>
+</div>
+
+<div class="form-group">
+    <label>Term of Payment</label>
+    <textarea class="form-control" name="term_of_payment"></textarea>
+</div>
+
+
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

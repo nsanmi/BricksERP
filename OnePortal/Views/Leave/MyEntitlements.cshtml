@@ -1,0 +1,85 @@
+﻿
+@using HRM.DAL.Models;
+@{
+    ViewBag.Title = "MyEntitlements";
+    var entitlements = (IQueryable<admin_hrm_leave_entitlement>)ViewBag.entitlements;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Leave Entitlements</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Leave</a>
+            </li>
+            <li class="active">
+                <strong>Entitlements</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+
+
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>My Leave Entitlements </h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    <th>Entitlement Type</th>
+                                    <th>No of Days</th>
+                                    <th>Days Used</th>
+                                    <th>Remaining</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (entitlements.Where(e => e.from_date <= DateTime.Now && e.to_date >= DateTime.Now).Any())
+                                {
+                                    foreach (var entitlemnt in entitlements.Where(e => e.from_date <= DateTime.Now && e.to_date >= DateTime.Now))
+                                    {
+                                        <tr>
+                                            <td>@entitlemnt.admin_hrm_leave_type.name</td>
+                                            <td>@entitlemnt.admin_hrm_leave_entitlement_type.name</td>
+                                            <td>@entitlemnt.no_of_days</td>
+                                            <td>@entitlemnt.days_used</td>
+                                            <td>@string.Format("{0}", entitlemnt.no_of_days - entitlemnt.days_used)</td>
+                                            <td>@entitlemnt.from_date.ToString("dd MMM yyyy")</td>
+                                            <td>@entitlemnt.to_date.Value.ToString("dd MMM yyyy")</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

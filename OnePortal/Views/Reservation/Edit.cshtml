@@ -1,0 +1,213 @@
+﻿@model Hotel.Dal.Models.Hotel_reservation
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update Reservation</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Hotel</a>
+            </li>
+            <li class="active">
+                <strong>update reservation</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> Reservation </h5>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+
+
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizonta row">
+                                <h4>Hotel_reservation</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Id)
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.Room_id, "Room_id", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.DropDownList("Room_id", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Room_id, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.guest_id, "guest_id", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.DropDownList("guest_id", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.guest_id, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_date, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.reservation_date, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.reservation_date, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_status, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.reservation_status, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.reservation_status, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_comment, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.reservation_comment, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.reservation_comment, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_checking_date, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.reservation_checking_date, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.reservation_checking_date, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_checkout_date, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.reservation_checkout_date, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.reservation_checkout_date, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                @*<div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.deleted, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.deleted, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.deleted, "", new { @class = "text-danger" })
+
+                                </div>*@
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.reservation_typeId, "reservation_typeId", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.DropDownList("reservation_typeId", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.reservation_typeId, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.total, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.payment_date, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.payment_date, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.payment_date, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.payment_option, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.payment_option, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.payment_option, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.paymentTypeId, "paymentTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.DropDownList("paymentTypeId", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.paymentTypeId, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.payment_status, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.payment_status, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.payment_status, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.session, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                    @Html.EditorFor(model => model.session, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.session, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div>
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                @*<div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Update Complain</button>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+       
+        </div>
+    </div>
+</div>

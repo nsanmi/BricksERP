@@ -1,0 +1,226 @@
+﻿@using HRM.DAL.Models;
+  
+@{
+    ViewBag.Title = "MyTimesheet";
+    var sheet = ViewBag.timesheet;
+    var timesheet = new admin_hrm_timesheet();
+    if (sheet != null)
+    {
+        timesheet = (admin_hrm_timesheet)ViewBag.timesheet;
+    }
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>My Timesheets</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Timesheet</a>
+            </li>
+            <li class="active">
+                <strong>My Timesheet</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> </h5>
+                    <div class="ibox-tools">
+                       <form action="@Url.Action("MyTimesheet","Timesheet")" method="post" onchange="$('#btn_refresh').click()">
+                           <select name="month" id="month">
+                               <option>Select Month...</option>
+                               <option value="1">January</option>
+                               <option value="2">February</option>
+                               <option value="3">March</option>
+                               <option value="4">April</option>
+                               <option value="5">May</option>
+                               <option value="6">June</option>
+                               <option value="7">July</option>
+                               <option value="8">August</option>
+                               <option value="9">September</option>
+                               <option value="10">October</option>
+                               <option value="11">November</option>
+                               <option value="12">December</option>
+                           </select>
+
+                           <select name="year" id="year" onchange="$('#btn_refresh').click()">
+                               @for (var i = 2017; i <= DateTime.Now.Year; i++)
+                                {
+                                     <option value="@i">@i</option>
+                                }
+                           </select>
+
+                           <button type="submit" class="btn-circle btn btn-default" id="btn_refresh"><i class="fa fa-refresh"></i></button>
+
+
+                       </form>
+
+                          
+
+             
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id="calendar"></div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span><strong>H</strong> - Holiday</span>
+                            <span><strong>L</strong> - Leave</span>
+                            <span><strong>W</strong> - Weekend</span>
+                            <span><strong>F</strong> - Full day-off</span>
+                            <span><strong>P</strong> - Partial day-off</span>
+                        </div>
+                        <div class="col-lg-12 ">
+                            <div class="pull-right">
+                                @if (sheet == null)
+                                {
+                                    <form action="@Url.Action("NewTimesheet","Timesheet")" method="post" id="frm_new_timesheet">
+                                        <input type="hidden" name="year" value="@ViewBag.year" />
+                                        <input type="hidden" name="month" value="@ViewBag.month" />
+                                    </form>
+                                    <a class="btn btn-primary" href="javascript:document.getElementById('frm_new_timesheet').submit()">Add</a>
+                                }
+                                else
+                                {
+                                    if (timesheet.state == "NOT SUBMITTED")
+                                    {
+                                        <a href="@Url.Action("Edit","Timesheet",new { id = timesheet.timesheet_id})" class="btn btn-primary">Edit</a>
+                                        <a href="@Url.Action("Submit","Timesheet",new { id = timesheet.timesheet_id })" class="btn btn-success">Submit</a>
+                                    }
+
+                                }
+                               
+                                <button class="btn btn-warning">Cancel</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>History</h5>
+
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Performed by</th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        @*<div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Timesheet History</h5>
+
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover" id="tb_logs">
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Performed by</th>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+      
+    </div>
+</div>
+
+@section styles{
+    <link href="~/Content/libs/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/libs/fullcalendar/fullcalendar.print.css" rel="stylesheet" />
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <style>
+        .fc-time {
+            display: none
+        }
+
+        .fc-day-grid-event > .fc-content {
+            white-space: normal;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/Content/libs/fullcalendar/moment.min.js"></script>
+    <script src="~/Content/libs/fullcalendar/fullcalendar.min.js"></script>
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_time_sheet.js"></script>
+
+    <script>
+
+       $(document).ready(function () {
+
+
+           $('.i-checks').iCheck({
+               checkboxClass: 'icheckbox_square-green',
+               radioClass: 'iradio_square-green'
+           });
+
+           preview_timesheet_on_calendar(@timesheet.timesheet_id);
+           current_selections(@ViewBag.year,@ViewBag.month);
+
+       });
+
+    </script>
+}
+

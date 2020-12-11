@@ -1,0 +1,141 @@
+﻿@using HRM.DAL.Models;
+@model PagedList.IPagedList<pm_project_task>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "MyTasks";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>My Tasks</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="">Workspace</a>
+            </li>
+            <li>
+                <a>Project</a>
+            </li>
+            <li>
+                <a>Objective</a>
+            </li>
+            <li>
+                <a>Activity</a>
+            </li>
+            <li class="active">
+                <strong>My Tasks</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>Not Started</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="completed">
+                        @if (Model.Any())
+                        {
+                            foreach (var task in Model.Where(e => e.status == 7))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    <a href="@Url.Action("Task","Task",new { id = task.id })"> @task.task</a> - @task.description
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <i class="fa fa-clock-o"></i> @task.due_date.Value.ToString("yyyy-MM-dd")
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>In Progress</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="inprogress">
+                        @if (Model.Any())
+                        {
+                            foreach (var task in Model.Where(e => e.status == 5))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    <strong><a href="@Url.Action("Task", "Task", new { id = task.id })"> @task.task</a></strong> - @task.description
+                                    <div class="team-members">
+                                        @if (task.pm_task_admin.Any())
+                                        {
+                                            foreach (var admin in task.pm_task_admin)
+                                            {
+
+                                                string pic = "/Content/images/profile_images/" + admin.admin_hrm_employee.user_id + ".jpg";
+                                                if (!File.Exists(Server.MapPath(pic)))
+                                                { pic = "/Content/images/a4.jpg"; }
+
+                                                <a href=""><img alt="image" class="img-circle" src="@pic"></a>
+                                            }
+                                        }
+
+
+                                    </div>
+
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <i class="fa fa-clock-o"></i> @task.due_date.Value.ToString("yyyy-MM-dd")
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>Completed</h3>
+                    @*<p class="small"><i class="fa fa-hand-o-up"></i> Drag task between list</p>*@
+                    <ul class="sortable-list connectList agile-list" id="completed">
+                        @if (Model.Any())
+                        {
+                            foreach (var task in Model.Where(e => e.status == 6))
+                            {
+                                <li class="success-element" id="@task.id">
+                                    @task.task - @task.description
+                                    <div class="agile-detail">
+                                        <a href="@Url.Action("Task","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">View</a>
+                                        <a href="@Url.Action("Edit","Task",new { id = task.id })" class="pull-right btn btn-xs btn-white">Edit</a>
+                                        <i class="fa fa-clock-o"></i> @task.due_date.Value.ToString("yyyy-MM-dd")
+                                    </div>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+     
+    </div>
+
+
+
+
+</div>
+
+
+

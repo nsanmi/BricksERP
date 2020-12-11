@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7f996756631a4796a531dd9450ab286d" Name="Diagram1" ZoomLevel="75">
+        <EntityTypeShape EntityType="oneportalModel.C__EFMigrationsHistory" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.C__MigrationHistory" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="oneportalModel.admin_announcement" Width="1.5" PointX="10.5" PointY="175.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_activity" Width="1.5" PointX="13.5" PointY="129.875" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_directorate" Width="1.5" PointX="14.25" PointY="108" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_education" Width="1.5" PointX="11.25" PointY="64.125" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_basicsalary" Width="1.5" PointX="10.5" PointY="188.5" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_dependents" Width="1.5" PointX="10.5" PointY="172.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_education" Width="1.5" PointX="13.5" PointY="70.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_emergency_contacts" Width="1.5" PointX="10.5" PointY="185.125" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_file" Width="1.5" PointX="16.5" PointY="73" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_job_record" Width="1.5" PointX="16.5" PointY="81.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_job_record_history" Width="1.5" PointX="19.5" PointY="73.5" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_language" Width="1.5" PointX="10.5" PointY="104" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_locations" Width="1.5" PointX="13.5" PointY="79" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_member_detail" Width="1.5" PointX="10.5" PointY="156.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_reportto" Width="1.5" PointX="10.5" PointY="194.875" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_skill" Width="1.5" PointX="10.5" PointY="192" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_emp_work_experience" Width="1.5" PointX="10.5" PointY="181.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_employee" Width="1.5" PointX="8.25" PointY="74.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_holiday" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave" Width="1.5" PointX="18.75" PointY="82" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_entitlement" Width="1.5" PointX="21.5" PointY="81.875" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_entitlement_type" Width="1.5" PointX="19.25" PointY="70" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_request" Width="1.5" PointX="10.5" PointY="82.5" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_request_comment" Width="1.5" PointX="12.75" PointY="95.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_status" Width="1.5" PointX="16.5" PointY="69.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_leave_type" Width="1.5" PointX="8.25" PointY="94.875" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_lk_directorate_subunit" Width="1.5" PointX="16.5" PointY="101" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_lkup_employment_status" Width="1.5" PointX="6" PointY="85.125" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_lkup_job_title" Width="1.5" PointX="8.25" PointY="70.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_lkup_subunit" Width="1.5" PointX="14.25" PointY="99.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_location" Width="1.5" PointX="11.25" PointY="52.25" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_suggestion" Width="1.5" PointX="10.5" PointY="71.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_suggestion_files" Width="1.5" PointX="12.75" PointY="67" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_timesheet" Width="1.5" PointX="10.5" PointY="178.375" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_timesheet_action_log" Width="1.5" PointX="12.75" PointY="126.5" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_timesheet_item" Width="1.5" PointX="15.75" PointY="129.125" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_timesheet_lk_project_activity" Width="1.5" PointX="16.75" PointY="97.625" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_uploaded_document" Width="1.5" PointX="14.25" PointY="62.625" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetPermission" Width="1.5" PointX="0.75" PointY="77" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetRolePermission" Width="1.5" PointX="3" PointY="78.25" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetRole" Width="1.5" PointX="0.75" PointY="80.375" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="82" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="79.5" />
+        <EntityTypeShape EntityType="oneportalModel.AspNetUser" Width="1.5" PointX="3" PointY="81.5" />
+        <EntityTypeShape EntityType="oneportalModel.pm_activity_admin" Width="1.5" PointX="19.5" PointY="87" />
+        <EntityTypeShape EntityType="oneportalModel.pm_activity_budget" Width="1.5" PointX="13.5" PointY="74.25" />
+        <EntityTypeShape EntityType="oneportalModel.pm_activity_deliverables" Width="1.5" PointX="10.5" PointY="91.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_activity_files" Width="1.5" PointX="13.5" PointY="82.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_budget_item" Width="1.5" PointX="11.25" PointY="99.25" />
+        <EntityTypeShape EntityType="oneportalModel.pm_comment" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="oneportalModel.pm_funder" Width="1.5" PointX="0.75" PointY="1.375" />
+        <EntityTypeShape EntityType="oneportalModel.pm_objective_admin" Width="1.5" PointX="19.5" PointY="90" />
+        <EntityTypeShape EntityType="oneportalModel.pm_objective_deliverables" Width="1.5" PointX="16.5" PointY="88.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_objective_files" Width="1.5" PointX="13.5" PointY="87.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project" Width="1.5" PointX="6.75" PointY="57.375" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_admin" Width="1.5" PointX="13.5" PointY="92" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_deliverables" Width="1.5" PointX="16.5" PointY="93.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_files" Width="1.5" PointX="10.5" PointY="86.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_funding_period" Width="1.5" PointX="9" PointY="30.5" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_objective_activity" Width="1.5" PointX="11.25" PointY="57" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_strategic_objective" Width="1.5" PointX="9" PointY="58.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project_task" Width="1.5" PointX="8.25" PointY="64.875" />
+        <EntityTypeShape EntityType="oneportalModel.pm_task_admin" Width="1.5" PointX="10.5" PointY="76" />
+        <EntityTypeShape EntityType="oneportalModel.pm_task_deliverables" Width="1.5" PointX="19.5" PointY="93.125" />
+        <EntityTypeShape EntityType="oneportalModel.pm_task_files" Width="1.5" PointX="16.5" PointY="76.125" />
+        <EntityTypeShape EntityType="oneportalModel.ws_app_settings" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.ws_complain" Width="1.5" PointX="5.25" PointY="125" />
+        <EntityTypeShape EntityType="oneportalModel.ws_complain_admin" Width="1.5" PointX="10.5" PointY="163.625" />
+        <EntityTypeShape EntityType="oneportalModel.ws_complain_files" Width="1.5" PointX="7.5" PointY="126" />
+        <EntityTypeShape EntityType="oneportalModel.ws_email_template" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="oneportalModel.ws_lookup" Width="1.5" PointX="14.25" PointY="103.125" />
+        <EntityTypeShape EntityType="oneportalModel.ws_notification" Width="1.5" PointX="10.5" PointY="79.125" />
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_suggestion_admin" Width="1.5" PointX="10.5" PointY="169.625" />
+        <AssociationConnector Association="oneportalModel.FK_admin_announcement_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_item_admin_hrm_activity" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_lk_project_activity_admin_hrm_activity" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_lk_department_jobtitle_admin_hrm_department" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_education_admin_hrm_education" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_basicsalary_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_dependents_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_education_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_emergency_contacts_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_file_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_file_admin_hrm_uploaded_document" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_job_record_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_job_record_admin_hrm_lkup_subunit" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_job_record_admin_hrm_lkup_job_title" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_job_record_history_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_job_record_history_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_job_record_history_admin_hrm_lkup_job_title" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_language_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_locations_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_locations_admin_hrm_location" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_member_detail_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_reportto_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_reportto_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_skill_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_emp_work_experience_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_employee_admin_hrm_lkup_employment_status" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_employee_AspNetUsers" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_entitlement_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_request_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_suggestion_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_suggestion_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_action_log_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_item_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_budget_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_budget_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_deliverables_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_deliverables_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_files_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_files_admin_hrm_employee_updated" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_deliverables_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_deliverables_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_files_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_files_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_deliverables_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_deliverables_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_files_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_files_admin_hrm_employee_updated" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_deliverables_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_deliverables_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_files_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_files_admin_hrm_employee_updated" />
+        <AssociationConnector Association="oneportalModel.FK_ws_complain_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_ws_notification_ws_notification" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_admin_hrm_leave_request1" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_admin_hrm_leave_status1" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_admin_hrm_leave_type" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_entitlement_admin_hrm_leave_entitlement_type" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_entitlement_admin_hrm_leave_type" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_request_admin_hrm_leave_type" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_leave_request_comment_admin_hrm_leave_request" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_lk_department_jobtitle_admin_hrm_lkup_job_title" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_suggestion_admin_hrm_lkup_job_title" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_suggestion_files_admin_hrm_suggestion" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_action_log_admin_hrm_timesheet" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_item_admin_hrm_timesheet" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_item_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_admin_hrm_timesheet_lk_project_activity_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_AspNetRolePermissions_AspNetPermissions" />
+        <AssociationConnector Association="oneportalModel.FK_AspNetRolePermissions_AspNetRoles" />
+        <AssociationConnector Association="oneportalModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="oneportalModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="oneportalModel.FK_ws_complain_AspNetUsers" />
+        <AssociationConnector Association="oneportalModel.FK_ws_complain_AspNetUsersResolvedBy" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_admin_pm_project_objective_activity" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_budget_pm_budget_item" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_budget_pm_project_objective_activity" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_deliverables_pm_project_objective_activity" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_deliverables_ws_lookup" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_deliverables_ws_lookup1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_activity_files_pm_project_objective_activity" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_funding_period_pm_funder" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_admin_pm_project_strategic_objective" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_deliverables_pm_project_strategic_objective" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_deliverables_ws_lookup" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_deliverables_ws_lookup1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_objective_files_pm_project_strategic_objective" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_admin_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_deliverables_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_files_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_funding_period_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_strategic_objective_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_deliverables_ws_lookup" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_deliverables_ws_lookup1" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_objective_activity_pm_project_strategic_objective" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_task_pm_project_objective_activity" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_admin_pm_project_task" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_deliverables_pm_project_task" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_files_pm_project_task" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_deliverables_ws_lookup" />
+        <AssociationConnector Association="oneportalModel.FK_pm_task_deliverables_ws_lookup1" />
+        <AssociationConnector Association="oneportalModel.FK_ws_complain_files_ws_complain" />
+        <AssociationConnector Association="oneportalModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_approval_token" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_employee_signature" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_form_design" Width="1.5" PointX="10.75" PointY="7.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_link_travel_expense" Width="1.5" PointX="10.75" PointY="10.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_lnk_vendor_category" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_payments" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_process" Width="1.5" PointX="5.75" PointY="12.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_transaction_token" Width="1.5" PointX="12.75" PointY="7.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_travel_expenses" Width="1.5" PointX="7.75" PointY="12.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_travel_type" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor_category" Width="1.5" PointX="12.75" PointY="13.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor_document" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow" Width="1.5" PointX="14.75" PointY="8.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_document" Width="1.5" PointX="9.75" PointY="14.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_employee" Width="1.5" PointX="14.75" PointY="12.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_program_approval" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="oneportalModel.customer" Width="1.5" PointX="8.75" PointY="4" />
+        <EntityTypeShape EntityType="oneportalModel.laundry_services" Width="1.5" PointX="14.75" PointY="15.75" />
+        <EntityTypeShape EntityType="oneportalModel.product" Width="1.5" PointX="6" PointY="7" />
+        <EntityTypeShape EntityType="oneportalModel.product_admin" Width="1.5" PointX="10.875" PointY="95.875" />
+        <EntityTypeShape EntityType="oneportalModel.product_category" Width="1.5" PointX="3.75" PointY="8" />
+        <EntityTypeShape EntityType="oneportalModel.product_files" Width="1.5" PointX="8.25" PointY="8.25" />
+        <EntityTypeShape EntityType="oneportalModel.supplier" Width="1.5" PointX="3.75" PointY="11.75" />
+        <EntityTypeShape EntityType="oneportalModel.transaction" Width="1.5" PointX="16.75" PointY="3.75" />
+        <AssociationConnector Association="oneportalModel.FK_product_admin_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_product_files_product" />
+        <AssociationConnector Association="oneportalModel.FK_product_product_cat" />
+        <AssociationConnector Association="oneportalModel.FK_product_product_supp" />
+        <EntityTypeShape EntityType="oneportalModel.Booking" Width="1.5" PointX="5.375" PointY="16.75" />
+        <EntityTypeShape EntityType="oneportalModel.AddOn" Width="1.5" PointX="14.5" PointY="46.625" />
+        <EntityTypeShape EntityType="oneportalModel.AddOnRate" Width="1.5" PointX="16.75" PointY="53.5" />
+        <EntityTypeShape EntityType="oneportalModel.Address" Width="1.5" PointX="24" PointY="72.125" />
+        <EntityTypeShape EntityType="oneportalModel.AddressType" Width="1.5" PointX="21.75" PointY="59.875" />
+        <EntityTypeShape EntityType="oneportalModel.Amenity" Width="1.5" PointX="14.5" PointY="43.875" />
+        <EntityTypeShape EntityType="oneportalModel.AmenityRate" Width="1.5" PointX="16.75" PointY="42.75" />
+        <EntityTypeShape EntityType="oneportalModel.Brand" Width="1.5" PointX="22.5" PointY="97.75" />
+        <EntityTypeShape EntityType="oneportalModel.CityZip" Width="1.5" PointX="19.625" PointY="6.75" />
+        <EntityTypeShape EntityType="oneportalModel.EmailType" Width="1.5" PointX="21.75" PointY="100.875" />
+        <EntityTypeShape EntityType="oneportalModel.Hotel" Width="1.5" PointX="24.75" PointY="91.25" />
+        <EntityTypeShape EntityType="oneportalModel.Override" Width="1.5" PointX="26.25" PointY="75.625" />
+        <EntityTypeShape EntityType="oneportalModel.Phone" Width="1.5" PointX="24" PointY="76.25" />
+        <EntityTypeShape EntityType="oneportalModel.PhoneType" Width="1.5" PointX="21.75" PointY="62.875" />
+        <EntityTypeShape EntityType="oneportalModel.pricing" Width="1.5" PointX="0.75" PointY="10" />
+        <EntityTypeShape EntityType="oneportalModel.Promo" Width="1.5" PointX="16.75" PointY="45.75" />
+        <EntityTypeShape EntityType="oneportalModel.Reservation" Width="1.5" PointX="19" PointY="65.125" />
+        <EntityTypeShape EntityType="oneportalModel.ReservationDetail" Width="1.5" PointX="23.5" PointY="65.75" />
+        <EntityTypeShape EntityType="oneportalModel.RoomAmenity" Width="1.5" PointX="29.25" PointY="91.625" />
+        <EntityTypeShape EntityType="oneportalModel.RoomType" Width="1.5" PointX="14.5" PointY="49.25" />
+        <AssociationConnector Association="oneportalModel.FK__AddOnRate__AddOn__17E28260" />
+        <AssociationConnector Association="oneportalModel.FK__Promo__AddOn_Add__2077C861" />
+        <AssociationConnector Association="oneportalModel.FK__Address__Address__469D7149" />
+        <AssociationConnector Association="oneportalModel.FK__Address__Employe__44B528D7" />
+        <AssociationConnector Association="oneportalModel.FK__Address__Hotel_H__43C1049E" />
+        <AssociationConnector Association="oneportalModel.FK__Override__Employ__61516785" />
+        <AssociationConnector Association="oneportalModel.FK__Phone__Employee___3EFC4F81" />
+        <AssociationConnector Association="oneportalModel.FK__AmenityRa__Ameni__6B0FDBE9" />
+        <AssociationConnector Association="oneportalModel.FK__Promo__Amenity_A__1F83A428" />
+        <AssociationConnector Association="oneportalModel.FK__RoomAmeni__Ameni__68336F3E" />
+        <AssociationConnector Association="oneportalModel.FK__Hotel__Brand_Bra__542C7691" />
+        <AssociationConnector Association="oneportalModel.FK__Phone__Hotel_Hot__3E082B48" />
+        <AssociationConnector Association="oneportalModel.FK__Override__Reserv__605D434C" />
+        <AssociationConnector Association="oneportalModel.FK__Phone__PhoneType__3FF073BA" />
+        <AssociationConnector Association="oneportalModel.FK__Promo__RoomType___1E8F7FEF" />
+        <AssociationConnector Association="oneportalModel.FK__Reservati__Reser__57C7FD4B" />
+        <AssociationConnector Association="oneportalModel.HotelEmployee" />
+        <AssociationConnector Association="oneportalModel.ReservationPromo" />
+        <EntityTypeShape EntityType="oneportalModel.billing" Width="1.5" PointX="17" PointY="7.125" />
+        <AssociationConnector Association="oneportalModel.FK_billing_billing" />
+        <AssociationConnector Association="oneportalModel.FK_billing_customer" />
+        <EntityTypeShape EntityType="oneportalModel.User_Email" Width="1.5" PointX="27" PointY="83.25" />
+        <AssociationConnector Association="oneportalModel.FK__User_Emai__Emplo__03A67F89" />
+        <AssociationConnector Association="oneportalModel.FK__User_Emai__Email__049AA3C2" />
+        <AssociationConnector Association="oneportalModel.FK__User_Emai__Hotel__02B25B50" />
+        <EntityTypeShape EntityType="oneportalModel.delivery" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="oneportalModel.collection_register" Width="1.5" PointX="21.75" PointY="91.75" />
+        <EntityTypeShape EntityType="oneportalModel.entry_information" Width="1.5" PointX="7.375" PointY="17.75" />
+        <AssociationConnector Association="oneportalModel.FK_collection_register_admin_hrm_employee" />
+        <EntityTypeShape EntityType="oneportalModel.Amenity1" Width="1.5" PointX="22" PointY="87.375" />
+        <EntityTypeShape EntityType="oneportalModel.Room" Width="1.5" PointX="22" PointY="103.875" />
+        <EntityTypeShape EntityType="oneportalModel.RoomRate" Width="1.5" PointX="19.75" PointY="104.5" />
+        <EntityTypeShape EntityType="oneportalModel.RoomReservation" Width="1.5" PointX="24.25" PointY="80.75" />
+        <EntityTypeShape EntityType="oneportalModel.RoomReservationAddOn" Width="1.5" PointX="26.5" PointY="65.375" />
+        <AssociationConnector Association="oneportalModel.FK__RoomReser__AddOn__54EB90A0" />
+        <AssociationConnector Association="oneportalModel.FK_RoomReservation_AddOn" />
+        <AssociationConnector Association="oneportalModel.FK_RoomReservation_Amenities" />
+        <AssociationConnector Association="oneportalModel.FK__Room__Hotel_Hote__627A95E8" />
+        <AssociationConnector Association="oneportalModel.FK_Room_Phone" />
+        <AssociationConnector Association="oneportalModel.FK__RoomReser__Reser__4D4A6ED8" />
+        <AssociationConnector Association="oneportalModel.FK__Reservati__RoomR__58BC2184" />
+        <AssociationConnector Association="oneportalModel.FK__Reservati__RoomR__59B045BD" />
+        <AssociationConnector Association="oneportalModel.FK__Room__RoomType_R__618671AF" />
+        <AssociationConnector Association="oneportalModel.FK__RoomAmeni__Room___673F4B05" />
+        <AssociationConnector Association="oneportalModel.FK__RoomReser__Room___4C564A9F" />
+        <AssociationConnector Association="oneportalModel.FK_Room_RoomRate" />
+        <AssociationConnector Association="oneportalModel.FK__RoomRate__RoomTy__5EAA0504" />
+        <AssociationConnector Association="oneportalModel.FK__RoomReser__RoomR__53F76C67" />
+        <AssociationConnector Association="oneportalModel.FK_RoomReservation_RoomReservation" />
+        <EntityTypeShape EntityType="oneportalModel.Guest" Width="1.5" PointX="10.5" PointY="107.125" />
+        <AssociationConnector Association="oneportalModel.FK__Address__Guest_G__42CCE065" />
+        <AssociationConnector Association="oneportalModel.FK__Guest__Employee___347EC10E" />
+        <AssociationConnector Association="oneportalModel.FK_collection_register_Guest" />
+        <AssociationConnector Association="oneportalModel.FK__Phone__Guest_Gue__3D14070F" />
+        <AssociationConnector Association="oneportalModel.FK__Reservati__Guest__4979DDF4" />
+        <AssociationConnector Association="oneportalModel.FK__User_Emai__Guest__01BE3717" />
+        <AssociationConnector Association="oneportalModel.FK_RoomReservation_Guest" />
+        <AssociationConnector Association="oneportalModel.RoomReservationGuest" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

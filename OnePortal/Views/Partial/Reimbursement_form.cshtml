@@ -1,0 +1,125 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+    var travel_expenses = Util.GetTravelExpenses(Convert.ToInt32(form.Element("travel_class").Value));
+}
+
+
+<div class="form-group">
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+                <th>Expense</th>
+                <th>Daily Rate</th>
+                <th>No of Days</th>
+                <th>Dates</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (travel_expenses.Any())
+            {
+                foreach (var expense in travel_expenses)
+                {
+                    <tr>
+                        <td>@expense.bpm_travel_expenses.name</td>
+                        <td>@expense.amount</td>
+                        <td><input type="text" class="form-control" name=@string.Format("{0}_no_of_days",expense.expense_id) /></td>
+                        <td>
+                            <div class="row">
+                                <div class="col-lg-6" id="data_1">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name=@string.Format("{0}_start_date",expense.expense_id) type="text" readonly class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" id="data_1">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name=@string.Format("{0}_end_date",expense.expense_id) type="text" readonly class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+
+            }
+            <tr>
+                <td>Hotel</td>
+                <td><input type="text" name="hotel" class="form-control" /></td>
+                <td><input type="text" class="form-control" name="h_no_of_days" /></td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="h_start_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="h_end_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Transportation</td>
+                <td><input type="text" name="transportation" class="form-control" /></td>
+                <td><input type="text" class="form-control" name="t_no_of_days" /></td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="t_start_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="t_end_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+
+
+            </tr>
+            <tr>
+                <td colspan="4">Others</td>
+            </tr>
+            <tr>
+                <td><input type="text" name="other" class="form-control" /></td>
+                <td><input type="text" name="other_amount" class="form-control" /></td>
+                <td><input type="text" class="form-control" name="o_no_of_days" /></td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="o_start_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="data_1">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="o_end_date" type="text" readonly class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td><button type="button" class="btn btn-sm btn-primary" onclick="add_row('tb_items')">Add Row</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>

@@ -1,0 +1,126 @@
+﻿@using System.Data
+@using HRM.DAL.Util;
+@{
+    ViewBag.Title = "Report";
+    var table = (DataTable)ViewBag.table;
+
+    var month = (int)ViewBag.month;
+    var year = (int)ViewBag.year;
+}
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Timesheet Audit </h5>
+                    <div class="ibox-tools">
+                        <form action="@Url.Action("Report","Timesheet")" method="get" id="frm">
+
+
+                            @Html.DropDownList("month", new SelectList(OptionUtil.GetMonths(), "Value", "Name", month), "- Select Month -", new { @class = "", @onchange = "$('#frm').submit()" })
+
+                            <select name="year" id="year" onchange="$('#frm').submit()">
+                                @for (var i = 2017; i <= DateTime.Now.Year; i++)
+                                {
+                                    if (i == year)
+                                    {
+                                        <option selected value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+
+                                }
+
+                            </select>
+                            <input type="hidden" name="search" id="search" />
+                            @*<button type="submit" class="btn-circle btn btn-default" id="btn_refresh"><i class="fa fa-refresh"></i></button>*@
+
+                        </form>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <h2>Employee Timesheet Report</h2>
+
+
+                    <div class="full-height-scroll">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" style="border-top:1px solid #ccc" id="table">
+                                <thead>
+
+                                    <tr>
+                                        @foreach (DataColumn col in table.Columns)
+                                        {
+                                            <th>@col.Caption</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in table.Rows)
+                                    {
+
+                                        <tr>
+                                            @foreach (var cell in row.ItemArray)
+                                            {
+
+
+                                                <td>@Html.Raw(cell.ToString())</td>
+
+                                            }
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_employee.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#table').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                "pageLength": 50,
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'employee_list' },
+                    { extend: 'pdf', title: 'employee_list' },
+
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
+
+        });
+    </script>
+}
+
+@section Styles{
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+

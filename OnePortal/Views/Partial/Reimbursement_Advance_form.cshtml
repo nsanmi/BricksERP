@@ -1,0 +1,149 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using HRM.DAL.Util
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+
+    //var travel_expenses = Util.GetTravelExpenses(Convert.ToInt32(form.Element("travel_class").Value));
+    double total = 0;
+    var account_name = form.Element("account_name")?.Value;
+    var account_no = form.Element("account_number")?.Value;
+    var bank_name = form.Element("bank_name")?.Value;
+
+    var procuremenetUnits = OptionUtil.GetProcuremenetUnits();
+    var _readonly = XElement.Parse(workflow.workflow).Element("next_step").Value == "3" ? "" : "readonly";
+}
+<div class="form-group">
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+        <tr>
+            <th style="background-color: transparent" width="12%">Qty</th>
+            <th style="background-color: transparent" width="20%">Unit</th>
+            <th style="background-color: transparent" width="33%">Description</th>
+            <th style="background-color: transparent" width="15%">Unit Cost</th>
+            <th style="background-color: transparent" width="15%">Total</th>
+            <th style="background-color: transparent" width="5%">
+                <button type="button" class="btn btn-sm btn-primary" onclick="add_row_n('tb_items')" disabled="@(!string.IsNullOrEmpty(@_readonly))"><i class="fa fa-plus"></i></button>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (form.Element("expenses").Elements("expense").Any() )
+        {
+            foreach (var item in form.Element("expenses").Elements("expense"))
+            {
+                double unit_cost = 0;
+                if (item.Element("vendors_unit_price") != null)
+                {
+                    unit_cost = Convert.ToDouble(item.Element("vendors_unit_price").Value);
+                }
+                else if (item.Element("unit_cost") != null)
+                {
+                    unit_cost = Convert.ToDouble(item.Element("unit_cost").Value);
+                }
+                else if (item.Element("est_unit_cost") != null)
+                {
+                    unit_cost = item.Element("est_unit_cost").Value != "" ? Convert.ToDouble(item.Element("est_unit_cost").Value) : 0;
+                }
+                double unit, qty;
+                //double.TryParse(item.Element("unit").Value, out unit);
+                double.TryParse(item.Element("quantity").Value, out qty);
+                var tc = qty * unit_cost;
+                //var tc = Convert.ToDouble(item.Element("unit").Value) * Convert.ToDouble(item.Element("quantity").Value) * unit_cost;
+                total += tc;
+                if (_readonly == "")
+                {
+                    <tr class="txtMult_n">
+                        <td><input class="form-control number allownumericwithdecimal val2" required type="text" name="quantity" value="@item.Element("quantity").Value" onpaste="return false" /></td>
+                        <td>
+                            @Html.DropDownList("unit", new SelectList(procuremenetUnits, "lookup_name", "lookup_name", item.Element("unit").Value), "- Select -", new { @class = "form-control", @required = "required" })
+                        </td>
+                        <td><textarea class="form-control" required name="description" rows="1">@item.Element("description").Value</textarea></td>
+                        <td><input class="form-control number allownumericwithdecimal val3" required type="text" name="unit_cost" onpaste="return false" value="@unit_cost" /></td>
+                        <td><span class="multTotal">0.00</span></td>
+                        <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row_n(this,'tb_items')"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@item.Element("quantity").Value</td>
+                        <td>@item.Element("unit").Value</td>
+                        @*<td>@item.Element("itemname").Value</td>*@
+                        <td>@item.Element("description").Value</td>
+                        <td>@unit_cost</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+                    </tr>
+                }
+            }
+            <tr class="txtMult_n">
+                <td><input class="form-control number allownumericwithdecimal val2" required type="text" name="quantity" onpaste="return false"/></td>
+                <td>
+                    @Html.DropDownList("unit", new SelectList(procuremenetUnits, "lookup_name", "lookup_name", null), "- Select -", new {@class = "form-control", @required = "required"})
+                </td>
+                <td><textarea class="form-control" required name="description" rows="1"></textarea></td>
+                <td><input class="form-control number allownumericwithdecimal val3" required type="text" name="unit_cost" onpaste="return false"/></td>
+                <td><span class="multTotal">0.00</span></td>
+                <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row_n(this, 'tb_items')"><i class="fa fa-trash"></i></button></td>
+            </tr>
+        }
+        else
+        {
+
+                @*style="display:none"*@
+
+                @*<tr id="tr_others" class="txtMult_r">
+                <td><input type="text" name="other" class="form-control" required /></td>
+                <td><input type="text" onpaste="return false" name="other_amount" class="form-control number val1 allownumericwithdecimal" required /></td>
+
+                <td><span class="multTotal">0.00</span></td>
+                <td>
+                    <button class="btn btn-sm btn-danger" type="button" onclick="delete_row_r(this,'tb_items')"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>*@
+            <tr class="txtMult_n">
+                <td><input class="form-control number allownumericwithdecimal val2" required type="text" name="quantity" onpaste="return false"/></td>
+                <td>
+                    @Html.DropDownList("unit", new SelectList(procuremenetUnits, "lookup_name", "lookup_name", null), "- Select -", new {@class = "form-control", @required = "required"})
+                </td>
+                <td><textarea class="form-control" required name="description" rows="1"></textarea></td>
+                <td><input class="form-control number allownumericwithdecimal val3" required type="text" name="unit_cost" onpaste="return false"/></td>
+                <td><span class="multTotal">0.00</span></td>
+                <td><button class="btn btn-sm btn-danger" type="button" onclick="delete_row_n(this, 'tb_items')"><i class="fa fa-trash"></i></button></td>
+            </tr>
+        }
+
+        </tbody>
+        <tfoot>
+            @if (!form.Element("expenses").Elements("expense").Any())
+            {
+                <tr>
+                    <td colspan="4">Total</td>
+                    <td id="grandTotal" colspan="2">0.00</td>
+                </tr>
+            }
+        </tfoot>
+    </table>
+
+</div>
+
+<div class="form-group">
+    <label>Account Name</label>
+    <input class="form-control" name="account_name" type="text" value="@account_name" required />
+</div>
+<div class="form-group">
+    <label>Account Number</label>
+    <input class="form-control" name="account_number" type="text" value="@account_no" required />
+</div>
+<div class="form-group">
+    <label>Bank Name</label>
+    <input class="form-control" name="bank_name" type="text" value="@bank_name" required />
+</div>
+
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>

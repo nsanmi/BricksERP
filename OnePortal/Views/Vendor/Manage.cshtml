@@ -1,0 +1,219 @@
+﻿@using WorkFlow.DAL.Data;
+@using PagedList.Mvc;
+@using HRM.DAL.Util;
+@using WorkFlow.DAL;
+@model bpm_vendor
+
+@{
+    ViewBag.Title = "Manage Vendor";
+    var vendorsCategory = Model.bpm_lnk_vendor_category.Select(m => m.category_id).Distinct().ToList();
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Edit Vendor</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a href="#">Workflow</a>
+            </li>
+            <li class="active">
+                <strong>Vendors</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Edit Vendor</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.V_message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.V_message
+                            </div>
+                        }
+                    </div>
+                    @using (Html.BeginForm("Manage", "Vendor", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <input type="hidden" value="@Model.id" name="id" />
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Name</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="name" value="@Model.name" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Company name</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="company_name" value="@Model.company_name" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Address</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="address" value="@Model.address" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Email</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="email" value="@Model.email" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Phone</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="phone" value="@Model.phone" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">TIN</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="tin" value="@Model.tin" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Account Name</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="account_name" value="@Model.account_name" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Account Number</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="account_number" value="@Model.account_number" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Bank Name</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="bank_name" value="@Model.bank_name" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Category</label>
+                            <div class="col-lg-9">
+                                @*@Html.DropDownList("category", new SelectList(OptionUtil.GetLookupOptions("vendor_categories"), "id", "lookup_name", null), "- Please Select -", new { @class = "form-control", @multiple = "multiple" })*@
+                                @foreach (var category in Util.GetVendorCategories())
+                                {
+                                    if (vendorsCategory.Contains(category.id))
+                                    {
+                                        <input type="checkbox" name="category" value="@category.id" checked>@category.name<br>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="category" value="@category.id">@category.name<br>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label"></label>
+                            <div class="col-lg-9">
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Vendor Documents</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.message
+                            </div>
+                        }
+                    </div>
+                    <div class="row table-responsive">
+                        <div class="col-lg-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Date Uploaded</th>
+                                        <th>Uploaded By</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var document in Model.bpm_vendor_document)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="#"> @document.ws_lookup.lookup_name</a>
+                                            </td>
+                                            <td>@document.created_at.ToString("yyyy-MMM-dd HH:mm tt")</td>
+                                            <td>
+                                                @string.Format("{0} {1}", document.admin_hrm_employee.emp_lastname, document.admin_hrm_employee.emp_firstname)
+                                            </td>
+                                            <td>
+                                                <form action="@Url.Action("DeleteDocument", "Vendor", new {id = document.id})">
+                                                    <button type="button" class="btn btn-xs btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form action="@Url.Action("UploadDocument", "Vendor")" method="post" class="form-horizontal" enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Description</label>
+                                    <input type="hidden" name="vendor_id" value="@Model.id" />
+                                    <div class="col-lg-9">
+                                        @Html.DropDownList("description", new SelectList(OptionUtil.GetLookupOptions("vendor_documents"), "id", "lookup_name", null), "Select Vendor Document", new { @class = string.Format("form-control"), @required = "required" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">File</label>
+
+                                    <div class="col-lg-9">
+                                        <input type="file" name="file" required class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label"></label>
+
+                                    <div class="col-lg-9">
+                                        <button type="submit" class="btn btn-success">Upload</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+</div>
+</div>

@@ -1,0 +1,133 @@
+﻿@model Hotel.Dal.Models.Hotel_amenity
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Update Reservation</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Hotel</a>
+            </li>
+            <li class="active">
+                <strong>update amenity</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> Amenity </h5>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+
+
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizonta row">
+                                <h4>Hotel_amenity</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Id)
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.room_id, "room_id", htmlAttributes: new { @class = "control-label col-md-2" })
+                                  
+                                        @Html.DropDownList("room_id", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.room_id, "", new { @class = "text-danger" })
+                               
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.amenity_name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.amenity_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.amenity_name, "", new { @class = "text-danger" })
+                                   
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.amenity_category, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.amenity_category, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.amenity_category, "", new { @class = "text-danger" })
+                                
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.amenity_status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                   
+                                        @Html.EditorFor(model => model.amenity_status, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.amenity_status, "", new { @class = "text-danger" })
+                               
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    @Html.LabelFor(model => model.amenity_description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                  
+                                        @Html.EditorFor(model => model.amenity_description, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.amenity_description, "", new { @class = "text-danger" })
+                                    
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div>
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                @*<div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Update Complain</button>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         
+        </div>
+    </div>
+</div>

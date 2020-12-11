@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<admin_announcement>
+@{
+    ViewBag.Title = "Noticeboard";
+    ApplicationDbContext context = new ApplicationDbContext();
+    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+    var user = UserManager.FindByName(User.Identity.Name);
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <embed src="~/Documents/Policies/@ViewBag.href#toolbar=0&navpanes=0&scrollbar=0" width="1300" height="600" type="application/pdf" toolbar="0">
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Content/libs/summernote/summernote.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        });
+    </script>
+}
+@section styles{
+
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote.css" rel="stylesheet" />
+    <link href="~/Content/libs/summernote/summernote-bs3.css" rel="stylesheet" />
+    <link href="~/Scripts/getorgchart.css" rel="stylesheet" />
+}

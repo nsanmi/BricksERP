@@ -1,0 +1,322 @@
+﻿@using System.Collections.Generic;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@{
+    ViewBag.Title = "Timesheet";
+    //var month = DateTime.DaysInMonth(DateTime.Now.Year,DateTime.Now.Month);
+    var time_sheet_days = (List<TimeSheetDay>)ViewBag.timeSheetDays;
+
+    var first_week = ViewBag.first_week;
+    var last_week = ViewBag.last_week;
+    var month = ViewBag.month;
+    if (month == 12)
+    {
+        last_week = 53;
+    }
+    var year = ViewBag.year;
+    var projects = OptionUtil.GetProjects().Where(e=>e.sub_parent == null);
+    var activities = OptionUtil.GetCategories();
+    var timesheet_items = (List<TimesheetItem>)ViewBag.timesheet_items;
+
+    ApplicationDbContext context = new ApplicationDbContext();
+    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+    var user = UserManager.FindByName(User.Identity.Name);
+    var employee = OptionUtil.GetEmployee(user.Id);
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Edit Timesheet</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Timesheet</a>
+            </li>
+            <li class="active">
+                <strong>Edit</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <form method="post" action="@Url.Action("PostTimesheet","TimeSheet")">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <input type="hidden" value="@ViewBag.timesheet_id" name="timesheet_id" />
+                    <div class="ibox-title">
+                        <h5>Edit Timesheet for @string.Format("{0} - {1}", month, year)</h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        @for (var i = first_week; i <= last_week; i++)
+                        {
+                            var project_id = "project_" + i;
+                            var activity_id = "activity_" + i;
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-striped " id="tbl_@i">
+                                <thead>
+                                <tr>
+                                    <th class="warning">
+                                        @*<input type='checkbox' id='drop-remove' class="i-checks" />*@ <label for='drop-remove'>Week</label>
+                                    </th>
+                                    <th class="warning" width="10%">Project Name</th>
+                                    <th class="warning" width="10%">Activity</th>
+                                    @{
+                                        //get all days in a particular week
+                                        var week_days = time_sheet_days.Where(e => e.weekOfMonth == i);
+
+                                        //get the number of rows
+                                        var week_rows = 0;
+                                        var proj_activity_list = new List<int[]>();
+
+                                        if (timesheet_items.Any())
+                                        {
+                                            //get all timesheets for this week
+                                            var week_time_sheets = timesheet_items.Where(e => e.week == i && e.date.Month == month);
+                                            var re_value = week_time_sheets.Select(m => new { m.project_id, m.activity_id }).Distinct().ToList();
+
+                                            foreach (var value in re_value)
+                                            {
+                                                proj_activity_list.Add(new int[] { value.project_id, value.activity_id });
+                                            }
+                                        }
+                                    }
+                                    @foreach (var day in week_days)
+                                    {
+                                        if (day.date.Month == month)
+                                        {
+                                            <th class="success" style="text-align:center">@day.dayOfWeek.Substring(0, 3) @day.dayOfMonth @OptionUtil.HolidayOrLeave(day.date, employee.emp_number)</th>
+                                        }
+                                        else
+                                        {
+                                            <th></th>
+                                        }
+                                    }
+                                    <th class="warning"><button type="button" class="btn btn-sm btn-primary" onclick='add_row("tbl_@i")'>Add Row</button></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if (proj_activity_list.Any())
+                                {
+                                    var row_count = 0;
+                                    foreach (var proj_list in proj_activity_list)
+                                    {
+                                        row_count += 1;
+                                        var proj_id = project_id + "_" + row_count;
+                                        var ac_id = activity_id + "_" + row_count;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>
+                                                @Html.DropDownList("project", new SelectList(projects, "id", "name", proj_list[0]), "- Please Select -", new { @class = string.Format("form-control pr {0}", proj_id), onchange = "enable_activities(this)" })
+                                            </td>
+                                            <td>
+                                                @Html.DropDownList("activity", new SelectList(activities.Where(e => e.project_id == proj_list[0]), "activity_id", "name", proj_list[1]), "- Please Select -", new { @class = string.Format("form-control act {0}", ac_id), onchange = "enable_inputs(this)" })
+                                            </td>
+                                            @foreach (var day in week_days)
+                                            {
+                                                var value = "";
+                                                var comment = "";
+                                                var comment_class = "";
+                                                var time_sheet = timesheet_items.FirstOrDefault(e => e.date == day.date && e.activity_id == proj_list[1] && e.project_id == proj_list[0]);
+                                                if (time_sheet != null)
+                                                {
+                                                    value = time_sheet.duration.ToString();
+                                                    comment = time_sheet.comment;
+                                                    if (comment != null && comment.Length > 0)
+                                                    {
+                                                        comment_class = "btn-warning";
+                                                    }
+                                                }
+
+                                                if (day.date.Month == month)
+                                                {
+                                                    var read_only = "readonly";
+                                                    if (OptionUtil.HolidayOrLeave(day.date, employee.emp_number) == "")
+                                                    {
+                                                        read_only = "";
+                                                    }
+                                                    var name = i + "_" + day.date.ToString("yyyy-MM-dd") + "_" + row_count;
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" @read_only maxlength="2" max="24" class="form-control small eligible" name="@name" value="@(OptionUtil.HolidayOrLeave(day.date, employee.emp_number) == "" ? value : "8")" @(OptionUtil.HolidayOrLeave(day.date, employee.emp_number) == "" ? "" : "readonly")> <span class="input-group-btn">
+                                                                <button type="button" data-toggle="modal" data-target="#myModal" onclick=active_comment(this) class="btn btn-default @comment_class eligible">
+                                                                    <i class="fa fa-comment-o"></i>
+                                                                </button>
+                                                                <input type="hidden" name="comment_@name" id="comment_@name" value="@comment" />
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="text" readonly class="form-control small"> <span class="input-group-btn">
+                                                                <button disabled type="button" class="btn btn-default">
+                                                                    <i class="fa fa-comment-o"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                }
+                                            }
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tbl_@i')"><i class="fa fa-trash"></i></button>
+                                                &nbsp;<button class="btn btn-sm btn-warning" type="button" onclick="clear_row(this)"><i class="fa fa-refresh"></i></button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    project_id += "_1";
+                                    activity_id += "_1";
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>
+                                            @Html.DropDownList("project", new SelectList(projects, "id", "name"), "- Please Select -", new { @class = string.Format("form-control pr {0}", project_id), onchange = "enable_activities(this)" })
+                                        </td>
+                                        <td>
+                                            @Html.DropDownList("activity", new SelectList(activities, "activity_id", "name"), "- Please Select -", new { @class = string.Format("form-control act {0}", activity_id), @disabled = "disabled", onchange = "enable_inputs(this)" })
+                                        </td>
+                                        @foreach (var day in week_days)
+                                        {
+                                            var value = "";
+                                            var time_sheet = timesheet_items.FirstOrDefault(e => e.date == day.date);
+                                            if (time_sheet != null)
+                                            {
+                                                value = time_sheet.duration.ToString();
+                                            }
+                                            if (day.date.Month == month)
+                                            {
+                                                var name = i + "_" + day.date.ToString("yyyy-MM-dd") + "_1";
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control small eligible" style="width: 50px" maxlength="2" max="24" disabled="disabled" name="@name" value="@(OptionUtil.HolidayOrLeave(day.date, employee.emp_number) == "" ? value : "8")" @(OptionUtil.HolidayOrLeave(day.date, employee.emp_number) == "" ? "" : "readonly") id="@name"> <span class="input-group-btn">
+                                                            <button type="button" disabled="disabled" data-toggle="modal" onclick=active_comment(this) data-target="#myModal" class="btn btn-default eligible">
+                                                                <i class="fa fa-comment-o"></i>
+                                                            </button>
+                                                            <input type="hidden" name="comment_@name" id="comment_@name" value="" />
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="text" readonly class="form-control small"> <span class="input-group-btn">
+                                                            <button disabled type="button" class="btn btn-default">
+                                                                <i class="fa fa-comment-o"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            }
+                                        }
+                                        <td>
+                                            <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tbl_@i')"><i class="fa fa-trash"></i></button>
+                                            &nbsp;<button class="btn btn-sm btn-warning" type="button" onclick="clear_row(this)"><i class="fa fa-refresh"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <span><strong>H</strong> - Holiday</span>
+                                <span><strong>L</strong> - Leave</span>
+                                <span><strong>W</strong> - Weekend</span>
+                                <span><strong>F</strong> - Full day-off</span>
+                                <span><strong>P</strong> - Partial day-off</span>
+                            </div>
+                            <div class="col-lg-12 ">
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <a class="btn btn-warning" href="javascript:history.back()">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Comment</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea class="form-control" rows="3" id="comment"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="add_comment()" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_time_sheet.js"></script>
+    <script>
+        //var active_comment_control=null;
+        $(document).ready(function () {
+            replace_name();
+            validate_entry();
+            getCategories();
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+        });
+
+        $(function () {
+            var regExp = /[a-z]/i;
+            $('input').on('keydown keyup', function (e) {
+                var value = String.fromCharCode(e.which) || e.key;
+
+                // No letters
+                if (regExp.test(value)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+
+    </script>
+}
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+}

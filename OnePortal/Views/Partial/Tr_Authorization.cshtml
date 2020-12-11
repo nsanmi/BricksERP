@@ -1,0 +1,56 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    ViewBag.Title = "Tr_Purpose";
+}
+
+
+<div class="form-group">
+    <label>Classs of Travel</label>
+    @Html.DropDownList("travel_class", new SelectList(Util.GetTravelTypes(), "id", "name", null), null, new { @class = "form-control", required = "required" })
+
+</div>
+<div class="form-group">
+    <label>Origination of Travel/Departure Airport:</label>
+
+    <input type="text" name="departure" required class="form-control">
+</div>
+<div class="form-group">
+    <label>Travel Destination/Destination Airport:</label>
+
+    <input type="text" name="destination" required class="form-control">
+</div>
+<div class="form-group">
+    <div class="row">
+
+        <div class="col-lg-2"> <label>Dates of Travel:</label></div>
+        <div class="col-lg-5" id="data_1">
+            <div class="input-group date">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="start_date" required type="text" readonly class="form-control">
+            </div>
+        </div>
+        <div class="col-lg-5" id="data_1">
+            <div class="input-group date">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="end_date" required type="text" readonly class="form-control">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="form-group">
+    <label>Purpose of travel:</label>
+    <textarea name="purpose_of_travel" class="form-control"></textarea>
+</div>
+
+<div class="form-group">
+    <label>Upload Supporting Document</label>
+
+    <input required type="file" multiple name="files" />
+</div>
+
+
+
+
+
+

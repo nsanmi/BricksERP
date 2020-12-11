@@ -1,0 +1,855 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<process>
+  <process_id></process_id>
+  <created_at></created_at>
+  <created_by></created_by>
+  <process_number></process_number>
+  <project></project>
+
+  <steps>
+    
+    <step>
+      <code>1</code>
+      <name>Need Identification</name>
+      <type>input</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+       <display_values>        
+      </display_values>
+      <form_values>
+           <form id="">
+          <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+          </item>
+          <justification></justification>
+            <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        </form>
+        
+      </form_values>
+      <next_step>2</next_step>
+      <status></status>
+      <access_level></access_level>
+      <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+      <next_step_position_id></next_step_position_id>
+    </step>
+    
+    <step>
+      <code>2</code>
+      <name>Unit head approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+          </item>
+          <justification></justification>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+     <step>
+      <code>3</code>
+      <name>Update Cost</name>
+      <type>input</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+          </item>
+          <justification></justification>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+           
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+         <item><!--Tag reserved for form collections-->
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+        <conversion_rate></conversion_rate>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+  
+     <step>
+      <code>4</code>
+      <name>First Compliance Review</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+    <step>
+      <code>5</code>
+      <name>Finance Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+
+    <step>
+      <code>6</code>
+      <name>Request for Quotations</name>
+      <type>email</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments></attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+   <step>
+      <code>7</code>
+      <name>Upload Quotations</name>
+      <type>input</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+   <step>
+      <code>8</code>
+      <name>Purchase Order</name>
+      <type>input</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <item><!--Tag reserved for form collections-->
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+   <step>
+      <code>9</code>
+      <name>Second Compliance Review</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+
+   <step>
+      <code>10</code>
+      <name>HR Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+      <step>
+      <code>11</code>
+      <name>Finance PO Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+    
+    <step>
+      <code>12</code>
+      <name>DFA Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+
+  
+    <step>
+      <code>13</code>
+      <name>Vendor Payment Request Form</name>
+      <type>input</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+
+   <step>
+      <code>14</code>
+      <name>Compliance Review and Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+  
+  
+   <step>
+      <code>15</code>
+      <name>Requesting official Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+  
+   <step>
+      <code>16</code>
+      <name>Country Director Approval</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+  
+   <step>
+      <code>17</code>
+      <name>Complete</name>
+      <type>approval</type>
+      <html_form_id></html_form_id>
+      <creatd_at></creatd_at>
+      <created_by></created_by>
+      <display_values>
+        <form>
+           <item><!--Tag reserved for form collections-->
+            <quantity></quantity>
+            <unit></unit>
+            <description></description>
+            <unit_price></unit_price>
+            <total_price></total_price>
+          </item>
+          <justification></justification>
+           <conversion_rate></conversion_rate>
+           <signatures>
+            <signature form_id="">
+              <signature_id></signature_id>
+              <emp_number></emp_number>
+              <created_at></created_at>
+            </signature>
+        </signatures>
+        </form>
+      </display_values>
+      <form_values>
+        <signatures>
+          <signature form_id="">
+            <signature_id></signature_id>
+            <emp_number></emp_number>
+            <created_at></created_at>
+          </signature>
+      </signatures>
+        
+      </form_values>
+      <next_step>3</next_step>
+      <status></status>
+      <access_level></access_level>
+     <locked></locked>
+      <attachments>
+        <quotations></quotations>
+      </attachments>
+      <comments></comments>
+     <next_step_position_id></next_step_position_id>
+    </step>
+  </steps>
+
+  <forms>
+    <form id="1" name="Purchase Requisition Form">
+        <item><!--Tag reserved for form collections-->
+          <quantity></quantity>
+          <unit></unit>
+          <description></description>
+          <unit_price></unit_price>
+          <conversion_rate></conversion_rate>
+        </item>
+        <justification></justification>
+
+      <signatures>
+        <signature>
+          <signature_id></signature_id>
+          <emp_number></emp_number>
+          <created_at></created_at>
+        </signature>
+      
+      </signatures>
+      <attachments></attachments>
+    </form>
+  
+ <form id="2" name="Purchase Order">
+        <item><!--Tag reserved for form collections-->
+          <quantity></quantity>
+          <unit></unit>
+          <description></description>
+          <unit_price></unit_price>
+          <conversion_rate></conversion_rate>
+        </item>
+        <justification></justification>
+
+      <signatures>
+        <signature>
+          <signature_id></signature_id>
+          <emp_number></emp_number>
+          <created_at></created_at>
+        </signature>
+      
+      </signatures>
+      <attachments></attachments>
+    </form>
+  </forms>
+</process>

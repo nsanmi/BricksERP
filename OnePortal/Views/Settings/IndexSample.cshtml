@@ -1,0 +1,284 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@using System.Data
+@using Microsoft.AspNet.Identity;
+
+@using PagedList;
+
+
+@using PagedList.Mvc;
+@model IPagedList<ws_lookup>
+@{
+    ViewBag.Title = "Lookup";
+    var message = ViewBag.message;
+
+
+}
+
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Lookup</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li class="active">
+                <a>Lookup</a>
+
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Lookup</h5>
+                    <div class="ibox-tools">
+
+                        <button type="button" data-toggle="modal" data-target="#MModal" class="btn btn-primary btn-sm">Create Lookup</button>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.message
+                            </div>
+                        }
+                    </div>
+
+                    <div class="project-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th align="center">Orderd</th>
+                                        <th align="center">Name</th>
+
+                                        <th align="center">Edit</th>
+                                        <th align="center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var lookup in Model)
+                                    {
+                                        <tr>
+                                            <td>@lookup.orderd</td>
+                                            <td>@lookup.lookup_name</td>
+                                            <td><button type="button" data-toggle="modal" data-target="#Updatemodal_@lookup.id" class="btn btn-primary btn-sm">Edit Lookup</button></td>
+
+                                            @*<td> @Html.ActionLink("Edit", "UpdateLookup", new { LookupId = lookup.id }, new { title = "Click to edit " })</td>*@
+
+
+                                            <td align="center">
+
+
+                                                <button class="btn btn-sm btn-danger" onclick="DeleteLookup(@lookup.id)" type="button"><i class="fa fa-trash"></i></button>
+                                            </td>
+
+
+                                            <div class="modal inmodal" id="Updatemodal_@lookup.id" aria-hidden="true">
+                                                <div class="modal-dialog" style="width:1250px; height:1000px;">
+                                                    <div class="modal-content animated flipInY" style="width:1250px; height:600px;">
+                                                        <div class="modal-header">
+                                                            Edit Lookup for @lookup.lookup_name
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="width:1248px; height:450px;">
+                                                            <form method="post" action="@Url.Action("UpdateLookup","Settings")" data-parsley-validate class="form-horizontal form-label-left">
+                                                                <div class="form-group">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <label for="note">name</label>
+                                                                        <input type="text" id="name" name="name" class="form-control col-md-7 col-xs-12" value="@lookup.lookup_name" />
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom:10px;">
+                                                                        <label for="jobtitle">Ordered</label>
+
+                                                                        <input type="text" id="Ordered" name="Ordered" class="form-control col-md-7 col-xs-12" value="@lookup.orderd">
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </form>
+                                                            <div class="pull-right" style="padding-top:10px">
+                                                                <button type="submit" class="btn btn-primary">Update lookup</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <div id="comment_box"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id='Paging' style="text-align: center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+                            @Html.PagedListPager(Model, page => Url.Action("indexLookup", new { page }))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="MModal" aria-hidden="true">
+    <div class="modal-dialog" style="width:1250px; height:1000px;">
+        <div class="modal-content animated flipInY" style="width:1250px; height:600px;">
+            <div class="modal-header">
+                Add Lookup
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body" style="width:1248px; height:450px;">
+                <form method="post" action="@Url.Action("CreateLookup","Settings")" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="orderd">Orderd</label>
+                            <input type="text" class="form-control" id="orderd" placeholder="Orderd">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Lookup name">
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Lookup</button>
+                </form>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div id="comment_box"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+
+        function DeleteLookup(id) {
+            if (confirm("Are you sure you want to remove this lookup type?")) {
+                $.ajax({
+                    url: "@string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"))/Settings/DeleteLookup/?Id=" + id,
+                    context: document.body
+                }).done(function (returnVal) {
+                    alert(returnVal);
+                    location.reload();
+                });
+            }
+        }
+
+    </script>
+}
+
+@section Styles{
+    <style>
+        .table td.text {
+            max-width: 177px;
+        }
+
+            .table td.text span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+        .table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        table {
+            border: 1px;
+            table-layout: fixed;
+        }
+
+        .table > tbody > tr > td, .table > thead > tr > th {
+            padding: 6px 10px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+    </style>
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+@{
+    ViewBag.Title = "IndexJobTitle";
+}
+
+<h2>IndexJobTitle</h2>
+

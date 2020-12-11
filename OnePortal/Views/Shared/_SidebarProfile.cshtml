@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using OnePortal.Models;
+@using OnePortal.Helper;
+@using HRM.DAL.Models;
+@using HRM.DAL.Util;
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+    var user = UserManager.FindByName(User.Identity.Name);
+    var employee = OptionUtil.GetEmployee(user.Id);
+
+}
+
+@{
+    string profilePic = "/Content/images/profile_images/" + User.Identity.GetUserId() + ".jpg";
+    if (!File.Exists(Server.MapPath(profilePic)))
+    { profilePic = "/Content/images/a4.jpg"; }
+}
+
+<div class="dropdown profile-element">
+    <span>
+        <img alt="image" class="img-circle" src="@profilePic" style="height:48px" />
+    </span>
+    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+        <span class="clear">
+            <span class="block m-t-xs">
+                <strong class="font-bold">
+                    @string.Format("{0} {1} {2}", employee.emp_firstname,employee.emp_middle_name, employee.emp_lastname)
+                </strong>
+            </span>
+            @if (employee.admin_hrm_emp_job_record != null)
+            {
+                <span class="text-muted text-xs block">
+
+                    @employee.admin_hrm_emp_job_record.admin_hrm_lkup_job_title.job_title
+                    <b class="caret">
+                    </b>
+                </span>
+            }
+            else
+            {
+                <span class="text-muted text-xs block">
+                    <b class="caret">
+                    </b>
+                </span>
+            }
+        </span>
+    </a>
+    <ul class="dropdown-menu m-t-xs">
+        <li>
+            <a href="@Url.Action("ChangePassword","Manage")">Profile</a>
+        </li>
+        <li>
+            <a href="#">Contacts</a>
+        </li>
+        <li>
+            <a href="#">Mailbox</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            @using Microsoft.AspNet.Identity
+
+
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                }
+            }
+            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        </li>
+        @if (HttpContext.Current.User.IsImpersonating())
+        {
+            <li>
+                <a href="@Url.Action("RevertImpersonate","Employee")">Stop Impersonation</a>
+            </li>
+        }
+</ul>
+    </div>

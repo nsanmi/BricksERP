@@ -1,0 +1,161 @@
+﻿@using HRM.DAL.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<pm_objective_files>
+@{
+    ViewBag.Title = "Files";
+    var objective = (pm_project_strategic_objective)ViewBag.objective;
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Files</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">@objective.pm_project.code</a>
+            </li>
+            <li>
+                <a href="#">@objective.code</a>
+            </li>
+            <li class="active">
+                <strong>Files</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-9">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Objective
+                    </h5>
+                    <div class="ibox-tools">
+                        <a href="#" onclick="$('#file').click()" class="btn btn-xs btn-primary">Add new file</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+
+                    @if (Model.Any())
+            {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><input type='checkbox' class="i-checks" /></th>
+                                    <th>Filename</th>
+                                    <th>Date uploaded</th>
+                                    <th>Uploaded By</th>
+                                    <th>Size</th>
+                                    <th>Last update date</th>
+                                    <th>Updated by</th>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var file in Model)
+                                {
+                                    <tr>
+                                        <td><input type='checkbox' class="i-checks" /></td>
+                                        <td><a href=""><i class="fa fa-file"></i> @file.file_name</a></td>
+                                        <td>@file.uploaded_at.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                        <td>@string.Format("{0} {1} {2}", file.admin_hrm_employee.emp_lastname, file.admin_hrm_employee.emp_firstname, file.admin_hrm_employee.emp_middle_name)</td>
+                                        <td>@file.file_size</td>
+                                        <td>@file.updated_at.Value.ToString("yyyy-MM-dd HH:mm tt")</td>
+                                        <td>@string.Format("{0} {1} {2}", file.admin_hrm_employee1.emp_lastname, file.admin_hrm_employee1.emp_firstname, file.admin_hrm_employee1.emp_middle_name)</td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+
+                        <div id='Paging' style="text-align:center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+
+                            @Html.PagedListPager(Model, page => Url.Action("files", new { page }))
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        Activities
+                    </h5>
+
+                </div>
+                <div class="ibox-content">
+
+                    <ul class="list-unstyled">
+                        @if (objective.pm_project_objective_activity.Any())
+                        {
+                            foreach (var activity in objective.pm_project_objective_activity)
+                            {
+                                <li><a href="@Url.Action("Files","Activity",new { id = activity.id })" ><i class="fa fa-folder-open-o"></i> @activity.activity</a></li>
+                            }
+                        }
+
+
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+<form method="post" enctype="multipart/form-data" id="frmFile">
+    <input type="file" style="display:none" name="file" id="file" />
+    <input type="hidden" value="objective" name="module" />
+    <input type="hidden" value="@objective.id" name="objective_id" />
+</form>
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/file_manager.js"></script>
+
+    <script>
+
+                    $(document).ready(function () {
+
+
+                        $('.i-checks').iCheck({
+                            checkboxClass: 'icheckbox_square-green',
+                            radioClass: 'iradio_square-green'
+                        });
+
+
+
+                    });
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+    <style>
+
+    </style>
+
+
+}

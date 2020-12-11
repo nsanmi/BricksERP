@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewBag.Title = "ChooseRoom";
+    Layout = "~/Views/Shared/_BricksLayout.cshtml";
+    var availablerooms = ViewBag.realdata;
+    var checkindate = ViewBag.CheckinDate;
+    var checkoutdate = ViewBag.CheckoutDate;
+}
+
+
+<link rel="stylesheet" type="text/css" href="../Bricks/css/event.css" />
+<link rel="stylesheet" type="text/css" href="../Bricks/css/popular.css" />
+
+<div class="k2t-body">
+    <div class="k2t-title-bar">
+        <div class="container k2t-wrap">
+            <h1 class="main-title k2t-cf7-title" style="font-size:36px;color:#283c5a;">
+                Booking Room
+            </h1>
+        </div>
+    </div>
+    <!-- .k2t-title-bar -->
+    <div class="k2t-content no-sidebar k2t-confirm-content">
+        <div class="container k2t-wrap">
+            <main class="k2t-main page">
+                <div class="page-entry">
+                    <div class="k2t-reservation-confirm">
+                        <div class="k2t-step-f pull-left first">
+                            <div class="k2t-step-done">
+                                <a> 1 </a>
+                            </div>
+                            <p class="k2t-p-done"> Choose Date </p>
+                        </div>
+                        <div class="k2t-step-s pull-left">
+                            <div class="k2t-step-done k2t-step-current">
+                                <a> 2 </a>
+                            </div>
+                            <p class="k2t-p-current"> Choose Room </p>
+                        </div>
+                        <div class="k2t-step-f pull-left">
+                            <div class="k2t-step-done k2t-next-step">
+                                <a> 3 </a>
+                            </div>
+                            <p class="k2t-p-next"> Reservation </p>
+                        </div>
+                        <div class="k2t-step-fo pull-left last">
+                            <div class="k2t-next-step k2t-step-done">
+                                <a> 4 </a>
+                            </div>
+                            <p class="k2t-p-next"> Confirmation </p>
+                        </div>
+                    </div>
+
+                    <div class="k2t-step-select-room w100 pull-left">
+                        <div class="event-listing-masonry-wrapper">
+                            <div class="event-listing-masonrys columns-3" style="position: relative; height: 1530px;">
+
+                                @foreach (var rooms in availablerooms)
+                                {
+                                    var image = @rooms.RoomImage1;
+                                    //string roomPic = "/Documents/Room/" + rooms.room_number;
+                                    //if (!File.Exists(Server.MapPath(roomPic)))
+                                    //{ roomPic = "/Content/images/a4.jpg"; }
+
+                                    <article class="masonry-item event-grid">
+                                        <div class="inner">
+                                            <div class="post-thumbnails">
+                                                <a href="reservation.html" title="King Suite Room">
+            <img width="370" height="370" src="../Bricks/images/upload/bricks6.png" class="attachment-thumb_330x330 wp-post-image" alt="King Suite Room" />
+        </a>
+
+
+                                                @*<a href="reservation.html" title="King Suite Room">
+                                                    <img width="370" height="370" style="background:url('@image')" class="attachment-thumb_330x330 wp-post-image" alt="King Suite Room" />
+                                                </a>*@
+
+                                                @*<a href="" title="King Suite Room">
+        <img width="370" height="370" style="background:url('@image')"  alt="King Suite Room" runat="server" class="attachment-thumb_330x330 wp-post-image" />*@
+
+                                                @*<a href="reservation.html" title="King Suite Room">
+            <img width="370" height="370" src="C:\Users\XXXXXXXXXXXXXXXXXXXX\source\repos\oneportal\OnePortal\Documents\Room\2010-19-10-2020_04_41_17.jpg" class="attachment-thumb_330x330 wp-post-image" alt="King Suite Room" />
+        </a>*@
+                                                <div class="info">
+                                                    <div class="product-price">
+                                                        <span class="price">
+                                                            <span class="amount">₦&nbsp; @rooms.rate</span>
+                                                        </span>
+                                                        <div id="post-ratings-2209" class="post-ratings">
+                                                            <img src="../Bricks/images/stars_crystal/rating_on.gif" alt="5 votes, average: 3.20 out of 5" title="5 votes, average: 3.20 out of 5"
+                                                                 class="post-ratings-image" />
+                                                            <img src="../Bricks/images/stars_crystal/rating_on.gif" alt="5 votes, average: 3.20 out of 5" title="5 votes, average: 3.20 out of 5"
+                                                                 class="post-ratings-image" />
+                                                            <img src="../Bricks/images/stars_crystal/rating_on.gif" alt="5 votes, average: 3.20 out of 5" title="5 votes, average: 3.20 out of 5"
+                                                                 class="post-ratings-image" />
+                                                            <img src="../Bricks/images/stars_crystal/rating_off.gif" alt="5 votes, average: 3.20 out of 5" title="5 votes, average: 3.20 out of 5"
+                                                                 class="post-ratings-image" />
+                                                            <img src="../Bricks/images/stars_crystal/rating_off.gif" alt="5 votes, average: 3.20 out of 5" title="5 votes, average: 3.20 out of 5"
+                                                                 class="post-ratings-image" />
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="title title-room">
+                                                        <a href="reservation.html" title="King Suite Room">
+                                                            @rooms.room_type
+                                                        </a>
+                                                        <span class="count-ratings pull-right"> (42 ratings)</span>
+                                                    </h3>
+                                                    <p class="attribute">
+                                                        <i class="zmdi zmdi-check"></i>
+                                                        <b>Bed:</b>&nbsp;@rooms.room_category
+                                                    </p>
+                                                    <p class="attribute">
+                                                        <i class="zmdi zmdi-check"></i>
+                                                        <b>Max:</b>&nbsp; 4 People
+                                                    </p>
+                                                    <p class="attribute">
+                                                        <i class="zmdi zmdi-check"></i>
+                                                        <b>Capacity:</b>&nbsp; @rooms.Capacity
+                                                    </p>
+                                                    <p class="attribute">
+                                                        <i class="zmdi zmdi-check"></i>
+                                                        <b>Room Details:</b>&nbsp; @rooms.Room_Description
+                                                    </p>
+
+                                                    <div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label" for="exampleCheck1" style="font-size: 30px; margin-top:30px; padding-top:30px;">Choose room</label>
+                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" style="height:30px; width:30px;">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="div-read-more">
+                                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id })*@
+                                                        @*<a class="" href="@Url.Action("Reservation", "HotelGuestBooking")" title="King Suite Room">Book This Room</a>*@
+                                                        @*<form method="post" action="@Url.Action("Reservation", "HotelGuestBooking")">
+                    <input type="date" value="@checkindate" id="contact_id" name="id"  hidden/>
+                    <input type="date" value="@checkoutdate" id="contact_id" name="id" hidden />
+                    <button type="submit" class="btn btn-warning btn-sm btn-block" onclick="location.href ='@Url.Action("Reservation", "HotelGuestBooking")?Id=@rooms.Id'">
+                        <i class="fa fa-edit"></i> Book This Room
+                    </button>
+                </form>*@
+
+
+                                                        @*<a class=""
+                   onclick="location.href ='@Url.Action("Reservation", "HotelGuestBooking")?Id=@rooms.Id'" title="King Suite Room">
+                    Book This Room
+                    onclick="location.href ='@Url.Action("Reservation", "HotelGuestBooking", new {Id=@rooms.Id, checkindate = checkindate, checkoutdate = checkoutdate }) ">
+                    Book
+
+                </a>*@
+
+
+                                                        <a href="@Url.Action("Reservation", "HotelGuestBooking", new {Id=@rooms.Id, checkindate = checkindate, checkoutdate = checkoutdate })">
+                                                            Book This Room
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+
+
+                                }
+
+
+                            </div>
+                            <!--event-listing-masonry-->
+                        </div>
+                        <div class="k2t-field-button pull-left w100">
+                            <a class="pull-left w100 k2t-field-backstep" href="@Url.Action("ChooseDate", "HotelGuestBooking")">
+                                <i class="zmdi zmdi-long-arrow-left"></i> &nbsp; Back Step
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#toclick').click(function () {
+
+            //var room_type = parseInt($(this).val())
+            var check_in_date = $('#checkin').val();
+            var check_out_date = $('#checkout').val();
+
+            console.log('check in' + check_in_date.length);
+            console.log('check out' + check_out_date.length);
+
+            if (check_in_date === "" || check_out_date === "") {
+                alert('Please select check-in and check-out dates');
+                return;
+            } else {
+                var ck_in = new Date(check_in_date);
+                var ck_out = new Date(check_out_date);
+                if (ck_in > ck_out) {
+
+                    alert("The checkout date selected is greater compared to checkin date please select date in correct order");
+                    return;
+                }
+
+
+                var formData = { check_out_date, check_in_date };
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/HotelGuestBooking/Reservation",
+                    data: JSON.stringify(formData),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (data) {
+
+                        var s = '<option value="-1">Please Select a Room</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].Room_number + '">' + data[i].Room_number + ' ' + data[i].room_type + '</option>';
+                        }
+                        //$("#roompull").html(s);
+
+
+                        $('#roompull').append(s);
+                        //alert(data);
+
+                        //debugger;
+                        console.log(data);
+                    }
+
+                });
+
+            }
+
+
+        });
+    })
+</script>

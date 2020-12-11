@@ -1,0 +1,143 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var doc = XElement.Parse(workflow.workflow);
+
+    var account_name = "";
+    if (form.Element("account_name") != null)
+    {
+        account_name = form.Element("account_name").Value;
+    }
+
+    var account_no = "";
+    if (form.Element("account_number") != null)
+    {
+        account_no = form.Element("account_number").Value;
+    }
+
+    var bank_name = "";
+    if (form.Element("bank_name") != null)
+    {
+        bank_name = form.Element("bank_name").Value;
+    }
+
+    double total = 0;
+}
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" placeholder="approval token" class="input form-control" name="approval_token">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn btn-primary" onclick="generate_approval_token()"> <i class="fa fa-refresh"></i> Refresh</button>
+        </span>
+    </div>
+</div>
+<div class="form-group">
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+                @*<th>Expense</th>
+                <th>Rate</th>
+                <th>Amonunt (&#8358;)</th>*@
+                <th style="background-color:transparent" width="10%">Unit</th>
+                <th style="background-color:transparent" width="10%">Quantity</th>
+                <th style="background-color:transparent" width="20%">Description</th>
+                <th style="background-color:transparent" width="15%">Unit Cost(&#8358;)</th>
+                <th style="background-color:transparent" width="15%">Total Cost(&#8358;)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("expenses").Elements("expense").Any())
+            {
+                @*foreach (var expense in form.Element("expenses").Elements("expense"))
+                {
+                    if (expense.Element("name") != null && expense.Element("name").Value != "")
+                    {
+                        double rate = 0;
+                        if (expense.Element("rate") != null && expense.Element("rate").Value != "")
+                        {
+                            rate = Convert.ToDouble(expense.Element("rate").Value);
+                        }
+                        var amount = rate * 1;
+                        total += amount;
+                        <tr>
+                            <td>@expense.Element("name").Value</td>
+                            <td>@expense.Element("rate").Value</td>
+                            <td>
+                                @String.Format("{0:N}", amount)
+                            </td>
+                        </tr>
+                    }
+                }*@
+                foreach (var item in form.Element("expenses").Elements("expense"))
+                {
+                    double unit_cost = 0;
+                    if (item.Element("vendors_unit_price") != null)
+                    {
+                        unit_cost = Convert.ToDouble(item.Element("vendors_unit_price").Value);
+                    }
+                    else if (item.Element("unit_cost") != null)
+                    {
+                        unit_cost = Convert.ToDouble(item.Element("unit_cost").Value);
+                    }
+                    else if (item.Element("est_unit_cost") != null)
+                    {
+                        unit_cost = item.Element("est_unit_cost").Value != "" ? Convert.ToDouble(item.Element("est_unit_cost").Value) : 0;
+                    }
+                    double unit, qty;
+                    //double.TryParse(item.Element("unit").Value, out unit);
+                    double.TryParse(item.Element("quantity").Value, out qty);
+                    var tc = qty * unit_cost;
+                    //var tc = Convert.ToDouble(item.Element("unit").Value) * Convert.ToDouble(item.Element("quantity").Value) * unit_cost;
+                    total += tc;
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        @*<td>@item.Element("itemname").Value</td>*@
+                        <td>@item.Element("description").Value</td>
+                        <td>@unit_cost</td>
+                        <td>@string.Format("{0:N}", tc)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="4" style="text-align:right"><strong>Total : </strong></td>
+                    <td>@String.Format("{0:N}", total)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="form-group">
+    <label>Account Name</label>
+    <input class="form-control" name="account_name" type="text" value="@account_name" />
+</div>
+
+<div class="form-group">
+    <label>Account Number</label>
+    <input class="form-control" name="account_number" type="text" value="@account_no" />
+</div>
+
+<div class="form-group">
+    <label>Bank Name</label>
+    <input class="form-control" name="bank_name" type="text" value="@bank_name" />
+</div>
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control" onchange="toggleRejection(this)">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+<div class="form-group" id="rejection_step">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+<div class="form-group">
+    <label>Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>

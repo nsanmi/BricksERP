@@ -1,0 +1,117 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+}
+<div class="form-group">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="tb_items">
+            <thead>
+            <tr>
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Unit Cost</th>
+                <th style="background-color:transparent">Total Cost</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var unit_cost = "";
+                    if (item.Element("est_unit_cost") != null)
+                    {
+                        unit_cost = item.Element("est_unit_cost").Value;
+                    }
+                    <tr>
+                        <td><input class="form-control" type="text" required onpaste="return false" name="unit_@item.Attribute("id").Value" value="@item.Element("unit").Value" readonly/></td>
+                        <td><input class="form-control" type="text" required onpaste="return false" name="quantity_@item.Attribute("id").Value" id="qty_@item.Attribute("id").Value" value="@item.Element("quantity").Value"/> </td>
+                        <td><input type="text" required name="description_@item.Attribute("id").Value" class="form-control" value="@item.Element("description").Value" readonly/></td>
+                        <td><input name="est_unit_price_@item.Attribute("id").Value" onpaste="return false" required onkeyup="multiply('@item.Element("quantity").Value',this,'est_total_price_@item.Attribute("id").Value')" type="text" class="form-control" value="@unit_cost" /></td>
+                        <td><input type="text" name="est_total_price_@item.Attribute("id").Value" id="est_total_price_@item.Attribute("id").Value" readonly class="form-control" value="@(int.Parse(unit_cost) * int.Parse(item.Element("quantity").Value))" /></td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td>Requesting Office</td>
+                <td colspan="5">
+                    @form.Element("requesting_office").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Needed By</td>
+                <td colspan="5">
+                    @form.Element("needed_by").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Delivery To</td>
+                <td colspan="5">
+                    @form.Element("delivery_to").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Delivery Address</td>
+                <td colspan="5">
+                    @form.Element("delivery_address").Value
+                </td>
+            </tr>
+            <tr>
+                <td>City/Country</td>
+                <td colspan="5">
+                    @form.Element("country").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Attention</td>
+                <td colspan="5">
+                    @form.Element("attention").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td colspan="5">
+                    @form.Element("phone").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Justification</td>
+                <td colspan="5">
+                    @form.Element("justification").Value
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@{
+    var conversion_rate = "";
+    if (form.Element("conversion_rate") != null)
+    {
+        conversion_rate = form.Element("conversion_rate").Value;
+    }
+}
+<div class="form-group">
+    <label>Conversion Rate</label>
+    <input type="number" required class="form-control" name="conversion_rate" value="@conversion_rate" />
+</div>
+
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+          
+
+                
+
+
+
+
+
+

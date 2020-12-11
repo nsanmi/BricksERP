@@ -1,0 +1,153 @@
+﻿@using HRM.DAL.Util;
+@using HRM.DAL.Models;
+@using PagedList;
+@using System.Data
+@using PagedList.Mvc;
+@using HRM.DAL;
+@model IQueryable<admin_hrm_suggestion>
+@{
+    ViewBag.Title = "Make Suggestion";
+
+
+}
+
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Make Suggestion</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li class="active">
+                <a>Suggestion</a>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Make your Suggestion</h5>
+                    <div class="ibox-tools">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                @ViewBag.message
+                            </div>
+                        }
+                    </div>
+                    <div class="content">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+
+                                <div class="panel panel-flat">
+
+
+                                    <div class="container">
+                                        <div class="panel-body">
+                                            <form class="" method="post" action="@Url.Action("Make","Suggestion")" id="fac_frm" data-parsley-validate>
+
+                                                <div class="form-group">
+                                                    <label for="title">Title</label>
+                                                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <label for="comment">Comment body</label>
+                                                    <textarea class="form-control" id="comment" name="comment" rows="5" placeholder="Enter your message" required></textarea>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Send suggestion</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div></div></div></div>
+
+
+
+
+
+@section scripts{
+    <script src="~/Content/libs/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/libs/dataTables/datatables.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+    <script src="~/Scripts/custom_fns/fn_leave.js"></script>
+    <script>
+
+        $(document).on("click", ".openCommentDialog", function () {
+            $(".modal-body #comment_box").text("");
+            var myImageId = $(this).data('id');
+            $(".modal-body #comment_box").text(myImageId);
+        });
+    </script>
+}
+
+@section Styles{
+    <style>
+        .table td.text {
+            max-width: 177px;
+        }
+
+            .table td.text span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+        .table td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        table {
+            border: 1px;
+            table-layout: fixed;
+        }
+
+        .table > tbody > tr > td, .table > thead > tr > th {
+            padding: 6px 10px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+    </style>
+
+    <link href="~/Content/libs/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="~/Content/libs/dataTables/datatables.min.css" rel="stylesheet">
+}
+
+
+

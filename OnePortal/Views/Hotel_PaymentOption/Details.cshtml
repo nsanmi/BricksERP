@@ -1,0 +1,120 @@
+﻿@model Hotel.Dal.Models.Hotel_PaymentOption
+
+@{
+    /**/
+
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Payment Details</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li>
+                <a>HRM</a>
+            </li>
+            <li>
+                <a>Hotel</a>
+            </li>
+            <li class="active">
+                <strong>Payment Details</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5> Details </h5>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="row">
+                            @if (ViewBag.message != null)
+                            {
+                                <div class="alert alert-info alert-dismissable">
+                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                    @ViewBag.message
+                                </div>
+                            }
+                        </div>
+
+
+                        <div>
+                            <h4>Hotel_PaymentOption</h4>
+                            <hr />
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Type)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Type)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Options)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Options)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Description)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.Status)
+                                </dd>
+
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.deleted)
+                                </dt>
+
+                                <dd>
+                                    @Html.DisplayFor(model => model.deleted)
+                                </dd>
+
+                            </dl>
+                        </div>
+                        <p>
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                            @Html.ActionLink("Back to List", "Index")
+                        </p>
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                @*<div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Update Complain</button>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+        </div>
+    </div>
+</div>

@@ -1,0 +1,262 @@
+﻿@using WorkFlow.DAL.Data;
+@using PagedList.Mvc;
+@using HRM.DAL.Util;
+@using WorkFlow.DAL;
+@model PagedList.IPagedList<bpm_workflow>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Transactions";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Transactions</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Noticeboard","Admin")">Administration</a>
+            </li>
+            <li class="active">
+                <strong>Completed Transactions</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12" id="div_list">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>All Transactions</h5>
+                    @*<div class="ibox-tools">
+                            <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-primary btn-xs">Make a Request</button>
+                        </div>*@
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <div class="col-md-11">
+                            <div class="input-group">
+                                <input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary"> Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-list">
+                        <div class="table-responsive">
+                            <table class="table table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Process</th>
+                                        <th>Project</th>
+                                        <th>Date created</th>
+                                        <th>Documents</th>
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model.Any())
+                                    {
+                                        foreach (var workflow in Model)
+                                        {
+
+                                            <tr>
+                                                <td>@workflow.id.ToString().Substring(0, 5)</td>
+                                                <td><strong><a id="t_@workflow.id" href="@Url.Action("Step", "Workflow", new { id = workflow.id })">@workflow.title</a> </strong></td>
+                                                <td>@workflow.bpm_process.process_name</td>
+                                                <td>@workflow.pm_project.name</td>
+
+
+                                                <td>@workflow.created_at.ToString("dd MMM, yyyy HH:mm tt")</td>
+
+
+                                                @{
+                                                    var documents = workflow.bpm_workflow_document;
+                                                    <td>
+                                                        @if (documents.Any())
+                                                        {
+                                                            foreach (var document in documents)
+                                                            {
+                                                                <a href="@Url.Action("Document", "Workflow", new { id = document.id })" class="btn btn-xs btn-default"><i class="fa fa-file"></i> @document.name</a>
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                                <td>
+                                                    <a href="@Url.Action("Transactions","Workflow",new { transaction_id = workflow.id })" class="btn btn-warning btn-xs">Create PV</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id='Paging' style="text-align:center">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+
+                            @Html.PagedListPager(Model, page => Url.Action("transactions", new { page }))
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12" style="display:none" id="div_create">
+        <div class="wrapper wrapper-content animated fadeInUp">
+            
+            @using (Html.BeginForm("PV", "Workflow", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+            {
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5 id="w_title"></h5>
+                        <h5> &nbsp; - Payment Voucher</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="hidden" name="process_id" id="w_id" />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Pay To</label>
+                                    @Html.DropDownList("vendor", new SelectList(Util.GetVendors(), "id", "name", null), "- Please Select -", new { @class = "form-control", @required = "required" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Pay From</label>
+                                    @Html.DropDownList("pay_from", new SelectList(OptionUtil.GetLookupOptions("pay_from"), "id", "lookup_name", null), null, new { @class = "form-control", @required = "required" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Purpose</label>
+                                    <textarea class="form-control" name="purpose"></textarea>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>Cheque number</label>
+                                    <input class="form-control" name="check_number">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Invoice</label>
+                                    <input class="form-control" name="invoice">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>Conversion Rate</label>
+                                    <input class="form-control" name="conversion_rate" required>
+                                </div>
+
+
+
+                            </div>
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Pay By</label>
+                                    @Html.DropDownList("pay_by", new SelectList(OptionUtil.GetLookupOptions("pay_by"), "id", "lookup_name", null), null, new { @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Bank Account</label>
+                                    <input class="form-control" required name="bank_account">
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label>Reference</label>
+                                    <input class="form-control" name="reference">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Amount in  Naira</label>
+                                    <input class="form-control" required name="amount_ngn">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Amount in USD</label>
+                                    <input class="form-control" required name="amount_usd">
+                                </div>
+
+                            </div>
+                        </div>
+
+      
+
+
+                    </div>
+                    <div class="ibox-footer">
+                        <button type="submit" id="btn_submit" class="btn btn-primary">Create Payment Voucher</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Content/libs/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/custom_fns/base.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+
+
+        });
+
+        function show_create(id) {
+            $("#w_title").text($("#t_" + id).text());
+            $("#w_id").val(id);
+            $("#div_create").show();
+            $("#div_list").hide();
+        }
+
+        function show_list() {
+            $("#div_create").hide();
+            $("#div_list").show();
+        }
+
+
+    </script>
+}
+
+
+
+@section styles{
+    <link href="~/Content/libs/iCheck/custom.css" rel="stylesheet" />
+
+
+
+}
+
+
+

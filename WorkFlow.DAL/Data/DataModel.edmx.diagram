@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="61affaa197784cf8be4f73cd2390dcbf" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="oneportalModel.admin_hrm_employee" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_form_design" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="oneportalModel.pm_project" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="oneportalModel.FK_pm_project_pm_project" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_employee" Width="1.5" PointX="7.5" PointY="11.625" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_employee_admin_hrm_employee" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor_document" Width="1.5" PointX="10.625" PointY="9.75" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_vendor_document_admin_hrm_employee" />
+        <EntityTypeShape EntityType="oneportalModel.ws_lookup" Width="1.5" PointX="9.375" PointY="0.875" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_vendor_document_ws_lookup" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_link_travel_expense" Width="1.5" PointX="11.625" PointY="5" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_travel_expenses" Width="1.5" PointX="9.375" PointY="5.5" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_travel_type" Width="1.5" PointX="9.375" PointY="15.5" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_expenses" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_link_travel_expense_bpm_travel_type" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_lnk_vendor_category" Width="1.5" PointX="7.625" PointY="8.375" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_transaction_token" Width="1.5" PointX="7.5" PointY="18.125" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor_category" Width="1.5" PointX="5.375" PointY="15.5" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor_category" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_vendor" Width="1.5" PointX="4.375" PointY="10.25" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_lnk_vendor_category_bpm_vendor" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_vendor_document_bpm_vendor" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_approval_token" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow" Width="1.5" PointX="13.625" PointY="8.625" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_transaction_token_bpm_workflow" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_employee_bpm_workflow_employee" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_pm_project" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_ws_lookup" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_item" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_process" Width="1.5" PointX="3" PointY="15.875" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_process_admin_hrm_employee" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_process_admin_hrm_employee1" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_bpm_process" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_payments" Width="1.5" PointX="15.875" PointY="12.75" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_payments_bpm_workflow" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_payments_bpm_workflow1" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_program_approval" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="oneportalModel.bpm_workflow_document" Width="1.5" PointX="15.875" PointY="9.75" />
+        <AssociationConnector Association="oneportalModel.FK_bpm_workflow_document_bpm_workflow" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

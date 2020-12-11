@@ -1,0 +1,128 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var doc = XElement.Parse(workflow.workflow);
+}
+
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" placeholder="approval token" class="input form-control" name="approval_token">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn btn-primary" onclick="generate_approval_token()"> <i class="fa fa-refresh"></i> Refresh</button>
+        </span>
+    </div>
+</div>
+
+<div class="form-group">
+
+
+    <table class="table table-bordered" id="tb_items">
+        <thead>
+            <tr>
+
+                <th style="background-color:transparent">Unit</th>
+                <th style="background-color:transparent">Quantity</th>
+                <th style="background-color:transparent">Description</th>
+                <th style="background-color:transparent">Est. Unit Price</th>
+                <th style="background-color:transparent">Est. Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (form.Element("items").Elements("item").Any())
+            {
+                foreach (var item in form.Element("items").Elements("item"))
+                {
+                    var tc = Convert.ToDouble(item.Element("est_unit_cost").Value) * Convert.ToDouble(item.Element("quantity").Value);
+                    <tr>
+                        <td>@item.Element("unit").Value</td>
+                        <td>@item.Element("quantity").Value</td>
+                        @*<td>@item.Element("itemname").Value</td>*@
+                        <td>@item.Element("description").Value</td>
+                        <td>@item.Element("est_unit_cost").Value</td>
+                        <td>@tc</td>
+                    </tr>
+                }
+            }
+        <tr>
+                <td>Requesting Office</td>
+                <td colspan="5">
+                    @form.Element("requesting_office").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Needed By</td>
+                <td colspan="5">
+                    @form.Element("needed_by").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Delivery To</td>
+                <td colspan="5">
+                    @form.Element("delivery_to").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Delivery Address</td>
+                <td colspan="5">
+                    @form.Element("delivery_address").Value
+                </td>
+            </tr>
+            <tr>
+                <td>City/Country</td>
+                <td colspan="5">
+                    @form.Element("country").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Attention</td>
+                <td colspan="5">
+                    @form.Element("attention").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td colspan="5">
+                    @form.Element("phone").Value
+                </td>
+            </tr>
+            <tr>
+                <td>Justification</td>
+                <td colspan="5">
+                    @form.Element("justification").Value
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-group">
+    <label>Select Action</label>
+    <select name="approval" class="form-control">
+        <option value="approved">Approve</option>
+        <option value="rejected">Reject</option>
+        <option value="dismissed">Dismiss</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Select a step to return to <span style="color:red">ONLY USE THIS OPTION IF YOUR ARE REJECTING A TRANSACTION</span></label>
+    <input type="number" max="@doc.Element("next_step").Value" min="1" name="fall_back" value="1" />
+</div>
+
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment"></textarea>
+</div>
+
+
+
+
+
+
+
+
+

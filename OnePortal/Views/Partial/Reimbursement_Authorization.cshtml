@@ -1,0 +1,43 @@
+﻿@using WorkFlow.DAL.Data
+@using System.Xml.Linq;
+@using WorkFlow.DAL;
+@{
+    ViewBag.Title = "Tr_Purpose";
+}
+@{
+    var workflow = (bpm_workflow)ViewBag.workflow;
+    var definition = workflow.workflow;
+    var form = XElement.Parse(workflow.workflow).Element("form");
+    var step = (Step)ViewBag.step;
+}
+@{
+    var justification = "";
+    if (form.Element("purpose_of_reimbursement") != null)
+    {
+        justification = form.Element("purpose_of_reimbursement").Value;
+    }
+
+    var comment = "";
+    if (step.Definition.Element("comments") != null)
+    {
+        comment = step.Definition.Element("comments").Value;
+    }
+}
+<div class="form-group">
+    <label>Purpose of Reimbursement</label>
+    <textarea name="purpose_of_reimbursement" placeholder="Describe the purpose of this reimbursement here..." class="form-control">@justification</textarea>
+</div>
+<div class="form-group">
+    <label>Additional Comments</label>
+    <textarea class="form-control" name="comment">@comment</textarea>
+</div>
+<div class="form-group">
+    <label>Upload Supporting Document</label>
+    <input required type="file" multiple name="files" />
+</div>
+
+
+
+
+
+
